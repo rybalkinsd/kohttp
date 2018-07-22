@@ -18,7 +18,7 @@ dependencies {
     compile("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.23.4")
     implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
 
-    testCompile("junit", "junit", "4.12")
+    testCompile(kotlin("test-junit", "1.2.51"))
 }
 
 configure<JavaPluginConvention> {

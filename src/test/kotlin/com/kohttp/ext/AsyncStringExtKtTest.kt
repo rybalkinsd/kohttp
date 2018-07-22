@@ -1,23 +1,20 @@
-package com.kohttp
+package com.kohttp.ext
 
-import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Test
 import kotlin.system.measureTimeMillis
 
 /**
- * Created by Sergey Rybalkin on 21/07/2018.
+ * Created by sergey on 21/07/2018.
  */
 class AsyncStringExtKtTest {
 
     @Test
-    fun `async httpGet simple test`() {
+    fun `many async invokes of httpGet`() {
         measureTimeMillis {
             runBlocking {
                 List(100) {
-                    async {
-                        "https://www.yandex.ru/search/?text=qqq&lr=213".asyncHttpGet()
-                    }
+                    "https://www.yandex.ru/search/?text=qqq&lr=213".asyncHttpGet()
                 }.map { it.await() }
                         .forEach {
                             println(it.code())
