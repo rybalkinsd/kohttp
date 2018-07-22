@@ -11,17 +11,17 @@ class HttpGetDslKtTest {
 
     @Test
     fun `single sync http get invocation`() {
-        val result = httpGet {
+        val response = httpGet {
             host = "yandex.ru"
             path = "/search"
 
             param {
-                "text" to "qqq"
+                "text" to "iphone"
                 "lr" to 213
             }
         }
 
-        assertNotNull(result)
-        assertEquals(200, result?.code())
+        assertNotNull(response)
+        assertEquals(200, response?.code())
     }
 }

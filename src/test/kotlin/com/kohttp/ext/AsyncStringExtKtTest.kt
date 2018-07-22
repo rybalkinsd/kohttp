@@ -14,11 +14,15 @@ class AsyncStringExtKtTest {
         measureTimeMillis {
             runBlocking {
                 List(100) {
-                    "https://www.yandex.ru/search/?text=qqq&lr=213".asyncHttpGet()
+                    "https://www.yandex.ru/search/?text=iphone".asyncHttpGet()
                 }.map { it.await() }
                         .forEach {
                             println(it.code())
                         }
+            }
+            runBlocking {
+                "https://www.yandex.ru/search/?text=iphone".asyncHttpGet()
+
             }
         }.also { println("$it ms") }
     }
