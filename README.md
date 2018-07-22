@@ -10,7 +10,7 @@ val response: okhttp3.Response? = "https://yandex.ru/search/?text=iphone".httpGe
    
 ### simple async GET with `String.asyncHttpGet()`
 ```kotlin
-val response: okhttp3.Response? = "https://yandex.ru/search/?text=iphone".asyncHttpGet()
+val response: Deferred<okhttp3.Response?> = "https://yandex.ru/search/?text=iphone".asyncHttpGet()
 ```
    
 ### sync GET with `httpGet { }` dsl
