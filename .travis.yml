@@ -3,4 +3,5 @@ language: java
 jdk:
   - oraclejdk9
 
-script: ./gradlew check
+script:
+  ./gradlew assemble && ./gradlew check
