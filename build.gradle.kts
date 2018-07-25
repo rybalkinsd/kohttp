@@ -5,6 +5,7 @@ val publish = false
 
 plugins {
     java
+    id("jacoco")
     kotlin("jvm") version "1.2.51"
 
     id("org.jetbrains.dokka") version "0.9.16"
@@ -38,6 +39,14 @@ tasks.withType<KotlinCompile> {
 
 kotlin {
     experimental.coroutines = Coroutines.ENABLE
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        xml.isEnabled = false
+        html.isEnabled = true
+        html.destination = File("$buildDir/jacocoHtml")
+    }
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
