@@ -1,6 +1,6 @@
 # Kotlin dsl for OkHttp
 [![Build Status](https://travis-ci.org/rybalkinsd/kohttp.svg?branch=master)](https://travis-ci.org/rybalkinsd/kohttp)
-
+[![Coverage Status](https://coveralls.io/repos/github/rybalkinsd/kohttp/badge.svg?branch=master)](https://coveralls.io/github/rybalkinsd/kohttp?branch=master)
 ## Usage examples
 
 ### simple sync GET with `String.httpGet()`
