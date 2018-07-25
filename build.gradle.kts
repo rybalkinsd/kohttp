@@ -16,6 +16,7 @@ repositories {
 dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.23.4")
+    compile("com.alibaba", "fastjson", "1.2.47")
     implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
 
     testCompile(kotlin("test-junit", "1.2.51"))
