@@ -8,12 +8,12 @@ class Json {
     fun json(init: Json.() -> Unit) = Json().also(init)
 
     infix fun String.to(obj: List<*>) {
-        val transform: ((Any?) -> CharSequence)? = when {
-            obj.all { it is String } -> { { """"$it"""" } }
-            else -> null
+        val v = obj.joinToString(separator = ",", prefix = "[", postfix = "]") {
+            when(it) {
+                is Number, is Json -> it.toString()
+                else -> """"$it""""
+            }
         }
-
-        val v = obj.joinToString(separator = ",", prefix = "[", postfix = "]", transform = transform)
         elements += Pair(this, v)
     }
 
