@@ -1,4 +1,5 @@
 # Kotlin dsl for OkHttp
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/260447326abf45ed98a5eeefc7dffd49)](https://app.codacy.com/app/yan.brikl/kohttp?utm_source=github.com&utm_medium=referral&utm_content=rybalkinsd/kohttp&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/rybalkinsd/kohttp.svg?branch=master)](https://travis-ci.org/rybalkinsd/kohttp)
 [![Coverage Status](https://coveralls.io/repos/github/rybalkinsd/kohttp/badge.svg?branch=master)](https://coveralls.io/github/rybalkinsd/kohttp?branch=master)
 ## Usage examples
