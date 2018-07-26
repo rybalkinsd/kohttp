@@ -8,7 +8,6 @@ plugins {
     java
 
     jacoco
-    id("com.github.kt3k.coveralls") version "2.8.2"
 
     id("org.jetbrains.dokka") version "0.9.16"
     maven
@@ -45,10 +44,9 @@ kotlin {
 
 tasks.withType<JacocoReport> {
     reports {
-        xml.isEnabled = false
-        html.isEnabled = true
-        html.destination = File("$buildDir/jacocoHtml")
-
+        xml.isEnabled = true
+        xml.destination = File("$buildDir/reports/jacoco/report.xml")
+        html.isEnabled = false
     }
 }
 
