@@ -4,9 +4,11 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 val publish = false
 
 plugins {
-    java
-    id("jacoco")
     kotlin("jvm") version "1.2.51"
+    java
+
+    jacoco
+    id("com.github.kt3k.coveralls") version "2.8.2"
 
     id("org.jetbrains.dokka") version "0.9.16"
     maven
@@ -46,6 +48,7 @@ tasks.withType<JacocoReport> {
         xml.isEnabled = false
         html.isEnabled = true
         html.destination = File("$buildDir/jacocoHtml")
+
     }
 }
 

@@ -5,3 +5,6 @@ jdk:
 
 script:
   ./gradlew assemble && ./gradlew check
+
+after_success:
+  ./gradlew jacocoTestReport coveralls
