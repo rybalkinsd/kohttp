@@ -4,8 +4,10 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 val publish = false
 
 plugins {
-    java
     kotlin("jvm") version "1.2.51"
+    java
+
+    jacoco
 
     id("org.jetbrains.dokka") version "0.9.16"
     maven
@@ -38,6 +40,14 @@ tasks.withType<KotlinCompile> {
 
 kotlin {
     experimental.coroutines = Coroutines.ENABLE
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        xml.isEnabled = true
+        xml.destination = File("$buildDir/reports/jacoco/report.xml")
+        html.isEnabled = false
+    }
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
