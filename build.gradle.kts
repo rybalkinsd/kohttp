@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
+val publish = false
+
 plugins {
     java
     kotlin("jvm") version "1.2.51"
@@ -76,10 +78,13 @@ tasks {
 
                 mavenDeployer {
                     withGroovyBuilder {
-//                        "repository"("url" to uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")) {
-//                            "authentication"("userName" to nexusUsername, "password" to nexusPassword)
-//                        }
-                        "repository"("url" to uri("$buildDir/pub/"))
+                        if (publish) {
+                            "repository"("url" to uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")) {
+                                "authentication"("userName" to nexusUsername, "password" to nexusPassword)
+                            }
+                        } else {
+                            "repository"("url" to uri("$buildDir/pub/"))
+                        }
                         "snapshotRepository"("url" to uri("https://oss.sonatype.org/content/repositories/snapshots/")) {
                             "authentication"("userName" to nexusUsername, "password" to nexusPassword)
                         }
@@ -125,7 +130,7 @@ tasks {
 }
 
 signing {
-    isRequired = true
+    isRequired = publish
     sign(configurations.archives)
 }
 
