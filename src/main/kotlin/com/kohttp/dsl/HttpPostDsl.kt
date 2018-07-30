@@ -16,6 +16,7 @@ fun httpPost(init: HttpPostContext.() -> Unit): Response? {
 
     val request = Request.Builder()
             .url(url)
+            .addHeader("content-type", MediaTypes.JSON.type.toString())
             .post(context.body)
             .build()
 
@@ -25,24 +26,24 @@ fun httpPost(init: HttpPostContext.() -> Unit): Response? {
 class HttpPostContext: HttpContext() {
     internal lateinit var body: RequestBody
 
-    fun form(init: FormContext.() -> Unit) {
+    fun body(mediaType: MediaTypes = MediaTypes.X_WWW_FORM_URLENCODED, init: FormContext.() -> Unit) {
         body = FormContext().also(init).toRequestBody()
     }
 }
 
 class FormContext {
-    private val content: MutableMap<String, Any> = mutableMapOf()
+    private val content: MutableList<Pair<String, Any?>> = mutableListOf()
 
     infix fun String.to(v: Any) {
-        content[this] = v
+        content += Pair(this, v)
     }
 
-    internal fun toRequestBody() = RequestBody.create(MediaTypes.X_WWW_FORM_URLENCODED.type,
-            content.map { "${it.key}=${it.value}" }
-                   .joinToString(separator = "&")
+    internal fun toRequestBody() = RequestBody.create(MediaTypes.JSON.type,
+            content.joinToString(separator = ",", prefix = "{", postfix = "}") { "${it.first}=${it.second}" }
     )
 }
 
 enum class MediaTypes(val type: MediaType) {
-    X_WWW_FORM_URLENCODED(MediaType.get("application/x-www-FormContext-urlencoded"))
+    X_WWW_FORM_URLENCODED(MediaType.get("application/x-www-FormContext-urlencoded")),
+    JSON(MediaType.get("application/json"))
 }

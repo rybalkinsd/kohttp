@@ -1,5 +1,6 @@
 package com.kohttp.dsl
 
+import com.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertNotNull
 
@@ -18,9 +19,11 @@ class HttpPostDslKtTest {
                 "arg" to "iphone"
             }
 
-            form {
+            body(mediaType = MediaTypes.JSON) {
                 "a" to "b"
-                "c" to 42
+                "c" to json {
+                    "x" to "y"
+                }
             }
         }.also {
             assertNotNull(it)
@@ -38,10 +41,6 @@ class HttpPostDslKtTest {
                 "arg" to "iphone"
             }
 
-            json {
-                "a" to "b"
-                "c" to 42
-            }
         }.also {
             assertNotNull(it)
             println(it?.body()?.string())

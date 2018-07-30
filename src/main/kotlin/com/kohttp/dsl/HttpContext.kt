@@ -3,7 +3,7 @@ package com.kohttp.dsl
 import okhttp3.HttpUrl
 
 /**
- * Created by Sergey Rybalkin on 23/07/2018.
+ * Created by sergey on 23/07/2018.
  */
 open class HttpContext {
     val paramContext: ParamContext = ParamContext()
@@ -28,14 +28,4 @@ open class HttpContext {
             return this
         }
     }
-}
-
-open class ParamContext {
-    private val content: MutableMap<String, Any> = mutableMapOf()
-
-    infix fun String.to(v: Any) {
-        content[this] = v
-    }
-
-    internal fun forEach(action: (k: String, v: Any) -> Unit) = content.forEach(action)
 }
