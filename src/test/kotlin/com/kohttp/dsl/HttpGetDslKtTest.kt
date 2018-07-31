@@ -15,12 +15,13 @@ class HttpGetDslKtTest {
         val response = httpGet {
             host = "yandex.ru"
             path = "/search"
+            port = 80
 
             param {
                 "text" to "iphone"
                 "lr" to 213
             }
-        }
+        }.also { println(it) }
 
         assertNotNull(response)
         assertEquals(200, response?.code())
