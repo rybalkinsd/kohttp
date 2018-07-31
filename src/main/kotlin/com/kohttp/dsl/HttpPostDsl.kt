@@ -16,7 +16,7 @@ fun httpPost(init: HttpPostContext.() -> Unit): Response? {
     return CommonHttpClient.newCall(context.makeRequest()).execute()
 }
 
-class HttpPostContext: AbsHttpContext(method = Method.POST) {
+class HttpPostContext: HttpContext(method = Method.POST) {
     lateinit var body: RequestBody
     fun body(init: BodyContext.() -> RequestBody) {
         body = BodyContext().init()

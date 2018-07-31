@@ -16,11 +16,11 @@ enum class Method {
     GET, POST
 }
 
-internal interface HttpContext {
+internal interface IHttpContext {
     fun makeRequest(): Request
 }
 
-open class AbsHttpContext(private val method: Method = Method.GET) : HttpContext {
+open class HttpContext(private val method: Method = Method.GET) : IHttpContext {
     private val paramContext = ParamContext()
     private val headerContext = HeaderContext()
 
@@ -65,7 +65,7 @@ open class AbsHttpContext(private val method: Method = Method.GET) : HttpContext
         }
     }
 
-    open fun makeBody(): RequestBody = throw UnsupportedOperationException("Request body is not support ed for this Method.")
+    open fun makeBody(): RequestBody = throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
 }
 
 class HeaderContext {

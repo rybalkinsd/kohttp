@@ -11,4 +11,4 @@ fun httpGet(init: HttpGetContext.() -> Unit): Response? {
     return CommonHttpClient.newCall(context.makeRequest()).execute()
 }
 
-class HttpGetContext : AbsHttpContext()
+class HttpGetContext : HttpContext()
