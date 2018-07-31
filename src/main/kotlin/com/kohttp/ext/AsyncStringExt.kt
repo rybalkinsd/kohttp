@@ -11,7 +11,7 @@ import java.io.IOException
 import kotlin.coroutines.experimental.suspendCoroutine
 
 /**
- * Created by sergey on 21/07/2018.
+ * Created by Sergey on 21/07/2018.
  */
 private suspend fun asyncHttpGet(url: String): Response {
     val request = Request.Builder()

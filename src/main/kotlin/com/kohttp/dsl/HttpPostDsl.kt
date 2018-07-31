@@ -1,8 +1,9 @@
 package com.kohttp.dsl
 
 import com.kohttp.client.CommonHttpClient
+import com.kohttp.util.Form
+import com.kohttp.util.Json
 import okhttp3.MediaType
-import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
 
@@ -11,38 +12,23 @@ import okhttp3.Response
  * Created by Sergey on 23/07/2018.
  */
 fun httpPost(init: HttpPostContext.() -> Unit): Response? {
-    val context = HttpPostContext().also(init)
-    val url = context.toHttpUrlBuilder().build()
-
-    val request = Request.Builder()
-            .url(url)
-            .post(context.body)
-            .build()
-
-    return CommonHttpClient.newCall(request).execute()
+    val context = HttpPostContext().apply(init)
+    return CommonHttpClient.newCall(context.makeRequest()).execute()
 }
 
-class HttpPostContext: HttpContext() {
-    internal lateinit var body: RequestBody
-
-    fun form(init: FormContext.() -> Unit) {
-        body = FormContext().also(init).toRequestBody()
-    }
-}
-
-class FormContext {
-    private val content: MutableMap<String, Any> = mutableMapOf()
-
-    infix fun String.to(v: Any) {
-        content[this] = v
+class HttpPostContext: AbsHttpContext(method = Method.POST) {
+    lateinit var body: RequestBody
+    fun body(init: BodyContext.() -> RequestBody) {
+        body = BodyContext().init()
     }
 
-    internal fun toRequestBody() = RequestBody.create(MediaTypes.X_WWW_FORM_URLENCODED.type,
-            content.map { "${it.key}=${it.value}" }
-                   .joinToString(separator = "&")
-    )
+    override fun makeBody(): RequestBody = body
 }
 
-enum class MediaTypes(val type: MediaType) {
-    X_WWW_FORM_URLENCODED(MediaType.get("application/x-www-FormContext-urlencoded"))
+class BodyContext {
+    fun json(init: Json.() -> Unit): RequestBody =
+        RequestBody.create(MediaType.get("application/json"), Json().also(init).toString())
+
+    fun form(init: Form.() -> Unit): RequestBody =
+        RequestBody.create(MediaType.get("application/x-www-form-urlencoded"), Form().also(init).toString())
 }

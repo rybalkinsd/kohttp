@@ -4,7 +4,7 @@ import org.junit.Test
 import kotlin.test.assertNotNull
 
 /**
- * Created by Sergey Rybalkin on 23/07/2018.
+ * Created by Sergey on 23/07/2018.
  */
 class HttpPostDslKtTest {
 
@@ -18,9 +18,19 @@ class HttpPostDslKtTest {
                 "arg" to "iphone"
             }
 
-            form {
-                "a" to "b"
-                "c" to 42
+            header {
+                "one" to 42
+                cookie {
+                    "aaa" to "bbb"
+                    "ccc" to 42
+                }
+            }
+
+            body {
+                form {
+                    "login" to "user"
+                    "email" to "john.doe@gmail.com"
+                }
             }
         }.also {
             assertNotNull(it)
@@ -38,9 +48,19 @@ class HttpPostDslKtTest {
                 "arg" to "iphone"
             }
 
-            json {
-                "a" to "b"
-                "c" to 42
+            header {
+                "one" to 42
+                cookie {
+                    "aaa" to "bbb"
+                    "ccc" to 42
+                }
+            }
+
+            body {
+                json {
+                    "login" to "user"
+                    "email" to "john.doe@gmail.com"
+                }
             }
         }.also {
             assertNotNull(it)

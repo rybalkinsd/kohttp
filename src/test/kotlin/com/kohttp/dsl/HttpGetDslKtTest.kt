@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 /**
- * Created by sergey on 22/07/2018.
+ * Created by Sergey on 22/07/2018.
  */
 class HttpGetDslKtTest {
 
