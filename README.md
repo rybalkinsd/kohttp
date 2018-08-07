@@ -7,12 +7,17 @@
 
 ### simple sync GET with `String.httpGet()`
 ```kotlin
-val response: okhttp3.Response? = "https://yandex.ru/search/?text=iphone".httpGet()
+val response: okhttp3.Response = "https://yandex.ru/search/?text=iphone".httpGet()
+
+// Response is `AutoClosable` access it with `use` to prevent resource leakage
+reponse.use {
+    ...
+}
 ```
    
 ### simple async GET with `String.asyncHttpGet()`
 ```kotlin
-val response: Deferred<okhttp3.Response?> = "https://yandex.ru/search/?text=iphone".asyncHttpGet()
+val response: Deferred<okhttp3.Response> = "https://yandex.ru/search/?text=iphone".asyncHttpGet()
 ```
    
 ### sync GET with `httpGet { }` dsl
@@ -24,6 +29,10 @@ val response: okhttp3.Response? = httpGet {
        "text" to "iphone"
        "lr" to 213
    }
+}
+
+reponse.use {
+    ...
 }
 ```
 
@@ -57,6 +66,10 @@ val response: okhttp3.Response? = httpGet {
         "lr" to 213
     }
 }
+
+reponse.use {
+    ...
+}
 ```
 ### async GET with dsl
 *TODO*
@@ -89,6 +102,10 @@ val response: okhttp3.Response? = httpPost {
         }
     }
 }
+
+reponse.use {
+    ...
+}
 ```
 
 #### Post with `json` body
@@ -116,6 +133,10 @@ val response: okhttp3.Response? = httpPost {
             "email" to "john.doe@gmail.com" //      "email": "john.doe@gmail.com" 
         }                                   //  }
     }
+}
+
+reponse.use {
+    ...
 }
 ```
 

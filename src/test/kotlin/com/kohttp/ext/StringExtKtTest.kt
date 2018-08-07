@@ -12,7 +12,16 @@ class StringExtKtTest {
     @Test
     fun `single sync invoke of httpGet`() {
         val result = "https://www.yandex.ru/search/?text=iphone".httpGet()
-        assertEquals(200, result?.code())
+        assertEquals(200, result.code())
+    }
+
+    @Test
+    fun `single sync invoke of httpGet safe way`() {
+        val result = "https://www.yandex.ru/search/?text=iphone".httpGet()
+
+        result.use {
+            assertEquals(200, it.code())
+        }
     }
 
     @Test
@@ -21,7 +30,7 @@ class StringExtKtTest {
             List(100) {
                 "https://www.yandex.ru/search/?text=iphone".httpGet()
             }.forEach {
-                assertEquals(200, it?.code())
+                assertEquals(200, it.code())
             }
         }.also { println("$it ms") }
     }
