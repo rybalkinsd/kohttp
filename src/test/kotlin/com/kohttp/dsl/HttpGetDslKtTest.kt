@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 /**
- * Created by sergey on 22/07/2018.
+ * Created by Sergey on 22/07/2018.
  */
 class HttpGetDslKtTest {
 
@@ -15,12 +15,13 @@ class HttpGetDslKtTest {
         val response = httpGet {
             host = "yandex.ru"
             path = "/search"
+            port = 80
 
             param {
                 "text" to "iphone"
                 "lr" to 213
             }
-        }
+        }.also { println(it) }
 
         assertNotNull(response)
         assertEquals(200, response?.code())

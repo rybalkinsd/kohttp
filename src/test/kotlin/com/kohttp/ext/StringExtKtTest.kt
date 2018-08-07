@@ -5,7 +5,7 @@ import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
 
 /**
- * Created by sergey on 21/07/2018.
+ * Created by Sergey on 21/07/2018.
  */
 class StringExtKtTest {
 

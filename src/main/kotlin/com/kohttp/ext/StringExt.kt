@@ -5,7 +5,7 @@ import okhttp3.Request
 import okhttp3.Response
 
 /**
- * Created by sergey on 21/07/2018.
+ * Created by Sergey on 21/07/2018.
  */
 fun String.httpGet(): Response? {
     val request = Request.Builder()

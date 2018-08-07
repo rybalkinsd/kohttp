@@ -62,7 +62,62 @@ val response: okhttp3.Response? = httpGet {
 *TODO*
 
 ### POST with dsl
-*TODO*
+
+#### Post with `form` body
+`form` body has a `application/x-www-form-urlencoded` content type
+```kotlin
+val response: okhttp3.Response? = httpPost {
+    host = "postman-echo.com"
+    path = "/post"
+
+    param {
+        "arg" to "iphone"
+    }
+
+    header {
+        "one" to 42
+        cookie {
+            "aaa" to "bbb"
+            "ccc" to 42
+        }
+    }
+    
+    body {
+        form {                              //  Resulting form will not contain ' ', '\t', '\n'
+            "login" to "user"               //  login=user&
+            "email" to "john.doe@gmail.com" //  email=john.doe@gmail.com
+        }
+    }
+}
+```
+
+#### Post with `json` body
+`json` body has a `application/json` content type
+```kotlin
+val response: okhttp3.Response? = httpPost {
+    host = "postman-echo.com"
+    path = "/post"
+
+    param {
+        "arg" to "iphone"
+    }
+
+    header {
+        "one" to 42
+        cookie {
+            "aaa" to "bbb"
+            "ccc" to 42
+        }
+    }
+    
+    body {                                  //  Resulting json will not contain ' ', '\t', '\n'
+        json {                              //  {
+            "login" to "user"               //      "login": "user",
+            "email" to "john.doe@gmail.com" //      "email": "john.doe@gmail.com" 
+        }                                   //  }
+    }
+}
+```
 
 ## Customization
 
