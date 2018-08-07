@@ -3,7 +3,6 @@ package com.kohttp.dsl
 import com.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 /**
  * Created by Sergey on 22/07/2018.
@@ -23,13 +22,14 @@ class HttpGetDslKtTest {
             }
         }.also { println(it) }
 
-        assertNotNull(response)
-        assertEquals(200, response?.code())
+        response.use {
+            assertEquals(200, it.code())
+        }
     }
 
     @Test
     fun `single sync http get invocation with param and header`() {
-        httpGet {
+        val response = httpGet {
             host = "postman-echo.com"
             path = "/get"
 
@@ -56,9 +56,11 @@ class HttpGetDslKtTest {
                 "text" to "iphone"
                 "lr" to 213
             }
-        }.also {
-            print(it?.body()?.string())
-            assertEquals(200, it?.code())
+        }
+
+        response.use {
+            print(it.body()?.string())
+            assertEquals(200, it.code())
         }
     }
 }

@@ -11,7 +11,7 @@ import okhttp3.Response
 /**
  * Created by Sergey on 23/07/2018.
  */
-fun httpPost(init: HttpPostContext.() -> Unit): Response? {
+fun httpPost(init: HttpPostContext.() -> Unit): Response {
     val context = HttpPostContext().apply(init)
     return CommonHttpClient.newCall(context.makeRequest()).execute()
 }

@@ -1,7 +1,6 @@
 package com.kohttp.dsl
 
 import org.junit.Test
-import kotlin.test.assertNotNull
 
 /**
  * Created by Sergey on 23/07/2018.
@@ -10,7 +9,7 @@ class HttpPostDslKtTest {
 
     @Test
     fun `post request with form # postman echo`() {
-        val response = httpPost {
+        httpPost {
             host = "postman-echo.com"
             path = "/post"
 
@@ -32,9 +31,8 @@ class HttpPostDslKtTest {
                     "email" to "john.doe@gmail.com"
                 }
             }
-        }.also {
-            assertNotNull(it)
-            println(it?.body()?.string())
+        }.use {
+            println(it.body()?.string())
         }
     }
 
@@ -62,9 +60,10 @@ class HttpPostDslKtTest {
                     "email" to "john.doe@gmail.com"
                 }
             }
-        }.also {
-            assertNotNull(it)
-            println(it?.body()?.string())
+        }
+
+        response.use {
+            println(it.body()?.string())
         }
     }
 }
