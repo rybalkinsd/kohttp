@@ -1,1 +1,9 @@
-kohttp.client.connection-pool: 42
+client:
+  connectTimeout: 5000
+  readTimeout: 10000
+  writeTimeout: 42
+  followRedirects: false
+  followSslRedirects: false
+  connectionPool:
+    maxIdleConnections: 42
+    keepAliveDuration: 321

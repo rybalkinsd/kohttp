@@ -22,12 +22,17 @@ repositories {
     mavenCentral()
 }
 
+fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
+
 dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.23.4")
-    compile("com.natpryce", "konfig", "1.6.10.0")
-    implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
 
+    compile(jackson("core"), "jackson-databind", "2.9.6")
+    compile(jackson("dataformat"), "jackson-dataformat-yaml", "2.9.6")
+    compile(jackson("module"), "jackson-module-kotlin", "2.9.6")
+
+    implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
     testCompile(kotlin("test-junit", "1.2.51"))
 }
 
