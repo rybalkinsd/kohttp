@@ -13,7 +13,11 @@ import kotlin.coroutines.experimental.suspendCoroutine
 /**
  * Async version of http GET request with the provided `String` url.
  *
+ * @param client gives a possibility to provide your implementation of HttpClient
+ * `CommonHttpClient` by default
+ *
  * @return a `Response` instance
+ * Do not forget to `close` response even if you do not use it.
  *
  * Instances of this class are not immutable: the response body is a one-shot
  * value that may be consumed only once and then closed. All other properties are immutable.
@@ -30,17 +34,17 @@ import kotlin.coroutines.experimental.suspendCoroutine
  *
  * @author sergey on 21/07/2018
  */
-fun String.asyncHttpGet(): Deferred<Response> = async {
-    asyncHttpGet(this@asyncHttpGet)
+fun String.asyncHttpGet(client: Call.Factory = CommonHttpClient): Deferred<Response> = async {
+    asyncHttpGet(client, this@asyncHttpGet)
 }
 
-private suspend fun asyncHttpGet(url: String): Response {
+private suspend fun asyncHttpGet(client: Call.Factory, url: String): Response {
     val request = Request.Builder()
             .url(url)
             .build()
 
     return suspendCoroutine { cont ->
-        CommonHttpClient.newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
                 cont.resume(response)
             }

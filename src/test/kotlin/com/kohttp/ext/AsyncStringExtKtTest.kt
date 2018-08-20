@@ -19,11 +19,12 @@ class AsyncStringExtKtTest {
                 }.map { it.await() }
                         .forEach {
                             assertEquals(200, it.code())
+                            it.close()
                         }
             }
             runBlocking {
                 val response = "https://www.yandex.ru/search/?text=iphone".asyncHttpGet()
-                assertEquals(200, response.await().code())
+                assertEquals(200, response.await().also { it.close() }.code())
             }
         }.also { println("$it ms") }
     }

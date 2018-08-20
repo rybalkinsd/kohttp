@@ -1,11 +1,15 @@
 package com.kohttp.ext
 
 import com.kohttp.client.CommonHttpClient
+import okhttp3.Call
 import okhttp3.Request
 import okhttp3.Response
 
 /**
  * This extension performs an GET request with the provided `String` url.
+ *
+ * @param client gives a possibility to provide your implementation of HttpClient
+ * `CommonHttpClient` by default
  *
  * @return a `Response` instance
  *
@@ -23,9 +27,9 @@ import okhttp3.Response
  *
  * @author sergey on 21/07/2018
  */
-fun String.httpGet(): Response {
+fun String.httpGet(client: Call.Factory = CommonHttpClient): Response {
     val request = Request.Builder()
             .url(this)
             .build()
-    return CommonHttpClient.newCall(request).execute()
+    return client.newCall(request).execute()
 }
