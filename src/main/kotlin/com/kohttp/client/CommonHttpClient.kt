@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Sergey on 21/07/2018.
  */
-
 internal object CommonHttpClient : Call.Factory by Config.instance.client.builder().build()
 
 

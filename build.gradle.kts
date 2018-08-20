@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 val publish = false
 
 plugins {
-    kotlin("jvm") version "1.2.51"
+    kotlin("jvm") version "1.2.61"
     java
 
     jacoco
@@ -33,7 +33,7 @@ dependencies {
     compile(jackson("module"), "jackson-module-kotlin", "2.9.6")
 
     implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
-    testCompile(kotlin("test-junit", "1.2.51"))
+    testCompile(kotlin("test-junit", "1.2.61"))
 }
 
 configure<JavaPluginConvention> {

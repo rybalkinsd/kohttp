@@ -13,11 +13,11 @@ class ConfigTest {
         with(Config.instance.client) {
             assertEquals(5_000, connectTimeout)
             assertEquals(10_000, readTimeout)
-            assertEquals(42, writeTimeout)
+            assertEquals(10_000, writeTimeout)
             assertEquals(false, followRedirects)
             assertEquals(false, followSslRedirects)
             assertEquals(42, connectionPool.maxIdleConnections)
-            assertEquals(321, connectionPool.keepAliveDuration)
+            assertEquals(10_000, connectionPool.keepAliveDuration)
         }
     }
 }
