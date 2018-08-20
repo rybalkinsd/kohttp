@@ -8,7 +8,7 @@
 
 ### simple sync GET with `String.httpGet()`
 ```kotlin
-val response: okhttp3.Response = "https://yandex.ru/search/?text=iphone".httpGet()
+val response: okhttp3.Response = "https://google.com/search?q=iphone".httpGet()
 
 // Response is `AutoClosable` access it with `use` to prevent resource leakage
 reponse.use {
@@ -18,17 +18,17 @@ reponse.use {
    
 ### simple async GET with `String.asyncHttpGet()`
 ```kotlin
-val response: Deferred<okhttp3.Response> = "https://yandex.ru/search/?text=iphone".asyncHttpGet()
+val response: Deferred<okhttp3.Response> = "https://google.com/search?q=iphone".asyncHttpGet()
 ```
    
 ### sync GET with `httpGet { }` dsl
 ```kotlin
 val response: okhttp3.Response? = httpGet {
-   host = "yandex.ru"
+   host = "google.com"
    path = "/search"
    param {
-       "text" to "iphone"
-       "lr" to 213
+       "q" to "iphone"
+       "safe" to "off"
    }
 }
 
