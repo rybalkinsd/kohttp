@@ -144,9 +144,11 @@ reponse.use {
 ## Customization
 
 ### Common Client pool customization
-It is possible to customize CommonClientPool by setting up `kohttp.yaml` in resource directory of your project
-All time values are in Milliseconds.
+It is possible to customize CommonClientPool by setting up `kohttp.yaml` in resource directory of your project.
+
 You can check default values in `com.kohttp.configuration.Config.kt`
+*All time values are in Milliseconds*
+
 
 ```yaml
 client:
