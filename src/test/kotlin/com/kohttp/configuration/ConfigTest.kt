@@ -2,6 +2,7 @@ package com.kohttp.configuration
 
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
  * Created by Sergey on 19/08/2018.
@@ -14,8 +15,8 @@ class ConfigTest {
             assertEquals(5_000, connectTimeout)
             assertEquals(10_000, readTimeout)
             assertEquals(10_000, writeTimeout)
-            assertEquals(false, followRedirects)
-            assertEquals(false, followSslRedirects)
+            assertTrue { followRedirects }
+            assertTrue { followSslRedirects }
             assertEquals(42, connectionPool.maxIdleConnections)
             assertEquals(10_000, connectionPool.keepAliveDuration)
         }

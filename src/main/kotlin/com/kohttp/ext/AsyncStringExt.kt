@@ -17,6 +17,7 @@ import kotlin.coroutines.experimental.suspendCoroutine
  * `CommonHttpClient` by default
  *
  * @return a `Response` instance
+ * Do not forget to `close` response even if you do not use it.
  *
  * Instances of this class are not immutable: the response body is a one-shot
  * value that may be consumed only once and then closed. All other properties are immutable.

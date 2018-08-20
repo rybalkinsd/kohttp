@@ -142,5 +142,28 @@ reponse.use {
 
 ## Customization
 
-### Client pool customization
-*TODO*
+### Common Client pool customization
+It is possible to customize CommonClientPool by setting up `kohttp.yaml` in resource directory of your project
+All time values are in Milliseconds.
+You can check default values in `com.kohttp.configuration.Config.kt`
+
+```yaml
+client:
+  connectTimeout: 5000
+  readTimeout: 10000
+  writeTimeout: 10000
+  followRedirects: true
+  followSslRedirects: true
+  connectionPool:
+    maxIdleConnections: 42
+    keepAliveDuration: 10000
+```
+
+### Run HTTP methods on custom client
+TODO
+
+### Fork Common Client for specific tasks
+TODO
+
+
+

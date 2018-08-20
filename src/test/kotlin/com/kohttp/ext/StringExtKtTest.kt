@@ -11,13 +11,13 @@ class StringExtKtTest {
 
     @Test
     fun `single sync invoke of httpGet`() {
-        val result = "https://www.yandex.ru/search/?text=iphone".httpGet()
+        val result = "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
         assertEquals(200, result.code())
     }
 
     @Test
     fun `single sync invoke of httpGet safe way`() {
-        val result = "https://www.yandex.ru/search/?text=iphone".httpGet()
+        val result = "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
 
         result.use {
             assertEquals(200, it.code())
@@ -28,7 +28,7 @@ class StringExtKtTest {
     fun `many sync invokes of httpGet`() {
         measureTimeMillis {
             List(100) {
-                "https://www.yandex.ru/search/?text=iphone".httpGet()
+                "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
             }.forEach {
                 assertEquals(200, it.code())
             }
