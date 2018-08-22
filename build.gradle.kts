@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 val publish = false
 
 plugins {
-    kotlin("jvm") version "1.2.61"
+    kotlin("jvm") version "1.2.60"
     java
 
     jacoco
@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "io.github.rybalkinsd"
-version = "0.0.5-SNAPSHOT"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -28,12 +28,13 @@ dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.23.4")
 
-    compile(jackson("core"), "jackson-databind", "2.9.6")
-    compile(jackson("dataformat"), "jackson-dataformat-yaml", "2.9.6")
-    compile(jackson("module"), "jackson-module-kotlin", "2.9.6")
+    val jacksonVersion = "2.9.6"
+    compile(jackson("core"), "jackson-databind", jacksonVersion)
+    compile(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
+    compile(jackson("module"), "jackson-module-kotlin", jacksonVersion)
 
     implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
-    testCompile(kotlin("test-junit", "1.2.61"))
+    testCompile(kotlin("test-junit"))
 }
 
 configure<JavaPluginConvention> {
