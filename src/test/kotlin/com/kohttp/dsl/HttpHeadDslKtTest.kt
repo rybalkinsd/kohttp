@@ -29,7 +29,7 @@ class HttpHeadDslKtTest {
     }
 
     @Test
-    fun `single sync http get invocation with param and header`() {
+    fun `single sync http head invocation with param and header`() {
         val response = httpHead {
             host = "postman-echo.com"
             path = "/head"
