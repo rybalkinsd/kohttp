@@ -24,7 +24,7 @@ class HttpHeadDslKtTest {
         }.also { println(it) }
 
         response.use {
-            assertEquals(400, it.code())
+            assertEquals(200, it.code())
         }
     }
 
