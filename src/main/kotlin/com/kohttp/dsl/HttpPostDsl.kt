@@ -20,7 +20,7 @@ fun httpPost(client: Call.Factory = CommonHttpClient, init: HttpPostContext.() -
     return client.newCall(context.makeRequest()).execute()
 }
 
-class HttpPostContext: HttpContext(method = Method.POST) {
+open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
     lateinit var body: RequestBody
     fun body(init: BodyContext.() -> RequestBody) {
         body = BodyContext().init()
