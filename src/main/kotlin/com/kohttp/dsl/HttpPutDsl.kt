@@ -2,7 +2,6 @@ package com.kohttp.dsl
 
 import com.kohttp.client.CommonHttpClient
 import okhttp3.Call
-import okhttp3.RequestBody
 import okhttp3.Response
 
 
@@ -17,11 +16,4 @@ fun httpPut(client: Call.Factory = CommonHttpClient, init: HttpPutContext.() -> 
     return client.newCall(context.makeRequest()).execute()
 }
 
-class HttpPutContext: HttpContext(method = Method.PUT) {
-    lateinit var body: RequestBody
-    fun body(init: BodyContext.() -> RequestBody) {
-        body = BodyContext().init()
-    }
-
-    override fun makeBody(): RequestBody = body
-}
+class HttpPutContext: HttpPostContext(method = Method.PUT)
