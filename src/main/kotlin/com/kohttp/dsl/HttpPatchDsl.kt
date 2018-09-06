@@ -11,8 +11,8 @@ import okhttp3.Response
  *
  * Created by Sergey on 23/07/2018.
  */
-fun httpPatch(client: Call.Factory = CommonHttpClient, init: HttpPutContext.() -> Unit): Response {
-    val context = HttpPutContext().apply(init)
+fun httpPatch(client: Call.Factory = CommonHttpClient, init: HttpPatchContext.() -> Unit): Response {
+    val context = HttpPatchContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }
 
