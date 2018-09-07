@@ -3,7 +3,7 @@ package com.kohttp.dsl
 import org.junit.Test
 
 /**
- * Created by Sergey on 23/07/2018.
+ * Created by Bpaxio on 06/09/2018.
  */
 class HttpPatchDslKtTest {
 
