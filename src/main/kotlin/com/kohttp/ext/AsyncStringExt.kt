@@ -2,6 +2,7 @@ package com.kohttp.ext
 
 import com.kohttp.client.CommonHttpClient
 import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.async
 import okhttp3.Call
 import okhttp3.Callback
@@ -12,6 +13,7 @@ import kotlin.coroutines.experimental.suspendCoroutine
 
 /**
  * Async version of http GET request with the provided `String` url.
+ * this function runs a new coroutine with `Unconfined` CoroutineDispatcher.
  *
  * @param client gives a possibility to provide your implementation of HttpClient
  * `CommonHttpClient` by default
@@ -34,7 +36,7 @@ import kotlin.coroutines.experimental.suspendCoroutine
  *
  * @author sergey on 21/07/2018
  */
-fun String.asyncHttpGet(client: Call.Factory = CommonHttpClient): Deferred<Response> = async {
+fun String.asyncHttpGet(client: Call.Factory = CommonHttpClient): Deferred<Response> = async(Unconfined) {
     asyncHttpGet(client, this@asyncHttpGet)
 }
 
