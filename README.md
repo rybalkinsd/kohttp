@@ -17,6 +17,8 @@ reponse.use {
 ```
    
 ### simple async GET with `String.asyncHttpGet()`
+This extension starts a new coroutine with *Unconfined* dispatcher. 
+
 ```kotlin
 val response: Deferred<okhttp3.Response> = "https://google.com/search?q=iphone".asyncHttpGet()
 ```
