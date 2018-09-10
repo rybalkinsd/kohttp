@@ -3,15 +3,15 @@ package com.kohttp.dsl
 import org.junit.Test
 
 /**
- * Created by Sergey on 23/07/2018.
+ * Created by Bpaxio on 06/09/2018.
  */
-class HttpPutDslKtTest {
+class HttpPatchDslKtTest {
 
     @Test
-    fun `put request with form # postman echo`() {
-        httpPut {
+    fun `patch request with form # postman echo`() {
+        httpPatch {
             host = "postman-echo.com"
-            path = "/put"
+            path = "/patch"
 
             param {
                 "arg" to "iphone"
@@ -37,10 +37,10 @@ class HttpPutDslKtTest {
     }
 
     @Test
-    fun `put request with json # postman echo`() {
-        val response = httpPut {
+    fun `patch request with json # postman echo`() {
+        val response = httpPatch {
             host = "postman-echo.com"
-            path = "/put"
+            path = "/patch"
 
             param {
                 "arg" to "iphone"

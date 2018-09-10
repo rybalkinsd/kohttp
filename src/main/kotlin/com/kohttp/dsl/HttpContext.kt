@@ -13,7 +13,7 @@ import okhttp3.RequestBody
  * Other methods are not supported at the moment
  */
 enum class Method {
-    GET, POST, PUT, HEAD
+    GET, POST, PUT, PATCH, HEAD
 }
 
 internal interface IHttpContext {
@@ -42,7 +42,7 @@ open class HttpContext(private val method: Method = Method.GET) : IHttpContext {
         headers(makeHeaders().build())
 
         when (method) {
-            Method.POST, Method.PUT -> post(makeBody())
+            Method.POST, Method.PUT, Method.PATCH -> post(makeBody())
             Method.HEAD -> head()
         }
 
