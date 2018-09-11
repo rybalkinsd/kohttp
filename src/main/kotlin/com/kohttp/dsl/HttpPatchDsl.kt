@@ -6,8 +6,7 @@ import okhttp3.Response
 
 
 /**
- * @param client gives a possibility to provide your implementation of HttpClient
- * `CommonHttpClient` by default.
+ * Method provides an synchronous DSL call of HTTP PATCH
  *
  * @return a `Response` instance.
  *
@@ -16,6 +15,7 @@ import okhttp3.Response
  *  <pre>
  *  val response: Response? = httpPatch {
  *      host = "yourhost"
+ *      scheme = "https"
  *      port = 8080
  *      path = "path/to/resource"
  *      param {
@@ -27,7 +27,8 @@ import okhttp3.Response
  *  response.use { ... }
  *  </pre>
  *
- * Also you can use your own implementation of HttpClient adding param in usage:
+ *  @param client allow to use your own implementation of HttpClient.
+ * `CommonHttpClient` is used by default.
  *
  * <pre>
  *  val response: Response? = httpPatch(customHttpClient) {
@@ -40,6 +41,7 @@ import okhttp3.Response
  * @see ParamContext
  * @see HeaderContext
  * @see BodyContext
+ *
  * Created by Bpaxio on 06/09/2018.
  */
 fun httpPatch(client: Call.Factory = CommonHttpClient, init: HttpPatchContext.() -> Unit): Response {

@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Sergey on 18/08/2018.
  */
-
 data class Config(
     val client: Client = Client()
 ) {

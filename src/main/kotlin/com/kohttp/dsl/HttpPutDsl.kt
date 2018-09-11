@@ -6,8 +6,41 @@ import okhttp3.Response
 
 
 /**
- * @param client gives a possibility to provide your implementation of HttpClient
- * `CommonHttpClient` by default
+ * Method provides an synchronous DSL call of HTTP PUT
+ *
+ * @return a `Response` instance.
+ *
+ * Usage example using the default `CommonHttpClient`:
+ *
+ *  <pre>
+ *  val response: Response? = httpPut {
+ *      host = "yourhost"
+ *      scheme = "https"
+ *      port = 8080
+ *      path = "path/to/resource"
+ *      param {
+ *          "your param" to "value"
+ *      }
+ *      header { ... }
+ *      body { ... }
+ *  }
+ *  response.use { ... }
+ *  </pre>
+ *
+ *  @param client allow to use your own implementation of HttpClient.
+ * `CommonHttpClient` is used by default.
+ *
+ * <pre>
+ *  val response: Response? = httpPut(customHttpClient) {
+ *      ...
+ *  }
+ * </pre>
+ *
+ * @see Response
+ * @see HttpContext
+ * @see ParamContext
+ * @see HeaderContext
+ * @see BodyContext
  *
  * Created by Sergey on 23/07/2018.
  */

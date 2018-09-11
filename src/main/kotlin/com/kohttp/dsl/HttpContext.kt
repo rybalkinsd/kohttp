@@ -6,10 +6,6 @@ import okhttp3.Request
 import okhttp3.RequestBody
 
 /**
- * Created by Sergey on 23/07/2018.
- */
-
-/**
  * Other methods are not supported at the moment
  */
 enum class Method {
