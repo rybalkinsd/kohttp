@@ -26,7 +26,7 @@ fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.23.4")
+    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.24.0")
 
     val jacksonVersion = "2.9.6"
     compile(jackson("core"), "jackson-databind", jacksonVersion)
