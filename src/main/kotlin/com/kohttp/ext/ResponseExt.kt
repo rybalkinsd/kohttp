@@ -12,15 +12,15 @@ import okhttp3.Response
  * In many cases response body is simple and it could be treated as String
  *
  *
- * Without `plain()` the correct way to consume response body is
+ * Without `eager()` the correct way to consume response body is
  *      val response = httpGet { }
  *
  *      response.use {
  *          it.body().string()
  *      }
  *
- * However with `plain()` method it is possible to consume easier and get a `PlainResponse` instance
- *      val response = httpGet { }.plain()
+ * However with `eager()` method it is possible to consume easier and get a `EagerResponse` instance
+ *      val response = httpGet { }.eager()
  *
  *
  * This method loads entire response body into memory. If the response body is very large this
@@ -30,7 +30,7 @@ import okhttp3.Response
  * @since 0.3
  * @author sergey on 8/10/2018
  */
-fun Response.plain() = PlainResponse(
+fun Response.eager() = EagerResponse(
         request = request(),
         protocol = protocol(),
         code = code(),
@@ -48,12 +48,12 @@ fun Response.plain() = PlainResponse(
 )
 
 /**
- * PlainResponse is basically the same class as okhttp3.Response
+ * EagerResponse is basically the same class as okhttp3.Response
  * except:
  *  - `headers` - they are represented as a list of type `Header`
  *  - `body` - the entire response body in memory represented as `String
  */
-data class PlainResponse(
+data class EagerResponse(
         val request: Request,
         val protocol: Protocol,
         val code: Int,

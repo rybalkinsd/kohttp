@@ -21,7 +21,7 @@ class ResponseExtKtTest {
                 "one" to 42
                 "two" to 123L
             }
-        }.plain()
+        }.eager()
 
         with(plainResponse) {
             assertEquals(200, code)
@@ -33,7 +33,7 @@ class ResponseExtKtTest {
 
     @Test
     fun `make plain response from http get response  # ext`() {
-        val plainResponse = "https://www.yandex.ru/search/?text=iphone".httpGet().plain()
+        val plainResponse = "https://www.yandex.ru/search/?text=iphone".httpGet().eager()
 
         with(plainResponse) {
             assertEquals(200, code)
