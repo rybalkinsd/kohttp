@@ -201,16 +201,26 @@ TODO
 ### Eager response
 @Since `0.3`
 
-Instead of `.use { ... it.body?.strin() ... }` it is now possible to read response body as string.
+Instead of `.use { ... it.body?.string() ... }` it is now possible to read response body as string.
 And also to map `Headers` to `listOf<Header>` to operate them easily.
 
 ```kotlin
 val response: EagerResponse = "https://google.com/search?q=iphone".httpGet().eager()
-println(response.body)
+
+// iterating over headers
+response.headers.forEach { ... }
+
+// manipulating body
+response.body?.let { ... }
 
 ```
 
 ```kotlin
 val response: EagerResponse = httpGet { }.eager()
-println(response.body)
+
+// iterating over headers
+response.headers.forEach { ... }
+
+// manipulating body
+response.body?.let { ... }
 ```
