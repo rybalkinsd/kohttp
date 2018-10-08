@@ -16,6 +16,10 @@ internal interface IHttpContext {
     fun makeRequest(): Request
 }
 
+@DslMarker
+annotation class HttpDslMarker
+
+@HttpDslMarker
 open class HttpContext(private val method: Method = Method.GET) : IHttpContext {
     private val paramContext = ParamContext()
     private val headerContext = HeaderContext()
@@ -54,7 +58,6 @@ open class HttpContext(private val method: Method = Method.GET) : IHttpContext {
     open fun makeUrl(): HttpUrl.Builder = HttpUrl.Builder().apply {
         scheme(scheme)
         host(host)
-
         port?.let { port(it) }
         path?.let { encodedPath(it) }
         paramContext.forEach { k, v ->
@@ -63,8 +66,10 @@ open class HttpContext(private val method: Method = Method.GET) : IHttpContext {
     }
 
     open fun makeBody(): RequestBody = throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
+
 }
 
+@HttpDslMarker
 class HeaderContext {
     private val map: MutableMap<String, Any> = mutableMapOf()
 
@@ -79,6 +84,7 @@ class HeaderContext {
     internal fun forEach(action: (k: String, v: Any) -> Unit) = map.forEach(action)
 }
 
+@HttpDslMarker
 class CookieContext {
     private val cookies: MutableList<Pair<String, Any>> = mutableListOf()
 
@@ -89,6 +95,7 @@ class CookieContext {
     internal fun collect(): String = cookies.joinToString(separator = "; ") { (k, v) -> "$k=$v"}
 }
 
+@HttpDslMarker
 class ParamContext {
     private val map: MutableMap<String, Any> = mutableMapOf()
 
