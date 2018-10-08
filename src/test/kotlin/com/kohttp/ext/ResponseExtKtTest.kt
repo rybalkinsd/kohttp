@@ -48,13 +48,6 @@ class ResponseExtKtTest {
             assertTrue { headers.isNotEmpty() }
             assertNotNull(body)
             assertTrue { body!!.isNotEmpty() }
-            assertEquals("GET", request.method())
-            assertEquals("HTTP_1_1", protocol.name)
-            assertEquals("OK", message)
-            assertNotNull(networkResponse)
-            assertNull(cacheResponse)
-            assertNull(priorResponse)
-            assertTrue { sentRequestAtMillis < receivedResponseAtMillis }
         }
     }
 }
