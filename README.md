@@ -9,12 +9,12 @@
 
 gradle kotlin DSL:
 ```kotlin
-compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.3.0")
+compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.3.1")
 ```
 
 gradle groovy DSL:
 ```groovy
-compile 'io.github.rybalkinsd:kohttp:0.3.0'
+compile 'io.github.rybalkinsd:kohttp:0.3.1'
 ```
 
 maven:
@@ -22,7 +22,7 @@ maven:
 <dependency>
   <groupId>io.github.rybalkinsd</groupId>
   <artifactId>kohttp</artifactId>
-  <version>0.3.0</version>
+  <version>0.3.1</version>
 </dependency>
 ```
 
