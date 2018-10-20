@@ -1,5 +1,11 @@
 package com.kohttp.dsl
 
+import com.kohttp.dsl.Method.DELETE
+import com.kohttp.dsl.Method.GET
+import com.kohttp.dsl.Method.HEAD
+import com.kohttp.dsl.Method.PATCH
+import com.kohttp.dsl.Method.POST
+import com.kohttp.dsl.Method.PUT
 import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.Request
@@ -9,7 +15,7 @@ import okhttp3.RequestBody
  * Other methods are not supported at the moment
  */
 enum class Method {
-    GET, POST, PUT, PATCH, HEAD
+    GET, POST, PUT, DELETE, PATCH, HEAD
 }
 
 internal interface IHttpContext {
@@ -20,7 +26,7 @@ internal interface IHttpContext {
 annotation class HttpDslMarker
 
 @HttpDslMarker
-open class HttpContext(private val method: Method = Method.GET) : IHttpContext {
+open class HttpContext(private val method: Method = GET) : IHttpContext {
     private val paramContext = ParamContext()
     private val headerContext = HeaderContext()
 
@@ -42,8 +48,8 @@ open class HttpContext(private val method: Method = Method.GET) : IHttpContext {
         headers(makeHeaders().build())
 
         when (method) {
-            Method.POST, Method.PUT, Method.PATCH -> post(makeBody())
-            Method.HEAD -> head()
+            POST, PUT, PATCH, DELETE -> method(method.name, makeBody())
+            HEAD -> head()
         }
 
         return build()
