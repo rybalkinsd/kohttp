@@ -48,5 +48,3 @@ fun httpPut(client: Call.Factory = CommonHttpClient, init: HttpPutContext.() -> 
     val context = HttpPutContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }
-
-class HttpPutContext: HttpPostContext(method = Method.PUT)

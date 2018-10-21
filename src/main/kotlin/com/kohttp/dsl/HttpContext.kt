@@ -6,8 +6,11 @@ import com.kohttp.dsl.Method.HEAD
 import com.kohttp.dsl.Method.PATCH
 import com.kohttp.dsl.Method.POST
 import com.kohttp.dsl.Method.PUT
+import com.kohttp.util.Form
+import com.kohttp.util.Json
 import okhttp3.Headers
 import okhttp3.HttpUrl
+import okhttp3.MediaType
 import okhttp3.Request
 import okhttp3.RequestBody
 
@@ -26,7 +29,7 @@ internal interface IHttpContext {
 annotation class HttpDslMarker
 
 @HttpDslMarker
-open class HttpContext(private val method: Method = GET) : IHttpContext {
+sealed class HttpContext(private val method: Method = GET) : IHttpContext {
     private val paramContext = ParamContext()
     private val headerContext = HeaderContext()
 
@@ -110,4 +113,27 @@ class ParamContext {
     }
 
     internal fun forEach(action: (k: String, v: Any) -> Unit) = map.forEach(action)
+}
+
+class HttpGetContext : HttpContext()
+class HttpHeadContext : HttpContext(method = Method.HEAD)
+class HttpPutContext: HttpPostContext(method = Method.PUT)
+class HttpPatchContext: HttpPostContext(method = Method.PATCH)
+
+open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
+    lateinit var body: RequestBody
+
+    fun body(init: BodyContext.() -> RequestBody) {
+        body = BodyContext().init()
+    }
+    override fun makeBody(): RequestBody = body
+
+}
+class BodyContext {
+
+    fun json(init: Json.() -> Unit): RequestBody =
+        RequestBody.create(MediaType.get("application/json"), Json().also(init).toString())
+    fun form(init: Form.() -> Unit): RequestBody =
+        RequestBody.create(MediaType.get("application/x-www-form-urlencoded"), Form().also(init).toString())
+
 }

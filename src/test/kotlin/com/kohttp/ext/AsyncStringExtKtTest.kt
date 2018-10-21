@@ -17,7 +17,7 @@ class AsyncStringExtKtTest {
                 val tasks = List(1000) {
                     "https://www.yandex.ru/search/?text=iphone".asyncHttpGet()
                 }
-                tasks.map {r ->
+                tasks.map { r ->
                     r.await().also { it.close() }
                 }.forEach {
                     assertEquals(200, it.code())
