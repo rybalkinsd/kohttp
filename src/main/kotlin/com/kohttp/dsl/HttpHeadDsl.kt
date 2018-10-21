@@ -45,5 +45,3 @@ fun httpHead(client: Call.Factory = CommonHttpClient, init: HttpHeadContext.() -
     val context = HttpHeadContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }
-
-class HttpHeadContext : HttpContext(method = Method.HEAD)

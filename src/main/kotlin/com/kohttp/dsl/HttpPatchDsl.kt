@@ -48,5 +48,3 @@ fun httpPatch(client: Call.Factory = CommonHttpClient, init: HttpPatchContext.()
     val context = HttpPatchContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }
-
-class HttpPatchContext: HttpPostContext(method = Method.PATCH)

@@ -47,4 +47,4 @@ fun httpGet(client: Call.Factory = CommonHttpClient, init: HttpGetContext.() -> 
     return client.newCall(context.makeRequest()).execute()
 }
 
-class HttpGetContext : HttpContext()
+
