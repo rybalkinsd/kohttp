@@ -66,4 +66,26 @@ class HttpPostDslKtTest {
             println(it.body()?.string())
         }
     }
+
+    @Test
+    fun `post request with empty body# postman echo`() {
+        httpPost {
+            host = "postman-echo.com"
+            path = "/post"
+
+            param {
+                "arg" to "iphone"
+            }
+
+            header {
+                "one" to 42
+                cookie {
+                    "aaa" to "bbb"
+                    "ccc" to 42
+                }
+            }
+        }.use {
+            println(it.body()?.string())
+        }
+    }
 }
