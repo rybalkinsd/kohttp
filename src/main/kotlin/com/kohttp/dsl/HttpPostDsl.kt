@@ -54,7 +54,7 @@ fun httpPost(client: Call.Factory = CommonHttpClient, init: HttpPostContext.() -
 }
 
 open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
-    lateinit var body: RequestBody
+    var body: RequestBody = RequestBody.create(null, byteArrayOf(0))
     fun body(init: BodyContext.() -> RequestBody) {
         body = BodyContext().init()
     }
