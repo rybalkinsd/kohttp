@@ -9,7 +9,7 @@
 
 gradle kotlin DSL:
 ```kotlin
-compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.3.2")
+compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.3.3")
 ```
 
 gradle groovy DSL:
@@ -22,7 +22,7 @@ maven:
 <dependency>
   <groupId>io.github.rybalkinsd</groupId>
   <artifactId>kohttp</artifactId>
-  <version>0.3.2</version>
+  <version>0.3.3</version>
 </dependency>
 ```
 
