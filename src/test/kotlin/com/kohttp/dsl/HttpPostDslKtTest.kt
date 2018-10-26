@@ -1,6 +1,8 @@
 package com.kohttp.dsl
 
+import com.kohttp.util.asJson
 import org.junit.Test
+import kotlin.test.assertEquals
 
 /**
  * Created by Sergey on 23/07/2018.
@@ -85,7 +87,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            println(it.body()?.string())
+            assertEquals(0, it.body()?.string().asJson()["headers"]["content-length"].asInt())
         }
     }
 }
