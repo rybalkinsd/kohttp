@@ -1,7 +1,7 @@
 package com.kohttp.dsl
 
 import com.kohttp.dsl.async.asyncHttpGet
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 

@@ -5,7 +5,9 @@ import okhttp3.Callback
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 internal fun Call.Factory.call(request: Request): Response = newCall(request).execute()
 

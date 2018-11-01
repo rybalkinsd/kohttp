@@ -1,9 +1,10 @@
 package com.kohttp.ext
 
 import com.kohttp.client.CommonHttpClient
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.Unconfined
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers.Unconfined
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import okhttp3.Call
 import okhttp3.Request
 import okhttp3.Response
@@ -58,6 +59,8 @@ fun String.httpGet(client: Call.Factory = CommonHttpClient): Response =
  *
  * @author sergey on 21/07/2018
  */
-fun String.asyncHttpGet(client: Call.Factory = CommonHttpClient): Deferred<Response> = async(Unconfined) {
-    client.suspendCall(Request.Builder().url(this@asyncHttpGet).build())
-}
+fun String.asyncHttpGet(client: Call.Factory = CommonHttpClient): Deferred<Response> =
+    GlobalScope.async(context = Unconfined) {
+        client.suspendCall(Request.Builder().url(this@asyncHttpGet).build())
+    }
+

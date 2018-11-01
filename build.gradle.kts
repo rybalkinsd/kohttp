@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "io.github.rybalkinsd"
-version = "0.3.3"
+version = "0.4.0"
 
 repositories {
     mavenCentral()
@@ -43,10 +43,6 @@ configure<JavaPluginConvention> {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-kotlin {
-    experimental.coroutines = Coroutines.ENABLE
 }
 
 tasks.withType<JacocoReport> {
