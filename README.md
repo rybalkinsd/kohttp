@@ -29,8 +29,6 @@ maven:
 ```
 
 
-
-
 ## Usage examples
 
 ### simple sync GET with `String.httpGet()`
@@ -47,12 +45,12 @@ reponse.use {
 This extension starts a new coroutine with *Unconfined* dispatcher. 
 
 ```kotlin
-val response: Deferred<okhttp3.Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
 ```
    
 ### sync GET with `httpGet { }` dsl
 ```kotlin
-val response: okhttp3.Response? = httpGet {
+val response: Response = httpGet {
    host = "google.com"
    path = "/search"
    param {
@@ -68,7 +66,7 @@ reponse.use {
 
 ### sync GET with header and cookies with `httpGet { }` dsl
 ```kotlin
-val response: okhttp3.Response? = httpGet {
+val response: Response = httpGet {
     host = "postman-echo.com"
     path = "/get"
 
@@ -102,27 +100,30 @@ reponse.use {
 }
 ```
 ### async GET with dsl
-*TODO*
+@Since `0.4.0`
+```kotlin
+val response: Deferred<Response> = asyncHttpGet {
+    host = "postman-echo.com"
+    path = "/get"
+    header { ... }
+    param { ... }
+}
+```
 
 ### POST with dsl
 
 #### Post with `form` body
 `form` body has a `application/x-www-form-urlencoded` content type
 ```kotlin
-val response: okhttp3.Response? = httpPost {
+val response: Response = httpPost {
     host = "postman-echo.com"
     path = "/post"
 
-    param {
-        "arg" to "iphone"
-    }
+    param { ... }
 
     header {
-        "one" to 42
-        cookie {
-            "aaa" to "bbb"
-            "ccc" to 42
-        }
+        ...
+        cookie { ... }
     }
     
     body {
@@ -141,20 +142,15 @@ reponse.use {
 #### Post with `json` body
 `json` body has a `application/json` content type
 ```kotlin
-val response: okhttp3.Response? = httpPost {
+val response: Response = httpPost {
     host = "postman-echo.com"
     path = "/post"
 
-    param {
-        "arg" to "iphone"
-    }
+    param { ... }
 
     header {
-        "one" to 42
-        cookie {
-            "aaa" to "bbb"
-            "ccc" to 42
-        }
+        ...
+        cookie { ... }
     }
     
     body {                                  //  Resulting json will not contain ' ', '\t', '\n'
@@ -201,7 +197,7 @@ TODO
 ## Experimental
 
 ### Eager response
-@Since `0.3`
+@Since `0.3.0`
 
 Instead of `.use { ... it.body?.string() ... }` it is now possible to read response body as string.
 And also to map `Headers` to `listOf<Header>` to operate them easily.
