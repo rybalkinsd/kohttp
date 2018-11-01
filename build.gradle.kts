@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 val publish = false
 
 plugins {
-    kotlin("jvm") version "1.2.60"
+    kotlin("jvm") version "1.3.0"
     java
 
     jacoco
@@ -26,9 +26,9 @@ fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.24.0")
+    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.0.0")
 
-    val jacksonVersion = "2.9.6"
+    val jacksonVersion = "2.9.7"
     compile(jackson("core"), "jackson-databind", jacksonVersion)
     compile(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
     compile(jackson("module"), "jackson-module-kotlin", jacksonVersion)
