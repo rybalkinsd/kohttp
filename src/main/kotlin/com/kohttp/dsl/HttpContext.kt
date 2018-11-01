@@ -121,7 +121,7 @@ class HttpPutContext: HttpPostContext(method = Method.PUT)
 class HttpPatchContext: HttpPostContext(method = Method.PATCH)
 
 open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
-    lateinit var body: RequestBody
+    var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
     fun body(init: BodyContext.() -> RequestBody) {
         body = BodyContext().init()
