@@ -1,6 +1,6 @@
 package com.kohttp.ext
 
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
