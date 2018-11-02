@@ -67,8 +67,8 @@ reponse.use {
 ### sync GET with header and cookies with `httpGet { }` dsl
 ```kotlin
 val response: Response = httpGet {
-    host = "postman-echo.com"
-    path = "/get"
+    host = "google.com"
+    path = "/search"
 
     val variable = 123L
 
@@ -103,8 +103,8 @@ reponse.use {
 @Since `0.4.0`
 ```kotlin
 val response: Deferred<Response> = asyncHttpGet {
-    host = "postman-echo.com"
-    path = "/get"
+    host = "google.com"
+    path = "/search"
     header { ... }
     param { ... }
 }
