@@ -28,6 +28,26 @@ class HttpGetDslKtTest {
     }
 
     @Test
+    fun `single sync http get invocation with list param`() {
+        val response = httpGet {
+            host = "yandex.ru"
+            path = "/search"
+            port = 80
+
+            param {
+                "text" to listOf("iphone", "not iphone")
+                "lr" to 213
+            }
+        }.also { println(it) }
+
+        response.use {
+            assertEquals(false, it.request().url().query()?.contains("%5B"))
+            assertEquals(200, it.code())
+        }
+    }
+
+
+    @Test
     fun `single sync http get invocation with param and header`() {
         val response = httpGet {
             host = "postman-echo.com"
