@@ -1,18 +1,9 @@
 package com.kohttp.dsl
 
-import com.kohttp.dsl.Method.DELETE
-import com.kohttp.dsl.Method.GET
-import com.kohttp.dsl.Method.HEAD
-import com.kohttp.dsl.Method.PATCH
-import com.kohttp.dsl.Method.POST
-import com.kohttp.dsl.Method.PUT
+import com.kohttp.dsl.Method.*
 import com.kohttp.util.Form
 import com.kohttp.util.Json
-import okhttp3.Headers
-import okhttp3.HttpUrl
-import okhttp3.MediaType
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 
 /**
  * Other methods are not supported at the moment
@@ -70,7 +61,10 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         port?.let { port(it) }
         path?.let { encodedPath(it) }
         paramContext.forEach { k, v ->
-            addQueryParameter(k, v.toString())
+            when (v) {
+                is List<*> -> v.forEach { addQueryParameter(k, it.toString()) }
+                else -> addQueryParameter(k, v.toString())
+            }
         }
     }
 
