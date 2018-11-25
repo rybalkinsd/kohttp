@@ -1,0 +1,33 @@
+package io.github.rybalkinsd.kohttp.client
+
+import io.github.rybalkinsd.kohttp.ext.httpGet
+import org.junit.Test
+import java.net.SocketTimeoutException
+import java.util.concurrent.TimeUnit
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
+
+/**
+ * Created by Sergey Rybalkin on 26/11/2018.
+ */
+class OkHttpClientExtKtTest {
+
+    @Test
+    fun fork() {
+        val impatientClient = CommonHttpClient.fork {
+            readTimeout(500, TimeUnit.MILLISECONDS)
+        }
+
+        val patientClient = CommonHttpClient.fork {
+            readTimeout(3_500, TimeUnit.MILLISECONDS)
+        }
+
+        assertFailsWith<SocketTimeoutException> {
+            "https://postman-echo.com/delay/3".httpGet(client = impatientClient)
+        }
+
+        "https://postman-echo.com/delay/3".httpGet(client = patientClient).use {
+            assertTrue { it.code() == 200 }
+        }
+    }
+}
