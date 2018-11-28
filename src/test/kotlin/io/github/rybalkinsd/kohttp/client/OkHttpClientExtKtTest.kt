@@ -19,6 +19,7 @@ class OkHttpClientExtKtTest {
         }
 
         val patientClient = CommonHttpClient.fork {
+
             readTimeout(3_500, TimeUnit.MILLISECONDS)
         }
 
