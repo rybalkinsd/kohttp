@@ -3,7 +3,6 @@ package io.github.rybalkinsd.kohttp.client
 import io.github.rybalkinsd.kohttp.ext.httpGet
 import org.junit.Test
 import java.net.SocketTimeoutException
-import java.util.concurrent.TimeUnit
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
@@ -15,12 +14,11 @@ class OkHttpClientExtKtTest {
     @Test
     fun fork() {
         val impatientClient = CommonHttpClient.fork {
-            readTimeout(500, TimeUnit.MILLISECONDS)
+            readTimeout = 500
         }
 
         val patientClient = CommonHttpClient.fork {
-
-            readTimeout(3_500, TimeUnit.MILLISECONDS)
+            readTimeout = 3_500
         }
 
         assertFailsWith<SocketTimeoutException> {
