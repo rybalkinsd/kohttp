@@ -26,6 +26,7 @@ fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
+    compile(kotlin("reflect"))
     compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.0.0")
 
     val jacksonVersion = "2.9.7"
@@ -33,7 +34,7 @@ dependencies {
     compile(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
     compile(jackson("module"), "jackson-module-kotlin", jacksonVersion)
     compile("com.squareup.okhttp3", "okhttp", "3.11.0")
-    
+
     testCompile(kotlin("test-junit"))
 }
 
