@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.client.CommonHttpClient
+import io.github.rybalkinsd.kohttp.client.DefaultHttpClient
 import okhttp3.Call
 import okhttp3.Response
 
@@ -10,7 +10,7 @@ import okhttp3.Response
  *
  * @return a `Response` instance.
  *
- * Usage example using the default `CommonHttpClient`:
+ * Usage example using the default `DefaultHttpClient`:
  *
  *  <pre>
  *  val response: Response? = httpPost {
@@ -28,7 +28,7 @@ import okhttp3.Response
  *  </pre>
  *
  *  @param client allow to use your own implementation of HttpClient.
- * `CommonHttpClient` is used by default.
+ * `DefaultHttpClient` is used by default.
  *
  * <pre>
  *  val response: Response? = httpPost(customHttpClient) {
@@ -44,7 +44,7 @@ import okhttp3.Response
  *
  * Created by Sergey on 23/07/2018.
  */
-fun httpPost(client: Call.Factory = CommonHttpClient, init: HttpPostContext.() -> Unit): Response {
+fun httpPost(client: Call.Factory = DefaultHttpClient, init: HttpPostContext.() -> Unit): Response {
     val context = HttpPostContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }

@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.client.CommonHttpClient
+import io.github.rybalkinsd.kohttp.client.DefaultHttpClient
 import okhttp3.Call
 import okhttp3.Response
 
@@ -9,7 +9,7 @@ import okhttp3.Response
  *
  * @return a `Response` instance.
  *
- * Usage example using the default `CommonHttpClient`:
+ * Usage example using the default `DefaultHttpClient`:
  *
  *  <pre>
  *  val response: Response? = httpHead {
@@ -26,7 +26,7 @@ import okhttp3.Response
  *  </pre>
  *
  *  @param client allow to use your own implementation of HttpClient.
- * `CommonHttpClient` is used by default.
+ * `DefaultHttpClient` is used by default.
  *
  * <pre>
  *  val response: Response? = httpHead(customHttpClient) {
@@ -41,7 +41,7 @@ import okhttp3.Response
  * @see BodyContext
  *
  */
-fun httpHead(client: Call.Factory = CommonHttpClient, init: HttpHeadContext.() -> Unit): Response {
+fun httpHead(client: Call.Factory = DefaultHttpClient, init: HttpHeadContext.() -> Unit): Response {
     val context = HttpHeadContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }
