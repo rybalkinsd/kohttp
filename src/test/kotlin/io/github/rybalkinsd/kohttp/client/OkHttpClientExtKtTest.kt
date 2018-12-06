@@ -13,11 +13,11 @@ class OkHttpClientExtKtTest {
 
     @Test
     fun fork() {
-        val impatientClient = CommonHttpClient.fork {
+        val impatientClient = defaultHttpClient.fork {
             readTimeout = 500
         }
 
-        val patientClient = CommonHttpClient.fork {
+        val patientClient = defaultHttpClient.fork {
             readTimeout = 3_500
         }
 
