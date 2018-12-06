@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.ext
 
-import io.github.rybalkinsd.kohttp.client.DefaultHttpClient
+import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers.Unconfined
 import kotlinx.coroutines.GlobalScope
@@ -13,7 +13,7 @@ import okhttp3.Response
  * This extension performs an GET request with the provided `String` url.
  *
  * @param client gives a possibility to provide your implementation of HttpClient
- * `DefaultHttpClient` by default
+ * `defaultHttpClient` by default
  *
  * @return a `Response` instance
  *
@@ -31,7 +31,7 @@ import okhttp3.Response
  *
  * @author sergey on 21/07/2018
  */
-fun String.httpGet(client: Call.Factory = DefaultHttpClient): Response =
+fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
     client.call(Request.Builder().url(this).build())
 
 /**
@@ -39,7 +39,7 @@ fun String.httpGet(client: Call.Factory = DefaultHttpClient): Response =
  * this function runs a new coroutine with `Unconfined` CoroutineDispatcher.
  *
  * @param client gives a possibility to provide your implementation of HttpClient
- * `DefaultHttpClient` by default
+ * `defaultHttpClient` by default
  *
  * @return a `Response` instance
  * Do not forget to `close` response even if you do not use it.
@@ -59,7 +59,7 @@ fun String.httpGet(client: Call.Factory = DefaultHttpClient): Response =
  *
  * @author sergey on 21/07/2018
  */
-fun String.asyncHttpGet(client: Call.Factory = DefaultHttpClient): Deferred<Response> =
+fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
     GlobalScope.async(context = Unconfined) {
         client.suspendCall(Request.Builder().url(this@asyncHttpGet).build())
     }
