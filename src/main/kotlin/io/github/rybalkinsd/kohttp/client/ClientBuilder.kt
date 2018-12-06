@@ -19,6 +19,32 @@ import javax.net.SocketFactory
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
 
+
+interface ClientB {
+    var dispatcher: Dispatcher
+    var proxy: Proxy?
+}
+
+interface ClientBFork {
+    var proxy: Proxy?
+    var proxySelector: ProxySelector
+    var interceptors: List<Interceptor>
+    var networkInterceptors: List<Interceptor>
+    var cookieJar: CookieJar
+    var cache: Cache?
+    var hostnameVerifier: HostnameVerifier
+    var certificatePinner: CertificatePinner
+    var proxyAuthenticator: Authenticator
+    var authenticator: Authenticator
+    var dns: Dns
+    var followSslRedirects: Boolean
+    var followRedirects: Boolean
+    var retryOnConnectionFailure: Boolean
+    var connectTimeout: Long
+    var readTimeout: Long
+    var writeTimeout: Long
+    var pingInterval: Long
+}
 /**
  *
  * Migrate getters to private when
@@ -26,7 +52,7 @@ import javax.net.ssl.SSLSocketFactory
  * will be implemented
  *
  */
-open class ClientBuilder {
+open class ClientBuilder : ClientB, ClientBFork {
     private val builder: OkHttpClient.Builder
 
     constructor() {
@@ -37,12 +63,12 @@ open class ClientBuilder {
         builder = client.newBuilder()
     }
 
-    var dispatcher: Dispatcher
+    override var dispatcher: Dispatcher
         set(value) { builder.dispatcher(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var proxy: Proxy?
+    override var proxy: Proxy?
         set(value) { builder.proxy(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
@@ -57,12 +83,12 @@ open class ClientBuilder {
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var interceptors: List<Interceptor>
+    override var interceptors: List<Interceptor>
         set(value) { value.forEach { builder.addInterceptor(it) } }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var networkInterceptors: List<Interceptor>
+    override var networkInterceptors: List<Interceptor>
         set(value) { value.forEach { builder.addNetworkInterceptor(it) } }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
@@ -72,17 +98,17 @@ open class ClientBuilder {
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var proxySelector: ProxySelector
+    override var proxySelector: ProxySelector
         set(value) { builder.proxySelector(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var cookieJar: CookieJar
+    override var cookieJar: CookieJar
         set(value) { builder.cookieJar(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var cache: Cache?
+    override var cache: Cache?
         set(value) { builder.cache(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
@@ -97,22 +123,22 @@ open class ClientBuilder {
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var hostnameVerifier: HostnameVerifier
+    override var hostnameVerifier: HostnameVerifier
         set(value) { builder.hostnameVerifier(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var certificatePinner: CertificatePinner
+    override var certificatePinner: CertificatePinner
         set(value) { builder.certificatePinner(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var proxyAuthenticator: Authenticator
+    override var proxyAuthenticator: Authenticator
         set(value) { builder.proxyAuthenticator(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var authenticator: Authenticator
+    override var authenticator: Authenticator
         set(value) { builder.authenticator(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
@@ -122,42 +148,42 @@ open class ClientBuilder {
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var dns: Dns
+    override var dns: Dns
         set(value) { builder.dns(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var followSslRedirects: Boolean
+    override var followSslRedirects: Boolean
         set(value) { builder.followSslRedirects(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var followRedirects: Boolean
+    override var followRedirects: Boolean
         set(value) { builder.followRedirects(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var retryOnConnectionFailure: Boolean
+    override var retryOnConnectionFailure: Boolean
         set(value) { builder.retryOnConnectionFailure(value) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var connectTimeout: Long
+    override var connectTimeout: Long
         set(value) { builder.connectTimeout(value, TimeUnit.MILLISECONDS) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var readTimeout: Long
+    override var readTimeout: Long
         set(value) { builder.readTimeout(value, TimeUnit.MILLISECONDS) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var writeTimeout: Long
+    override var writeTimeout: Long
         set(value) { builder.writeTimeout(value, TimeUnit.MILLISECONDS) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
 
-    open var pingInterval: Long
+    override var pingInterval: Long
         set(value) { builder.pingInterval(value, TimeUnit.MILLISECONDS) }
         @Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
         get() = throw UnsupportedOperationException()
