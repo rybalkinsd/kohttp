@@ -31,7 +31,7 @@ fun client(block: ClientBuilder.() -> Unit) = ClientBuilderImpl().apply(block).b
  * will be implemented
  *
  */
-class ClientBuilderImpl : ClientBuilder {
+internal class ClientBuilderImpl : ClientBuilder {
     private val builder: OkHttpClient.Builder
 
     constructor() {
