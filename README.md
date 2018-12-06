@@ -29,16 +29,11 @@ maven:
 ```
 
 
-## Usage examples
+## Usage
 
 ### simple sync GET with `String.httpGet()`
 ```kotlin
 val response: okhttp3.Response = "https://google.com/search?q=iphone".httpGet()
-
-// Response is `AutoClosable` access it with `use` to prevent resource leakage
-reponse.use {
-    ...
-}
 ```
    
 ### simple async GET with `String.asyncHttpGet()`
@@ -58,10 +53,6 @@ val response: Response = httpGet {
        "safe" to "off"
    }
 }
-
-reponse.use {
-    ...
-}
 ```
 
 ### sync GET with header and cookies with `httpGet { }` dsl
@@ -70,13 +61,11 @@ val response: Response = httpGet {
     host = "google.com"
     path = "/search"
 
-    val variable = 123L
-
     header {
         "one" to 42
         "two" to variable
         "three" to json {
-            "a" to variable
+            "a" to 123L
             "b" to json {
                 "b1" to "512"
             }
@@ -89,16 +78,10 @@ val response: Response = httpGet {
         }
     }
 
-    param {
-        "text" to "iphone"
-        "lr" to 213
-    }
-}
-
-reponse.use {
-    ...
+    param { ... }
 }
 ```
+
 ### async GET with dsl
 @Since `0.4.0`
 ```kotlin
@@ -120,11 +103,7 @@ val response: Response = httpPost {
     path = "/post"
 
     param { ... }
-
-    header {
-        ...
-        cookie { ... }
-    }
+    header { ... }
     
     body {
         form {                              //  Resulting form will not contain ' ', '\t', '\n'
@@ -147,11 +126,7 @@ val response: Response = httpPost {
     path = "/post"
 
     param { ... }
-
-    header {
-        ...
-        cookie { ... }
-    }
+    header { ... }
     
     body {                                  //  Resulting json will not contain ' ', '\t', '\n'
         json {                              //  {
@@ -160,16 +135,27 @@ val response: Response = httpPost {
         }                                   //  }
     }
 }
+```
+
+### Response usage
+Kohttp methods return `okhttp3.Response` which is `AutoClosable` 
+It's strictly recommended to access it with `use` to prevent resource leakage.  
+
+```kotlin
+val response = httpGet { ... }
 
 reponse.use {
     ...
 }
 ```
 
+
 ## Customization
 
-### Common Client pool customization
-It is possible to customize CommonClientPool by setting up `kohttp.yaml` in resource directory of your project.
+### default Client pool customization
+Kohttp provides a `defaultClientPool` to have a single endpoint for your http request.
+
+It is possible to customize `defaultClientPool` by setting `kohttp.yaml` in resource directory of your project.
 
 You can check default values in `io.github.rybalkinsd.kohttp.configuration.Config.kt`
 *All time values are in Milliseconds*
@@ -187,18 +173,34 @@ client:
     keepAliveDuration: 10000
 ```
 
-### Run HTTP methods on custom client
-TODO
 
-### Fork Common Client for specific tasks
-TODO
+### Fork Http Client for specific tasks
+If you have some requests that need an extra `readTimeout` it's east to fork your http client.
+
+In this example `patientClient` will share `ConnectionPool` with `defaultHttpClient`, 
+however `patientClient` requests will have increased read timeout.  
+```kotlin
+val patientClient = defaultHttpClient.fork {   
+    readTimeout = 100_000 
+}
+```
+
+### Run HTTP methods on custom client
+If `defaultClientPool` does not suit you for some reason it is possible to create your own one.
+
+```kotlin
+// a new client with custom dispatcher, connection pool and ping interval
+val customClient = client {
+    dispatcher = ...
+    connectionPool = ConnectionPool( ... )
+    pingInterval = 1_000
+}
+```
 
 
 ## Experimental
 
 ### Eager response
-@Since `0.3.0`
-
 Instead of `.use { ... it.body?.string() ... }` it is now possible to read response body as string.
 And also to map `Headers` to `listOf<Header>` to operate them easily.
 
