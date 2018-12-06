@@ -11,44 +11,60 @@ import java.net.Proxy
 import java.net.ProxySelector
 import java.net.SocketAddress
 import java.net.URI
-import java.rmi.NoSuchObjectException
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ForkClientBuilderTest {
-    fun `fork client regress compare to okhttp`() {
 
+    @Test
+    fun `fork client regress compare to okhttp`() {
         val defaultTimeout = 100L
-        val client = CommonHttpClient.newBuilder()
+        val defaultHostNameVerifier = HostnameVerifier { _, _ -> false }
+        val defaultDns = Dns { emptyList() }
+        val defaultProxySelector = object: ProxySelector() {
+            override fun select(uri: URI?): MutableList<Proxy> = mutableListOf()
+            override fun connectFailed(uri: URI?, sa: SocketAddress?, ioe: IOException?) { }
+        }
+        val defaultCookieJar = object : CookieJar {
+            override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) { }
+            override fun loadForRequest(url: HttpUrl): MutableList<Cookie> = mutableListOf()
+        }
+        val defaultCertificatePinner = CertificatePinner.Builder().build()
+
+        val client = defaultHttpClient.newBuilder()
+            .proxy(Proxy.NO_PROXY)
+            .proxySelector(defaultProxySelector)
+            .cookieJar(defaultCookieJar)
+            .cache(null)
+            .hostnameVerifier(defaultHostNameVerifier)
+            .certificatePinner(defaultCertificatePinner)
+            .proxyAuthenticator(Authenticator.NONE)
+            .authenticator(Authenticator.NONE)
+            .dns(defaultDns)
+            .followSslRedirects(false)
+            .followRedirects(false)
+            .retryOnConnectionFailure(false)
+            .connectTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
             .readTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
             .writeTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
             .pingInterval(defaultTimeout, TimeUnit.MILLISECONDS)
-            .retryOnConnectionFailure(false)
-            .followRedirects(false)
-            .followSslRedirects(false)
-            .dns { emptyList() }
-            .
+            .connectionSpecs(emptyList())
             .build()
 
-        val dslClient = CommonHttpClient.fork {
+        val dslClient = defaultHttpClient.fork {
             proxy = Proxy.NO_PROXY
             interceptors = emptyList()
             networkInterceptors = emptyList()
-            proxySelector = object: ProxySelector() {
-                override fun select(uri: URI?): MutableList<Proxy> = mutableListOf()
-                override fun connectFailed(uri: URI?, sa: SocketAddress?, ioe: IOException?) { }
-            }
-            cookieJar = object : CookieJar {
-                override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) { }
-                override fun loadForRequest(url: HttpUrl): MutableList<Cookie> = mutableListOf()
-            }
+            proxySelector = defaultProxySelector
+            cookieJar = defaultCookieJar
             cache = null
-
-            hostnameVerifier = HostnameVerifier { _, _ -> false }
-            certificatePinner = CertificatePinner.Builder().build()
+            hostnameVerifier = defaultHostNameVerifier
+            certificatePinner = defaultCertificatePinner
             proxyAuthenticator = Authenticator.NONE
             authenticator = Authenticator.NONE
-            dns = Dns { emptyList() }
+            dns = defaultDns
             followSslRedirects = false
             followRedirects = false
             retryOnConnectionFailure = false
@@ -56,11 +72,31 @@ class ForkClientBuilderTest {
             readTimeout = defaultTimeout
             writeTimeout = defaultTimeout
             pingInterval = defaultTimeout
-
-
             connectionSpecs = emptyList()
-            protocols = emptyList()
         }
 
+        with(client) {
+            assertEquals(dispatcher(), dslClient.dispatcher())
+            assertEquals(authenticator(), dslClient.authenticator())
+            assertEquals(protocols(), dslClient.protocols())
+            assertEquals(connectionSpecs(), dslClient.connectionSpecs())
+            assertEquals(eventListenerFactory(), dslClient.eventListenerFactory())
+            assertEquals(proxySelector(), dslClient.proxySelector())
+            assertEquals(cookieJar(), dslClient.cookieJar())
+            assertEquals(socketFactory(), dslClient.socketFactory())
+            assertEquals(hostnameVerifier(), dslClient.hostnameVerifier())
+            assertEquals(certificatePinner(), dslClient.certificatePinner())
+            assertEquals(proxyAuthenticator(), dslClient.proxyAuthenticator())
+            assertEquals(authenticator(), dslClient.authenticator())
+            assertEquals(connectionPool(), dslClient.connectionPool())
+            assertEquals(dns(), dslClient.dns())
+            assertEquals(followSslRedirects(), dslClient.followSslRedirects())
+            assertEquals(followSslRedirects(), dslClient.followRedirects())
+            assertEquals(retryOnConnectionFailure(), dslClient.retryOnConnectionFailure())
+            assertEquals(connectTimeoutMillis(), dslClient.connectTimeoutMillis())
+            assertEquals(readTimeoutMillis(), dslClient.readTimeoutMillis())
+            assertEquals(writeTimeoutMillis(), dslClient.writeTimeoutMillis())
+            assertEquals(pingIntervalMillis(), dslClient.pingIntervalMillis())
+        }
     }
 }
