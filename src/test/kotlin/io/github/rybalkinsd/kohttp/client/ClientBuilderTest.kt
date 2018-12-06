@@ -12,10 +12,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.internal.tls.OkHostnameVerifier
 import org.junit.Test
+import sun.security.ssl.SSLSocketFactoryImpl
+import java.lang.reflect.InvocationTargetException
 import java.net.ProxySelector
 import java.util.concurrent.TimeUnit
 import javax.net.SocketFactory
+import kotlin.reflect.full.declaredMemberProperties
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ClientBuilderTest {
 
@@ -29,6 +33,7 @@ class ClientBuilderTest {
         val defaultProxySelector = ProxySelector.getDefault()
         val defaultCookieJar = CookieJar.NO_COOKIES
         val defaultSocketFactory = SocketFactory.getDefault()
+        val defaultSslSocketFactory = SSLSocketFactoryImpl()
         val defaultHostnameVerifier = OkHostnameVerifier.INSTANCE
         val defaultCertificatePinner = CertificatePinner.DEFAULT
         val defaultAuth = Authenticator.NONE
@@ -45,6 +50,7 @@ class ClientBuilderTest {
             proxySelector = defaultProxySelector
             cookieJar = defaultCookieJar
             socketFactory = defaultSocketFactory
+            sslSocketFactory = defaultSslSocketFactory
             hostnameVerifier = defaultHostnameVerifier
             certificatePinner = defaultCertificatePinner
             proxyAuthenticator = defaultAuth
@@ -69,6 +75,7 @@ class ClientBuilderTest {
             .proxySelector(defaultProxySelector)
             .cookieJar(defaultCookieJar)
             .socketFactory(defaultSocketFactory)
+            .sslSocketFactory(defaultSslSocketFactory)
             .hostnameVerifier(defaultHostnameVerifier)
             .certificatePinner(defaultCertificatePinner)
             .proxyAuthenticator(defaultAuth)
@@ -93,6 +100,7 @@ class ClientBuilderTest {
             assertEquals(proxySelector(), dslClient.proxySelector())
             assertEquals(cookieJar(), dslClient.cookieJar())
             assertEquals(socketFactory(), dslClient.socketFactory())
+            assertEquals(socketFactory(), dslClient.socketFactory())
             assertEquals(hostnameVerifier(), dslClient.hostnameVerifier())
             assertEquals(certificatePinner(), dslClient.certificatePinner())
             assertEquals(proxyAuthenticator(), dslClient.proxyAuthenticator())
@@ -108,4 +116,18 @@ class ClientBuilderTest {
             assertEquals(pingIntervalMillis(), dslClient.pingIntervalMillis())
         }
     }
+
+    @Test
+    fun `client builder getters throw exceptions`() {
+        val clientBuilder = ClientBuilderImpl()
+        ClientBuilderImpl::class.declaredMemberProperties.filter { !it.isFinal }
+            .map {
+                try {
+                    it.call(clientBuilder)
+                    assertTrue(false, "${it.name} call is successfull, but not expected to be")
+                } catch (ignored: InvocationTargetException) {
+                }
+            }
+    }
+
 }
