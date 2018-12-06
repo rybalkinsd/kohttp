@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.client.CommonHttpClient
+import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.dsl.Method.DELETE
 import okhttp3.Call
 import okhttp3.Response
@@ -11,7 +11,7 @@ import okhttp3.Response
  *
  * @return a `Response` instance.
  *
- * Usage example using the default `CommonHttpClient`:
+ * Usage example using the default `defaultHttpClient`:
  *
  *  <pre>
  *  val response: Response? = httpDelete {
@@ -29,7 +29,7 @@ import okhttp3.Response
  *  </pre>
  *
  *  @param client allow to use your own implementation of HttpClient.
- * `CommonHttpClient` is used by default.
+ * `defaultHttpClient` is used by default.
  *
  * <pre>
  *  val response: Response? = httpDelete(customHttpClient) {
@@ -45,7 +45,7 @@ import okhttp3.Response
  *
  * Created by Sergey on 23/07/2018.
  */
-fun httpDelete(client: Call.Factory = CommonHttpClient, init: HttpDeleteContext.() -> Unit): Response {
+fun httpDelete(client: Call.Factory = defaultHttpClient, init: HttpDeleteContext.() -> Unit): Response {
     val context = HttpDeleteContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }

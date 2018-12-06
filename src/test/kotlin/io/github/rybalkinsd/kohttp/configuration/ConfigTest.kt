@@ -17,8 +17,8 @@ class ConfigTest {
             assertEquals(10_000, writeTimeout)
             assertTrue { followRedirects }
             assertTrue { followSslRedirects }
-            assertEquals(42, connectionPool.maxIdleConnections)
-            assertEquals(10_000, connectionPool.keepAliveDuration)
+            assertEquals(42, connectionPoolConfig.maxIdleConnections)
+            assertEquals(10_000, connectionPoolConfig.keepAliveDuration)
         }
     }
 }
