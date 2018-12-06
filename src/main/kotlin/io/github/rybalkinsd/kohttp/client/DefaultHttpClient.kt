@@ -22,3 +22,4 @@ val defaultHttpClient: OkHttpClient = config.client.let {
 }
 
 private fun ConnectionPoolConfig.create() = ConnectionPool(maxIdleConnections, keepAliveDuration, TimeUnit.MILLISECONDS)
+
