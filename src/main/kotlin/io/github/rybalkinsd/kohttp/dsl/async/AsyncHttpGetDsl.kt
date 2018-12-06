@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
-import io.github.rybalkinsd.kohttp.client.CommonHttpClient
+import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.dsl.HttpGetContext
 import io.github.rybalkinsd.kohttp.ext.suspendCall
 import kotlinx.coroutines.Deferred
@@ -11,7 +11,7 @@ import okhttp3.Call
 import okhttp3.Response
 
 
-fun asyncHttpGet(client: Call.Factory = CommonHttpClient, init: HttpGetContext.() -> Unit): Deferred<Response> =
+fun asyncHttpGet(client: Call.Factory = defaultHttpClient, init: HttpGetContext.() -> Unit): Deferred<Response> =
     GlobalScope.async(context = Unconfined) {
         client.suspendCall(HttpGetContext().apply(init).makeRequest())
     }
