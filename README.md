@@ -31,19 +31,17 @@ maven:
 
 ## Usage
 
-### simple sync GET with `String.httpGet()`
-```kotlin
-val response: okhttp3.Response = "https://google.com/search?q=iphone".httpGet()
-```
-   
-### simple async GET with `String.asyncHttpGet()`
-This extension starts a new coroutine with *Unconfined* dispatcher. 
+### Sync http calls
+
+#### GET
+
+`String.httpGet()` extension
 
 ```kotlin
-val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+val response: Response = "https://google.com/search?q=iphone".httpGet()
 ```
-   
-### sync GET with `httpGet { }` dsl
+
+GET with request parameters
 ```kotlin
 val response: Response = httpGet {
    host = "google.com"
@@ -55,7 +53,7 @@ val response: Response = httpGet {
 }
 ```
 
-### sync GET with header and cookies with `httpGet { }` dsl
+GET with header and cookies
 ```kotlin
 val response: Response = httpGet {
     host = "google.com"
@@ -63,7 +61,6 @@ val response: Response = httpGet {
 
     header {
         "one" to 42
-        "two" to variable
         "three" to json {
             "a" to 123L
             "b" to json {
@@ -82,21 +79,11 @@ val response: Response = httpGet {
 }
 ```
 
-### async GET with dsl
-@Since `0.4.0`
-```kotlin
-val response: Deferred<Response> = asyncHttpGet {
-    host = "google.com"
-    path = "/search"
-    header { ... }
-    param { ... }
-}
-```
+#### POST
 
-### POST with dsl
-
-#### Post with `form` body
+##### POST with `form` body.
 `form` body has a `application/x-www-form-urlencoded` content type
+
 ```kotlin
 val response: Response = httpPost {
     host = "postman-echo.com"
@@ -112,14 +99,11 @@ val response: Response = httpPost {
         }
     }
 }
-
-reponse.use {
-    ...
-}
 ```
 
-#### Post with `json` body
+##### POST with `json` body.
 `json` body has a `application/json` content type
+
 ```kotlin
 val response: Response = httpPost {
     host = "postman-echo.com"
@@ -134,6 +118,27 @@ val response: Response = httpPost {
             "email" to "john.doe@gmail.com" //      "email": "john.doe@gmail.com" 
         }                                   //  }
     }
+}
+```
+
+### Async http calls
+
+#### GET
+
+##### `String.asyncHttpGet()` extension function
+This function starts a new coroutine with *Unconfined* dispatcher. 
+
+```kotlin
+val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+```
+
+##### `asyncHttpGet` call
+```kotlin
+val response: Deferred<Response> = asyncHttpGet {
+    host = "google.com"
+    path = "/search"
+    header { ... }
+    param { ... }
 }
 ```
 
@@ -152,7 +157,7 @@ reponse.use {
 
 ## Customization
 
-### default Client pool customization
+### `defaultClientPool` customization
 Kohttp provides a `defaultClientPool` to have a single endpoint for your http request.
 
 It is possible to customize `defaultClientPool` by setting `kohttp.yaml` in resource directory of your project.
@@ -174,7 +179,7 @@ client:
 ```
 
 
-### Fork Http Client for specific tasks
+### Fork `HttpClient` for specific tasks
 If you have some requests that need an extra `readTimeout` it's east to fork your http client.
 
 In this example `patientClient` will share `ConnectionPool` with `defaultHttpClient`, 
@@ -196,7 +201,6 @@ val customClient = client {
     pingInterval = 1_000
 }
 ```
-
 
 ## Experimental
 
