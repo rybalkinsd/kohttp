@@ -56,22 +56,23 @@ val response: Response = httpGet {
 GET with header and cookies
 ```kotlin
 val response: Response = httpGet {
-    host = "google.com"
+    host = "github.com"
     path = "/search"
 
     header {
-        "one" to 42
-        "three" to json {
-            "a" to 123L
-            "b" to json {
-                "b1" to "512"
+        "username" to "rybalkinsd"
+        "security-policy" to json {
+            "base-uri" to "none"
+            "expect-ct" to json {
+                "max-age" to 2592000
+                "report-uri" to "foo.com/bar"
             }
-            "c" to listOf(1, 2.0, 3)
+            "script-src" to listOf("github.com", "github.io")
         }
 
         cookie {
-            "aaa" to "bbb"
-            "ccc" to 42
+            "user_session" to "toFycNV"
+            "expires" to "Fri, 21 Dec 2018 09:29:55 -0000"
         }
     }
 
