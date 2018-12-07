@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
  * A default http client.
  * Default client is recommended to use for your requests.
  *
- * Default client is either configured with `/kohttp.yaml`
+ * Default client is either configured with `/kohttp.yaml` if present
  * or by defaults
  *  connectTimeout: 10 seconds
  *  readTimeout: 10 seconds

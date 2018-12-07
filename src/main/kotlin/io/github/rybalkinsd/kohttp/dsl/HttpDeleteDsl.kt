@@ -14,7 +14,7 @@ import okhttp3.Response
  * Usage example using the default `defaultHttpClient`:
  *
  *  <pre>
- *  val response: Response? = httpDelete {
+ *  val response: Response = httpDelete {
  *      host = "yourhost"
  *      scheme = "https"
  *      port = 8080

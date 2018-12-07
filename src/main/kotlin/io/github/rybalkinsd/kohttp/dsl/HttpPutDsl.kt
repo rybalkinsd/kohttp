@@ -13,7 +13,7 @@ import okhttp3.Response
  * Usage example using the default `defaultHttpClient`:
  *
  *  <pre>
- *  val response: Response? = httpPut {
+ *  val response: Response = httpPut {
  *      host = "yourhost"
  *      scheme = "https"
  *      port = 8080
