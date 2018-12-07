@@ -18,33 +18,88 @@ import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
 
 
+/**
+ *
+ * Migrate `@get:Deprecated` to private getters when
+ * https://youtrack.jetbrains.com/issue/KT-3110
+ * will be implemented
+ *
+ */
 interface ClientBuilder : ForkClientBuilder {
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var dispatcher: Dispatcher
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var proxy: Proxy?
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var protocols: List<Protocol>
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var connectionSpecs: List<ConnectionSpec>
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var eventListenerFactory: EventListener.Factory
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var proxySelector: ProxySelector
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var cookieJar: CookieJar
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var socketFactory: SocketFactory
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var sslSocketFactory: SSLSocketFactory
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var hostnameVerifier: HostnameVerifier
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var certificatePinner: CertificatePinner
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var proxyAuthenticator: Authenticator
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var authenticator: Authenticator
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var connectionPool: ConnectionPool
 }
 
 interface ForkClientBuilder {
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var interceptors: List<Interceptor>
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var networkInterceptors: List<Interceptor>
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var cache: Cache?
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var dns: Dns
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var followSslRedirects: Boolean
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var followRedirects: Boolean
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var retryOnConnectionFailure: Boolean
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var connectTimeout: Long
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var readTimeout: Long
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var writeTimeout: Long
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var pingInterval: Long
 }
