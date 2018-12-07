@@ -35,13 +35,13 @@ maven:
 
 #### GET
 
-`String.httpGet()` extension
+##### `String.httpGet()` extension
 
 ```kotlin
 val response: Response = "https://google.com/search?q=iphone".httpGet()
 ```
 
-GET with request parameters
+##### GET with request parameters
 ```kotlin
 val response: Response = httpGet {
    host = "google.com"
@@ -53,7 +53,7 @@ val response: Response = httpGet {
 }
 ```
 
-GET with header and cookies
+##### GET with header and cookies
 ```kotlin
 val response: Response = httpGet {
     host = "github.com"
@@ -120,6 +120,34 @@ val response: Response = httpPost {
         }                                   //  }
     }
 }
+```
+
+#### HEAD
+
+You can use same syntax as in [GET](/#GET)
+```kotlin
+val response = httpHead { }
+```
+
+#### PUT
+
+You can use same syntax as in [POST](/#POST)
+```kotlin
+val response = httpPut { }
+```
+
+#### PATCH
+
+You can use same syntax as in [POST](/#POST)
+```kotlin
+val response = httpPatch { }
+```
+
+#### DELETE
+
+You can use same syntax as in [POST](](/#POST)
+```kotlin
+val response = httpDelete { }
 ```
 
 ### Async http calls
