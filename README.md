@@ -124,28 +124,28 @@ val response: Response = httpPost {
 
 #### HEAD
 
-You can use same syntax as in [GET](/#get)
+You can use same syntax as in [GET](#get)
 ```kotlin
 val response = httpHead { }
 ```
 
 #### PUT
 
-You can use same syntax as in [POST](/#post)
+You can use same syntax as in [POST](#post)
 ```kotlin
 val response = httpPut { }
 ```
 
 #### PATCH
 
-You can use same syntax as in [POST](/#post)
+You can use same syntax as in [POST](#post)
 ```kotlin
 val response = httpPatch { }
 ```
 
 #### DELETE
 
-You can use same syntax as in [POST](](/#post)
+You can use same syntax as in [POST](](#post)
 ```kotlin
 val response = httpDelete { }
 ```
