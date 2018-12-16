@@ -146,7 +146,7 @@ val response = httpPatch { }
 
 #### DELETE
 
-You can use same syntax as in [POST](](#post)
+You can use same syntax as in [POST](#post)
 ```kotlin
 val response = httpDelete { }
 ```
