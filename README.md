@@ -210,10 +210,10 @@ client:
 
 
 ### Fork `HttpClient` for specific tasks
-If you have some requests that need an extra `readTimeout` it's east to fork your http client.
+Forked client uses **exactly the same** connection pool and dispatcher. However, it will custom parameters like custom `timeout`s, additional `interceptor`s or others.
 
-In this example `patientClient` will share `ConnectionPool` with `defaultHttpClient`, 
-however `patientClient` requests will have increased read timeout.  
+In this example below `patientClient` will share `ConnectionPool` with `defaultHttpClient`, 
+however `patientClient` requests will have custom read timeout.  
 ```kotlin
 val patientClient = defaultHttpClient.fork {   
     readTimeout = 100_000 
@@ -221,7 +221,7 @@ val patientClient = defaultHttpClient.fork {
 ```
 
 ### Run HTTP methods on custom client
-If `defaultClientPool` does not suit you for some reason it is possible to create your own one.
+If `defaultClientPool` or forked client does not suit you for some reason, it is possible to create your own one.
 
 ```kotlin
 // a new client with custom dispatcher, connection pool and ping interval
