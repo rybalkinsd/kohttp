@@ -1,9 +1,0 @@
-client:
-  connectTimeout: 5000
-  readTimeout: 10000
-  writeTimeout: 10000
-  followRedirects: true
-  followSslRedirects: true
-  connectionPool:
-    maxIdleConnections: 42
-    keepAliveDuration: 10000
