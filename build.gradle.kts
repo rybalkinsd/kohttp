@@ -7,6 +7,7 @@ plugins {
 
     id("org.jetbrains.dokka") version "0.9.16"
     `maven-publish`
+    signing
 }
 
 group = "io.github.rybalkinsd"
@@ -17,17 +18,17 @@ repositories {
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
-    compile(kotlin("reflect"))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.0.0")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.0.0")
 
     val jacksonVersion = "2.9.7"
-    compile(jackson("core"), "jackson-databind", jacksonVersion)
-    compile(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
-    compile(jackson("module"), "jackson-module-kotlin", jacksonVersion)
-    compile("com.squareup.okhttp3", "okhttp", "3.11.0")
+    implementation(jackson("core"), "jackson-databind", jacksonVersion)
+    implementation(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
+    implementation(jackson("module"), "jackson-module-kotlin", jacksonVersion)
+    implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
 
-    testCompile(kotlin("test-junit"))
+    testImplementation(kotlin("test-junit"))
 }
 
 configure<JavaPluginConvention> {
@@ -75,8 +76,10 @@ publishing {
                     url.set("https://github.com/rybalkinsd")
                 }
                 licenses {
-                    name.set("Apache License 2.0")
-                    url.set("https://github.com/rybalkinsd/kohttp/blob/master/LICENSE")
+                    license {
+                        name.set("Apache License 2.0")
+                        url.set("https://github.com/rybalkinsd/kohttp/blob/master/LICENSE")
+                    }
                 }
                 scm {
                     url.set("https://github.com/rybalkinsd/kohttp")
@@ -94,8 +97,8 @@ publishing {
         repositories {
             maven {
                 credentials {
-                    val nexusUsername: String by project
-                    val nexusPassword: String by project
+                    val nexusUsername: String? by project
+                    val nexusPassword: String? by project
                     username = nexusUsername
                     password = nexusPassword
                 }
@@ -106,6 +109,10 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    sign(publishing.publications["kohttp"])
 }
 
 fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
