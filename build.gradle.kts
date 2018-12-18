@@ -26,7 +26,7 @@ dependencies {
     implementation(jackson("core"), "jackson-databind", jacksonVersion)
     implementation(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
     implementation(jackson("module"), "jackson-module-kotlin", jacksonVersion)
-    implementation("com.squareup.okhttp3", "okhttp", "3.11.0")
+    implementation("com.squareup.okhttp3", "okhttp", "3.12.0")
 
     testImplementation(kotlin("test-junit"))
 }
