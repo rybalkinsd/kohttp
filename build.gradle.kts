@@ -1,28 +1,20 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
-val publish = true
-
 plugins {
     kotlin("jvm") version "1.3.0"
-    java
-
     jacoco
 
     id("org.jetbrains.dokka") version "0.9.16"
-    maven
     `maven-publish`
-    signing
 }
 
 group = "io.github.rybalkinsd"
-version = "0.6.0"
+version = "0.6.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
-
-fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
@@ -54,15 +46,15 @@ tasks.withType<JacocoReport> {
     }
 }
 
-task<Jar>("sourcesJar") {
+val sourcesJar = task<Jar>("sourcesJar") {
     from(sourceSets.main.get().allJava)
     classifier = "sources"
 }
 
-task<Jar>("dokkaJar") {
+val dokkaJar = task<Jar>("dokkaJar") {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
-    classifier = "javadoc"
     from(tasks.dokka)
+    classifier = "javadoc"
 }
 
 publishing {
@@ -70,8 +62,32 @@ publishing {
         create<MavenPublication>("kohttp") {
             from(components["java"])
             artifacts {
-                artifact(tasks["sourcesJar"])
-                artifact(tasks["dokkaJar"])
+                artifact(sourcesJar)
+                artifact(dokkaJar)
+            }
+
+            pom {
+                name.set("Kotlin http dsl")
+                description.set("Kotlin http dsl based on okhttp")
+                url.set("https://github.com/rybalkinsd/kohttp")
+                organization {
+                    name.set("io.github.rybalkinsd")
+                    url.set("https://github.com/rybalkinsd")
+                }
+                licenses {
+                    name.set("Apache License 2.0")
+                    url.set("https://github.com/rybalkinsd/kohttp/blob/master/LICENSE")
+                }
+                scm {
+                    url.set("https://github.com/rybalkinsd/kohttp")
+                    connection.set("scm:git:git://github.com/rybalkinsd/kohttp.git")
+                    developerConnection.set("scm:git:ssh://git@github.com:rybalkinsd/kohttp.git")
+                }
+                developers {
+                    developer {
+                        name.set("Sergey")
+                    }
+                }
             }
         }
 
@@ -83,91 +99,13 @@ publishing {
                     username = nexusUsername
                     password = nexusPassword
                 }
-                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+                val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+                url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
             }
         }
     }
 }
 
-//
-//tasks {
-//    "uploadArchives"(Upload::class) {
-//        repositories {
-//
-//            withConvention(MavenRepositoryHandlerConvention::class) {
-//                publishing {
-//                    (publications) {
-//                        "mavenSources"(MavenPublication::class) {
-//                            from(components["java"])
-//                            artifact(dokkaJar)
-//                            artifact(sourcesJar)
-//                        }
-//                    }
-//                }
-//
-//                mavenDeployer {
-//                    withGroovyBuilder {
-//                        val nexusUsername: String by project
-//                        val nexusPassword: String by project
-//
-//                        if (publish) {
-//                            "repository"("url" to uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")) {
-//                                "authentication"("userName" to nexusUsername, "password" to nexusPassword)
-//                            }
-//                        } else {
-//                            "repository"("url" to uri("$buildDir/pub/"))
-//                        }
-//                        "snapshotRepository"("url" to uri("https://oss.sonatype.org/content/repositories/snapshots/")) {
-//                            "authentication"("userName" to nexusUsername, "password" to nexusPassword)
-//                        }
-//                        "beforeDeployment" {
-//                            if (signing.isRequired)
-//                                signing.signPom(delegate as MavenDeployment)
-//                        }
-//                    }
-//
-//                    pom.project {
-//                        withGroovyBuilder {
-//
-//                            "description"("Kotlin http dsl based on okhttp")
-//                            "name"("Kotlin http dsl")
-//                            "url"("https://github.com/rybalkinsd/kohttp")
-//                            "organization" {
-//                                "name"("io.github.rybalkinsd")
-//                                "url"("https://github.com/rybalkinsd")
-//                            }
-//                            "licenses" {
-//                                "license" {
-//                                    "name"("Apache License 2.0")
-//                                    "url"("https://github.com/mautini/schemaorg-java/blob/master/LICENSE")
-//                                    "distribution"("repo")
-//                                }
-//                            }
-//                            "scm" {
-//                                "url"("https://github.com/rybalkinsd/kohttp")
-//                                "connection"("scm:git:git://github.com/rybalkinsd/kohttp.git")
-//                                "developerConnection"("scm:git:ssh://git@github.com:rybalkinsd/kohttp.git")
-//                            }
-//                            "developers" {
-//                                "developer" {
-//                                    "name"("Sergey")
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
-//signing {
-//    isRequired = publish
-//    sign(configurations.archives)
-//}
-//
-//artifacts {
-//    withGroovyBuilder {
-//        "archives"(tasks["jar"], sourcesJar, dokkaJar)
-//    }
-//}
+fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
