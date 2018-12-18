@@ -6,17 +6,18 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.3.0-blue.svg)](https://kotlinlang.org) 
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
 
+Kotlin DSL http client 
 
 ## Download
 
 gradle kotlin DSL:
 ```kotlin
-compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.4.0")
+compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.5.0")
 ```
 
 gradle groovy DSL:
 ```groovy
-compile 'io.github.rybalkinsd:kohttp:0.4.0'
+compile 'io.github.rybalkinsd:kohttp:0.5.0'
 ```
 
 maven:
@@ -24,31 +25,24 @@ maven:
 <dependency>
   <groupId>io.github.rybalkinsd</groupId>
   <artifactId>kohttp</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0</version>
 </dependency>
 ```
 
 
-## Usage examples
+## Usage
 
-### simple sync GET with `String.httpGet()`
-```kotlin
-val response: okhttp3.Response = "https://google.com/search?q=iphone".httpGet()
+### Sync http calls
 
-// Response is `AutoClosable` access it with `use` to prevent resource leakage
-reponse.use {
-    ...
-}
-```
-   
-### simple async GET with `String.asyncHttpGet()`
-This extension starts a new coroutine with *Unconfined* dispatcher. 
+#### GET
+
+##### `String.httpGet()` extension
 
 ```kotlin
-val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+val response: Response = "https://google.com/search?q=iphone".httpGet()
 ```
-   
-### sync GET with `httpGet { }` dsl
+
+##### GET with request parameters
 ```kotlin
 val response: Response = httpGet {
    host = "google.com"
@@ -58,49 +52,117 @@ val response: Response = httpGet {
        "safe" to "off"
    }
 }
-
-reponse.use {
-    ...
-}
 ```
 
-### sync GET with header and cookies with `httpGet { }` dsl
+##### GET with header and cookies
 ```kotlin
 val response: Response = httpGet {
-    host = "google.com"
+    host = "github.com"
     path = "/search"
 
-    val variable = 123L
-
     header {
-        "one" to 42
-        "two" to variable
-        "three" to json {
-            "a" to variable
-            "b" to json {
-                "b1" to "512"
+        "username" to "rybalkinsd"
+        "security-policy" to json {
+            "base-uri" to "none"
+            "expect-ct" to json {
+                "max-age" to 2592000
+                "report-uri" to "foo.com/bar"
             }
-            "c" to listOf(1, 2.0, 3)
+            "script-src" to listOf("github.com", "github.io")
         }
 
         cookie {
-            "aaa" to "bbb"
-            "ccc" to 42
+            "user_session" to "toFycNV"
+            "expires" to "Fri, 21 Dec 2018 09:29:55 -0000"
         }
     }
 
-    param {
-        "text" to "iphone"
-        "lr" to 213
-    }
-}
-
-reponse.use {
-    ...
+    param { ... }
 }
 ```
-### async GET with dsl
-@Since `0.4.0`
+
+#### POST
+
+##### POST with `form` body.
+`form` body has a `application/x-www-form-urlencoded` content type
+
+```kotlin
+val response: Response = httpPost {
+    host = "postman-echo.com"
+    path = "/post"
+
+    param { ... }
+    header { ... }
+    
+    body {
+        form {                              //  Resulting form will not contain ' ', '\t', '\n'
+            "login" to "user"               //  login=user&
+            "email" to "john.doe@gmail.com" //  email=john.doe@gmail.com
+        }
+    }
+}
+```
+
+##### POST with `json` body.
+`json` body has a `application/json` content type
+
+```kotlin
+val response: Response = httpPost {
+    host = "postman-echo.com"
+    path = "/post"
+
+    param { ... }
+    header { ... }
+    
+    body {                                  //  Resulting json will not contain ' ', '\t', '\n'
+        json {                              //  {
+            "login" to "user"               //      "login": "user",
+            "email" to "john.doe@gmail.com" //      "email": "john.doe@gmail.com" 
+        }                                   //  }
+    }
+}
+```
+
+#### HEAD
+
+You can use same syntax as in [GET](#get)
+```kotlin
+val response = httpHead { }
+```
+
+#### PUT
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response = httpPut { }
+```
+
+#### PATCH
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response = httpPatch { }
+```
+
+#### DELETE
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response = httpDelete { }
+```
+
+### Async http calls
+
+#### GET
+
+##### `String.asyncHttpGet()` extension function
+This function starts a new coroutine with *Unconfined* dispatcher. 
+
+```kotlin
+val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+```
+
+##### `asyncHttpGet` call
 ```kotlin
 val response: Deferred<Response> = asyncHttpGet {
     host = "google.com"
@@ -110,66 +172,25 @@ val response: Deferred<Response> = asyncHttpGet {
 }
 ```
 
-### POST with dsl
+### Response usage
+Kohttp methods return `okhttp3.Response` which is `AutoClosable` 
+It's strictly recommended to access it with `use` to prevent resource leakage.  
 
-#### Post with `form` body
-`form` body has a `application/x-www-form-urlencoded` content type
 ```kotlin
-val response: Response = httpPost {
-    host = "postman-echo.com"
-    path = "/post"
-
-    param { ... }
-
-    header {
-        ...
-        cookie { ... }
-    }
-    
-    body {
-        form {                              //  Resulting form will not contain ' ', '\t', '\n'
-            "login" to "user"               //  login=user&
-            "email" to "john.doe@gmail.com" //  email=john.doe@gmail.com
-        }
-    }
-}
+val response = httpGet { ... }
 
 reponse.use {
     ...
 }
 ```
 
-#### Post with `json` body
-`json` body has a `application/json` content type
-```kotlin
-val response: Response = httpPost {
-    host = "postman-echo.com"
-    path = "/post"
-
-    param { ... }
-
-    header {
-        ...
-        cookie { ... }
-    }
-    
-    body {                                  //  Resulting json will not contain ' ', '\t', '\n'
-        json {                              //  {
-            "login" to "user"               //      "login": "user",
-            "email" to "john.doe@gmail.com" //      "email": "john.doe@gmail.com" 
-        }                                   //  }
-    }
-}
-
-reponse.use {
-    ...
-}
-```
 
 ## Customization
 
-### Common Client pool customization
-It is possible to customize CommonClientPool by setting up `kohttp.yaml` in resource directory of your project.
+### `defaultClientPool` customization
+Kohttp provides a `defaultClientPool` to have a single endpoint for your http request.
+
+It is possible to customize `defaultClientPool` by setting `kohttp.yaml` in resource directory of your project.
 
 You can check default values in `io.github.rybalkinsd.kohttp.configuration.Config.kt`
 *All time values are in Milliseconds*
@@ -187,18 +208,33 @@ client:
     keepAliveDuration: 10000
 ```
 
+
+### Fork `HttpClient` for specific tasks
+Forked client uses **exactly the same** connection pool and dispatcher. However, it will custom parameters like custom `timeout`s, additional `interceptor`s or others.
+
+In this example below `patientClient` will share `ConnectionPool` with `defaultHttpClient`, 
+however `patientClient` requests will have custom read timeout.  
+```kotlin
+val patientClient = defaultHttpClient.fork {   
+    readTimeout = 100_000 
+}
+```
+
 ### Run HTTP methods on custom client
-TODO
+If `defaultClientPool` or forked client does not suit you for some reason, it is possible to create your own one.
 
-### Fork Common Client for specific tasks
-TODO
-
+```kotlin
+// a new client with custom dispatcher, connection pool and ping interval
+val customClient = client {
+    dispatcher = ...
+    connectionPool = ConnectionPool( ... )
+    pingInterval = 1_000
+}
+```
 
 ## Experimental
 
 ### Eager response
-@Since `0.3.0`
-
 Instead of `.use { ... it.body?.string() ... }` it is now possible to read response body as string.
 And also to map `Headers` to `listOf<Header>` to operate them easily.
 

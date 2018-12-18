@@ -11,14 +11,14 @@ class ConfigTest {
 
     @Test
     fun `client full configuration`() {
-        with(Config.instance.client) {
+        with(config.client) {
             assertEquals(5_000, connectTimeout)
             assertEquals(10_000, readTimeout)
             assertEquals(10_000, writeTimeout)
             assertTrue { followRedirects }
             assertTrue { followSslRedirects }
-            assertEquals(42, connectionPool.maxIdleConnections)
-            assertEquals(10_000, connectionPool.keepAliveDuration)
+            assertEquals(42, connectionPoolConfig.maxIdleConnections)
+            assertEquals(10_000, connectionPoolConfig.keepAliveDuration)
         }
     }
 }
