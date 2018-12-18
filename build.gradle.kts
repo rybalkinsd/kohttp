@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
 plugins {
-    kotlin("jvm") version "1.3.0"
+    kotlin("jvm") version "1.3.11"
     jacoco
 
     id("org.jetbrains.dokka") version "0.9.16"
@@ -20,7 +20,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.0.0")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.0.1")
 
     val jacksonVersion = "2.9.7"
     implementation(jackson("core"), "jackson-databind", jacksonVersion)
