@@ -105,6 +105,40 @@ class HttpPostDslKtTest {
     }
 
     @Test
+    fun `post request with json string # postman echo`() {
+        val response = httpPost {
+            host = "postman-echo.com"
+            path = "/post"
+
+            body {
+                "application/json" content
+                    """{"login":"user","email":"john.doe@gmail.com"}"""
+            }
+        }
+
+        response.use {
+            println(it.body()?.string())
+        }
+    }
+
+    @Test
+    fun `post request with file # postman echo`() {
+        val response = httpPost {
+            host = "postman-echo.com"
+            path = "/post"
+
+            body {
+                "image/gif" content
+                    this::class.java.classLoader.getResource("cat.gif").file
+            }
+        }
+
+        response.use {
+            println(it.body()?.string())
+        }
+    }
+
+    @Test
     fun `post request with empty body# postman echo`() {
         val expectedHeader = hashMapOf(
                 "one" to "42",

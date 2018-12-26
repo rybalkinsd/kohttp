@@ -13,6 +13,7 @@ import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.Request
 import okhttp3.RequestBody
+import java.io.File
 
 /**
  * Other methods are not supported at the moment
@@ -132,7 +133,16 @@ open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
     override fun makeBody(): RequestBody = body
 
 }
+
 class BodyContext {
+    infix fun String.content(content: Any): RequestBody {
+        val type = MediaType.get(this)
+        return when (content) {
+            is String -> RequestBody.create(type, content.trimIndent())
+            is File -> RequestBody.create(type, content)
+            else -> throw IllegalArgumentException("${content.javaClass.name} is not allowed as body to")
+        }
+    }
 
     fun json(init: Json.() -> Unit): RequestBody =
         RequestBody.create(MediaType.get("application/json"), Json().also(init).toString())
