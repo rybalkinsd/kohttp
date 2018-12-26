@@ -3,6 +3,7 @@ package io.github.rybalkinsd.kohttp.dsl
 import io.github.rybalkinsd.kohttp.assertResponses
 import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
+import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
 
 /**
@@ -135,6 +136,23 @@ class HttpPostDslKtTest {
 
         response.use {
             println(it.body()?.string())
+        }
+    }
+
+    @Test
+    fun `post request with wrong type # postman echo`() {
+        try {
+            httpPost {
+                host = "postman-echo.com"
+                path = "/post"
+
+                body {
+                    "image/gif" content this
+                }
+            }
+            assert(false)
+        } catch (e: IllegalArgumentException) {
+            assert(true)
         }
     }
 
