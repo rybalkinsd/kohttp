@@ -127,6 +127,10 @@ class HttpPatchContext: HttpPostContext(method = Method.PATCH)
 open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
     var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
+    fun body(contentType: String, contentProducer: () -> Any) {
+        body = BodyContext().content(contentType, contentProducer())
+    }
+
     fun body(init: BodyContext.() -> RequestBody) {
         body = BodyContext().init()
     }
@@ -135,12 +139,12 @@ open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
 }
 
 class BodyContext {
-    infix fun String.content(content: Any): RequestBody {
-        val type = MediaType.get(this)
+    internal fun content(type: String, content: Any): RequestBody {
+        val mediaType = MediaType.get(type)
         return when (content) {
-            is String -> RequestBody.create(type, content.trimIndent())
-            is File -> RequestBody.create(type, content)
-            else -> throw IllegalArgumentException("${content.javaClass.name} is not allowed as body to")
+            is String -> RequestBody.create(mediaType, content.trimIndent())
+            is File -> RequestBody.create(mediaType, content)
+            else -> throw IllegalArgumentException("${content.javaClass.name} is not allowed as body content")
         }
     }
 

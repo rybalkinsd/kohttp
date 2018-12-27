@@ -76,9 +76,8 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body {
-                "application/json" content
-                    """{"login":"user","email":"john.doe@gmail.com"}"""
+            body("application/json") {
+                """{"login":"user","email":"john.doe@gmail.com"}"""
             }
         }
 
@@ -93,9 +92,8 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body {
-                "image/gif" content
-                    this::class.java.classLoader.getResource("cat.gif").file
+            body("image/gif") {
+                this::class.java.classLoader.getResource("cat.gif").file
             }
         }
 
@@ -111,8 +109,8 @@ class HttpPostDslKtTest {
                 host = "postman-echo.com"
                 path = "/post"
 
-                body {
-                    "image/gif" content this
+                body("image/gif") {
+                    this
                 }
             }
             assert(false)
