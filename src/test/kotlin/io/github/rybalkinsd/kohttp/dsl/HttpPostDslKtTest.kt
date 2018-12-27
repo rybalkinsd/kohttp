@@ -103,6 +103,22 @@ class HttpPostDslKtTest {
     }
 
     @Test
+    fun `post request with byte array # postman echo`() {
+        val response = httpPost {
+            host = "postman-echo.com"
+            path = "/post"
+
+            body("image/gif") {
+                """{"login":"user","email":"john.doe@gmail.com"}""".toByteArray()
+            }
+        }
+
+        response.use {
+            println(it.body()?.string())
+        }
+    }
+
+    @Test
     fun `post request with wrong type # postman echo`() {
         try {
             httpPost {
