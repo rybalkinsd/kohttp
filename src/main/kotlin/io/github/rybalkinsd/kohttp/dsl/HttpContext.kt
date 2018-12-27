@@ -144,6 +144,7 @@ class BodyContext {
         return when (content) {
             is String -> RequestBody.create(mediaType, content.trimIndent())
             is File -> RequestBody.create(mediaType, content)
+            is ByteArray -> RequestBody.create(mediaType, content)
             else -> throw IllegalArgumentException("${content.javaClass.name} is not allowed as body content")
         }
     }
