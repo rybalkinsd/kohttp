@@ -17,6 +17,9 @@ internal interface IHttpContext {
     fun makeRequest(): Request
 }
 
+private val JSON = MediaType.get("application/json")
+private val FORM = MediaType.get("application/x-www-form-urlencoded")
+
 @DslMarker
 annotation class HttpDslMarker
 
@@ -116,40 +119,49 @@ class HttpPutContext: HttpPostContext(method = Method.PUT)
 class HttpPatchContext: HttpPostContext(method = Method.PATCH)
 
 open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
-    var body: RequestBody = RequestBody.create(null, byteArrayOf())
+    private var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
-    fun body(init: BodyContext.() -> RequestBody) {
-        body = BodyContext().init()
+    fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
+        body = BodyContext(contentType).init()
     }
     override fun makeBody(): RequestBody = body
 
 }
 
-class BodyContext {
-    fun content(type: String? = null, contentProducer: () -> Any): RequestBody {
-        val mediaType = type?.let { MediaType.get(it) }
+class BodyContext(type: String?) {
+
+    private val mediaType = type?.let { MediaType.get(it) }
+
+    fun string(contentProducer: () -> String): RequestBody {
+        return RequestBody.create(mediaType, contentProducer())
+    }
+
+    fun file(contentProducer: () -> File): RequestBody {
+        return RequestBody.create(mediaType, contentProducer())
+    }
+
+    fun bytes(contentProducer: () -> ByteArray): RequestBody {
+        return RequestBody.create(mediaType, contentProducer())
+    }
+
+    private fun MediaType.create(contentProducer: () -> Any): RequestBody {
         return when (val content = contentProducer()) {
-            is String -> RequestBody.create(mediaType, content)
-            is File -> RequestBody.create(mediaType, content)
-            is ByteArray -> RequestBody.create(mediaType, content)
+            is String -> RequestBody.create(this, content)
+            is File -> RequestBody.create(this, content)
+            is ByteArray -> RequestBody.create(this, content)
             else -> throw IllegalArgumentException("${content.javaClass.name} is not allowed as body content")
         }
     }
 
     fun json(init: Json.() -> Unit): RequestBody =
-        content("application/json") { Json().also(init).toString() }
-
-    fun json(content: String): RequestBody =
-        content("application/json") { content }
+        JSON.create { Json().also(init).toString() }
 
     fun form(init: Form.() -> Unit): RequestBody =
-        content("application/x-www-form-urlencoded") { Form().also(init).toString() }
+        FORM.create { Form().also(init).toString() }
+
+    fun json(content: String): RequestBody =
+        JSON.create { content }
 
     fun form(content: String): RequestBody =
-        content("application/x-www-form-urlencoded") { content }
-
-}
-
-inline class jsonCl(val content: String) {
-
+        FORM.create { content }
 }

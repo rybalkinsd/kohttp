@@ -1,10 +1,8 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.ext.eager
 import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
 import java.io.File
-import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -93,8 +91,8 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body {
-                content("application/json") {
+            body("application/json") {
+                string {
                     """{"login":"user","email":"john.doe@gmail.com"}"""
                 }
             }
@@ -127,8 +125,8 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body {
-                content("image/gif") {
+            body("image/gif") {
+                file {
                     File(this::class.java.classLoader.getResource("cat.gif").file)
                 }
             }
@@ -149,7 +147,7 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body {
-                content {
+                bytes {
                     "Blablabla".toByteArray()
                 }
             }
@@ -157,24 +155,6 @@ class HttpPostDslKtTest {
 
         response.use {
             println(it.body()?.string())
-        }
-    }
-
-    @Test
-    fun `post request with wrong type # postman echo`() {
-        try {
-            httpPost {
-                host = "postman-echo.com"
-                path = "/post"
-                body {
-                    content {
-                        this
-                    }
-                }
-            }
-            assert(false)
-        } catch (e: IllegalArgumentException) {
-            assert(true)
         }
     }
 
