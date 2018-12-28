@@ -40,6 +40,20 @@ class HttpPostDslKtTest {
     }
 
     @Test
+    fun `post request with form string # postman echo`() {
+        httpPost {
+            host = "postman-echo.com"
+            path = "/post"
+
+            body {
+                form("login=user&email=john.doe@gmail.com")
+            }
+        }.use {
+            println(it.body()?.string())
+        }
+    }
+
+    @Test
     fun `post request with json # postman echo`() {
         val response = httpPost {
             host = "postman-echo.com"
