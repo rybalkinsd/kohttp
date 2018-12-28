@@ -14,17 +14,11 @@ class BodyContext(type: String?) {
     fun file(content: File): RequestBody = RequestBody.create(mediaType, content)
     fun bytes(content: ByteArray): RequestBody = RequestBody.create(mediaType, content)
 
-    fun json(init: Json.() -> Unit): RequestBody =
-        JSON.create { Json().also(init).toString() }
+    fun json(content: String): RequestBody = JSON.create { content }
+    fun form(content: String): RequestBody = FORM.create { content }
 
-    fun form(init: Form.() -> Unit): RequestBody =
-        FORM.create { Form().also(init).toString() }
-
-    fun json(content: String): RequestBody =
-        JSON.create { content }
-
-    fun form(content: String): RequestBody =
-        FORM.create { content }
+    fun json(init: Json.() -> Unit): RequestBody = JSON.create { Json().also(init).toString() }
+    fun form(init: Form.() -> Unit): RequestBody = FORM.create { Form().also(init).toString() }
 
     private fun MediaType.create(contentProducer: () -> Any): RequestBody {
         return when (val content = contentProducer()) {
