@@ -100,8 +100,13 @@ val response: Response = httpPost {
             "email" to "john.doe@gmail.com" //  email=john.doe@gmail.com
         }
     }
+    // or
+    body {
+        form("login=user&email=john.doe@gmail.com")
+    }
 }
 ```
+
 
 ##### POST with `json` body.
 `json` body has a `application/json` content type
@@ -119,6 +124,31 @@ val response: Response = httpPost {
             "login" to "user"               //      "login": "user",
             "email" to "john.doe@gmail.com" //      "email": "john.doe@gmail.com" 
         }                                   //  }
+    }
+    // or
+    body {
+        json("""{"login":"user","email":"john.doe@gmail.com"}""")
+    }
+}
+```
+
+#### POST with various content type
+```kotlin
+val response = httpPost {
+    host = "postman-echo.com"
+    path = "/post"
+
+    body("image/gif") {
+        val fileUrl = this.javaClass.getResource("/cat.gif")
+        file(File(fileUrl.toURI()))
+    }
+    // or 
+    body { // content type is optional, null by default
+        bytes("Blablabla".toByteArray())
+    }
+    // or 
+    body("application/json") {
+        string("""{"login":"user","email":"john.doe@gmail.com"}""")
     }
 }
 ```

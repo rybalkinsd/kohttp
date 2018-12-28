@@ -65,7 +65,7 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body("application/x-www-form-urlencoded") {
+            body {
                 form("login=user&email=john.doe@gmail.com")
             }
         }.use {
