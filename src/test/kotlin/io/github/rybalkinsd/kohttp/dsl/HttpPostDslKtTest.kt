@@ -92,9 +92,7 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body("application/json") {
-                string {
-                    """{"login":"user","email":"john.doe@gmail.com"}"""
-                }
+                string("""{"login":"user","email":"john.doe@gmail.com"}""")
             }
         }
 
@@ -126,9 +124,10 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body("image/gif") {
-                file {
-                    File(this::class.java.classLoader.getResource("cat.gif").file)
-                }
+                val path = this::class.java.classLoader.getResource("cat.gif").file
+                // both are fine
+                file(path)
+                file(File(path))
             }
         }
 
@@ -147,9 +146,7 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body {
-                bytes {
-                    "Blablabla".toByteArray()
-                }
+                bytes("Blablabla".toByteArray())
             }
         }
 

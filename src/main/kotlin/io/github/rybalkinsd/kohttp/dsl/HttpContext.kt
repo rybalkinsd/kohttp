@@ -132,16 +132,20 @@ class BodyContext(type: String?) {
 
     private val mediaType = type?.let { MediaType.get(it) }
 
-    fun string(contentProducer: () -> String): RequestBody {
-        return RequestBody.create(mediaType, contentProducer())
+    fun string(content: String): RequestBody {
+        return RequestBody.create(mediaType, content)
     }
 
-    fun file(contentProducer: () -> File): RequestBody {
-        return RequestBody.create(mediaType, contentProducer())
+    fun file(content: File): RequestBody {
+        return RequestBody.create(mediaType, content)
     }
 
-    fun bytes(contentProducer: () -> ByteArray): RequestBody {
-        return RequestBody.create(mediaType, contentProducer())
+    fun file(path: String): RequestBody {
+        return RequestBody.create(mediaType, File(path))
+    }
+
+    fun bytes(content: ByteArray): RequestBody {
+        return RequestBody.create(mediaType, content)
     }
 
     private fun MediaType.create(contentProducer: () -> Any): RequestBody {
