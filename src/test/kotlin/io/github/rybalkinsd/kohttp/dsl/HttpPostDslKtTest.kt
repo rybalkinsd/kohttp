@@ -124,10 +124,8 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body("image/gif") {
-                val path = this::class.java.classLoader.getResource("cat.gif").file
-                // both are fine
-                file(path)
-                file(File(path))
+                val fileUrl = this.javaClass.getResource("/cat.gif")
+                file(File(fileUrl.toURI()))
             }
         }
 

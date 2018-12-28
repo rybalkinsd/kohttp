@@ -1,7 +1,8 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.dsl.Method.DELETE
+import io.github.rybalkinsd.kohttp.dsl.context.HttpPostContext
+import io.github.rybalkinsd.kohttp.dsl.context.Method.DELETE
 import okhttp3.Call
 import okhttp3.Response
 

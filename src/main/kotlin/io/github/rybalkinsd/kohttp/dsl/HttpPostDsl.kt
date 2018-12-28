@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.dsl.context.HttpPostContext
 import okhttp3.Call
 import okhttp3.Response
 
