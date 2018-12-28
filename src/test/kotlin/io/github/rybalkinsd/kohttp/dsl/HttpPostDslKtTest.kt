@@ -1,9 +1,12 @@
 package io.github.rybalkinsd.kohttp.dsl
 
+import io.github.rybalkinsd.kohttp.ext.eager
 import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
+import java.io.File
 import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
  * Created by Sergey on 23/07/2018.
@@ -109,12 +112,7 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body {
-                json(
-                    """{
-                        "login":"user",
-                        "email":"john.doe@gmail.com"
-                    }"""
-                )
+                json("""{"login":"user","email":"john.doe@gmail.com"}""")
             }
         }
 
@@ -131,13 +129,16 @@ class HttpPostDslKtTest {
 
             body {
                 content("image/gif") {
-                    this::class.java.classLoader.getResource("cat.gif").file
+                    File(this::class.java.classLoader.getResource("cat.gif").file)
                 }
             }
         }
 
         response.use {
-            println(it.body()?.string())
+            with(it.body()?.string()) {
+                println(this)
+                assertTrue { asJson()["headers"]["content-length"].asLong() > 100_000 }
+            }
         }
     }
 
@@ -148,8 +149,8 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body {
-                content("image/gif") {
-                    """{"login":"user","email":"john.doe@gmail.com"}""".toByteArray()
+                content {
+                    "Blablabla".toByteArray()
                 }
             }
         }
@@ -166,7 +167,7 @@ class HttpPostDslKtTest {
                 host = "postman-echo.com"
                 path = "/post"
                 body {
-                    content("image/gif") {
+                    content {
                         this
                     }
                 }
