@@ -1,18 +1,9 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.dsl.Method.DELETE
-import io.github.rybalkinsd.kohttp.dsl.Method.GET
-import io.github.rybalkinsd.kohttp.dsl.Method.HEAD
-import io.github.rybalkinsd.kohttp.dsl.Method.PATCH
-import io.github.rybalkinsd.kohttp.dsl.Method.POST
-import io.github.rybalkinsd.kohttp.dsl.Method.PUT
+import io.github.rybalkinsd.kohttp.dsl.Method.*
 import io.github.rybalkinsd.kohttp.util.Form
 import io.github.rybalkinsd.kohttp.util.Json
-import okhttp3.Headers
-import okhttp3.HttpUrl
-import okhttp3.MediaType
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 import java.io.File
 
 /**
@@ -135,11 +126,10 @@ open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
 }
 
 class BodyContext {
-    fun content(type: String, contentProducer: () -> Any): RequestBody {
-        val mediaType = MediaType.get(type)
-        val content = contentProducer()
-        return when (content) {
-            is String -> RequestBody.create(mediaType, content.trimIndent())
+    fun content(type: String? = null, contentProducer: () -> Any): RequestBody {
+        val mediaType = type?.let { MediaType.get(it) }
+        return when (val content = contentProducer()) {
+            is String -> RequestBody.create(mediaType, content)
             is File -> RequestBody.create(mediaType, content)
             is ByteArray -> RequestBody.create(mediaType, content)
             else -> throw IllegalArgumentException("${content.javaClass.name} is not allowed as body content")
@@ -147,12 +137,19 @@ class BodyContext {
     }
 
     fun json(init: Json.() -> Unit): RequestBody =
-        RequestBody.create(MediaType.get("application/json"), Json().also(init).toString())
+        content("application/json") { Json().also(init).toString() }
+
     fun json(content: String): RequestBody =
-        RequestBody.create(MediaType.get("application/json"), content.trimIndent())
+        content("application/json") { content }
+
     fun form(init: Form.() -> Unit): RequestBody =
-        RequestBody.create(MediaType.get("application/x-www-form-urlencoded"), Form().also(init).toString())
+        content("application/x-www-form-urlencoded") { Form().also(init).toString() }
+
     fun form(content: String): RequestBody =
-        RequestBody.create(MediaType.get("application/x-www-form-urlencoded"), content.trimIndent())
+        content("application/x-www-form-urlencoded") { content }
+
+}
+
+inline class jsonCl(val content: String) {
 
 }
