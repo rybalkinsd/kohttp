@@ -111,8 +111,31 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body("application/json") {
-                """{"login":"user","email":"john.doe@gmail.com"}"""
+            body {
+                content("application/json") {
+                    """{"login":"user","email":"john.doe@gmail.com"}"""
+                }
+            }
+        }
+
+        response.use {
+            println(it.body()?.string())
+        }
+    }
+
+    @Test
+    fun `post request with json string 2 # postman echo`() {
+        val response = httpPost {
+            host = "postman-echo.com"
+            path = "/post"
+
+            body {
+                json(
+                    """{
+                        "login":"user",
+                        "email":"john.doe@gmail.com"
+                    }"""
+                )
             }
         }
 
@@ -127,8 +150,10 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body("image/gif") {
-                this::class.java.classLoader.getResource("cat.gif").file
+            body {
+                content("image/gif") {
+                    this::class.java.classLoader.getResource("cat.gif").file
+                }
             }
         }
 
@@ -143,8 +168,10 @@ class HttpPostDslKtTest {
             host = "postman-echo.com"
             path = "/post"
 
-            body("image/gif") {
-                """{"login":"user","email":"john.doe@gmail.com"}""".toByteArray()
+            body {
+                content("image/gif") {
+                    """{"login":"user","email":"john.doe@gmail.com"}""".toByteArray()
+                }
             }
         }
 
@@ -159,9 +186,10 @@ class HttpPostDslKtTest {
             httpPost {
                 host = "postman-echo.com"
                 path = "/post"
-
-                body("image/gif") {
-                    this
+                body {
+                    content("image/gif") {
+                        this
+                    }
                 }
             }
             assert(false)

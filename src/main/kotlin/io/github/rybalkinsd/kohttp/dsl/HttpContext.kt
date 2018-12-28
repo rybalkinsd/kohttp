@@ -127,10 +127,6 @@ class HttpPatchContext: HttpPostContext(method = Method.PATCH)
 open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
     var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
-    fun body(contentType: String, contentProducer: () -> Any) {
-        body = BodyContext().content(contentType, contentProducer())
-    }
-
     fun body(init: BodyContext.() -> RequestBody) {
         body = BodyContext().init()
     }
@@ -139,8 +135,9 @@ open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
 }
 
 class BodyContext {
-    internal fun content(type: String, content: Any): RequestBody {
+    fun content(type: String, contentProducer: () -> Any): RequestBody {
         val mediaType = MediaType.get(type)
+        val content = contentProducer()
         return when (content) {
             is String -> RequestBody.create(mediaType, content.trimIndent())
             is File -> RequestBody.create(mediaType, content)
@@ -151,7 +148,11 @@ class BodyContext {
 
     fun json(init: Json.() -> Unit): RequestBody =
         RequestBody.create(MediaType.get("application/json"), Json().also(init).toString())
+    fun json(content: String): RequestBody =
+        RequestBody.create(MediaType.get("application/json"), content.trimIndent())
     fun form(init: Form.() -> Unit): RequestBody =
         RequestBody.create(MediaType.get("application/x-www-form-urlencoded"), Form().also(init).toString())
+    fun form(content: String): RequestBody =
+        RequestBody.create(MediaType.get("application/x-www-form-urlencoded"), content.trimIndent())
 
 }
