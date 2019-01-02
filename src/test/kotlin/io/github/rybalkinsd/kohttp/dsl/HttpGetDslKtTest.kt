@@ -89,7 +89,6 @@ class HttpGetDslKtTest {
                 "lr" to 213
             }
         }
-        println("message")
         response.use {
             val parsedResponse = ObjectMapper().readValue(it.body()?.byteStream(), kotlin.collections.hashMapOf<String, Any>()::class.java)
             val headers: LinkedHashMap<String, Any> = parsedResponse["headers"] as LinkedHashMap<String, Any>
