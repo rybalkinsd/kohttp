@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
+import assertResponses
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.rybalkinsd.kohttp.dsl.async.asyncHttpGet
 import kotlinx.coroutines.runBlocking
@@ -35,14 +36,8 @@ class AsyncHttpGetDslTest {
         runBlocking {
             response.await().use {
                 val parsedResponse = ObjectMapper().readValue(it.body()?.byteStream(), kotlin.collections.hashMapOf<String, Any>()::class.java)
-                val headers: LinkedHashMap<String, Any> = parsedResponse["headers"] as LinkedHashMap<String, Any>
-                expectedHeader.forEach { t, u ->
-                    assertEquals(u, headers[t])
-                }
-                val parameters: LinkedHashMap<String, Any> = parsedResponse["args"] as LinkedHashMap<String, Any>
-                expectedParams.forEach { t, u ->
-                    assertEquals(u, parameters[t])
-                }
+                assertResponses(parsedResponse["headers"] as LinkedHashMap<String, Any>, expectedHeader)
+                assertResponses(parsedResponse["args"] as LinkedHashMap<String, Any>, expectedParams)
                 assertEquals(200, it.code())
             }
         }

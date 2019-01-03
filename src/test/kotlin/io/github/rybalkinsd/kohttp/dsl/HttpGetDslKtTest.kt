@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
+import assertResponses
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -91,15 +92,8 @@ class HttpGetDslKtTest {
         }
         response.use {
             val parsedResponse = ObjectMapper().readValue(it.body()?.byteStream(), kotlin.collections.hashMapOf<String, Any>()::class.java)
-            val headers: LinkedHashMap<String, Any> = parsedResponse["headers"] as LinkedHashMap<String, Any>
-            expectedHeader.forEach { t, u ->
-                assertEquals(u, headers[t])
-            }
-            val parameters: LinkedHashMap<String, Any> = parsedResponse["args"] as LinkedHashMap<String, Any>
-            expectedParams.forEach { t, u ->
-                assertEquals(u, parameters[t])
-            }
-
+            assertResponses(parsedResponse["headers"] as LinkedHashMap<String, Any>, expectedHeader)
+            assertResponses(parsedResponse["args"] as LinkedHashMap<String, Any>, expectedParams)
             assertEquals(200, it.code())
         }
     }

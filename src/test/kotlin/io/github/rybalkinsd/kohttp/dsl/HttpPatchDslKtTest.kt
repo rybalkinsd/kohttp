@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
+import assertResponses
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -49,18 +50,9 @@ class HttpPatchDslKtTest {
             }
         }.use {
             val parsedResponse = ObjectMapper().readValue(it.body()?.byteStream(), kotlin.collections.hashMapOf<String, Any>()::class.java)
-            val headers: LinkedHashMap<String, Any> = parsedResponse["headers"] as LinkedHashMap<String, Any>
-            expectedHeader.forEach { t, u ->
-                assertEquals(u, headers[t])
-            }
-            val parameters: LinkedHashMap<String, Any> = parsedResponse["args"] as LinkedHashMap<String, Any>
-            expectedParams.forEach { t, u ->
-                assertEquals(u, parameters[t])
-            }
-            val form: LinkedHashMap<String, Any> = parsedResponse["form"] as LinkedHashMap<String, Any>
-            expectedForm.forEach { t, u ->
-                assertEquals(u, form[t])
-            }
+            assertResponses(parsedResponse["headers"] as LinkedHashMap<String, Any>, expectedHeader)
+            assertResponses(parsedResponse["args"] as LinkedHashMap<String, Any>, expectedParams)
+            assertResponses(parsedResponse["form"] as LinkedHashMap<String, Any>, expectedForm)
             assertEquals(200, it.code())
         }
     }
@@ -107,18 +99,9 @@ class HttpPatchDslKtTest {
 
         response.use {
             val parsedResponse = ObjectMapper().readValue(it.body()?.byteStream(), kotlin.collections.hashMapOf<String, Any>()::class.java)
-            val headers: LinkedHashMap<String, Any> = parsedResponse["headers"] as LinkedHashMap<String, Any>
-            expectedHeader.forEach { k, v ->
-                assertEquals(v, headers[k])
-            }
-            val parameters: LinkedHashMap<String, Any> = parsedResponse["args"] as LinkedHashMap<String, Any>
-            expectedParams.forEach { k, v ->
-                assertEquals(v, parameters[k])
-            }
-            val json: LinkedHashMap<String, Any> = parsedResponse["json"] as LinkedHashMap<String, Any>
-            expectedJson.forEach { k, v ->
-                assertEquals(v, json[k])
-            }
+            assertResponses(parsedResponse["headers"] as LinkedHashMap<String, Any>, expectedHeader)
+            assertResponses(parsedResponse["args"] as LinkedHashMap<String, Any>, expectedParams)
+            assertResponses(parsedResponse["json"] as LinkedHashMap<String, Any>, expectedJson)
             assertEquals(200, it.code())
         }
     }
