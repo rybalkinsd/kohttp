@@ -43,7 +43,8 @@ import okhttp3.Response
  * @see HeaderContext
  * @see BodyContext
  *
- * Created by Sergey on 23/07/2018.
+ * @since 0.2.0
+ * @author sergey
  */
 fun httpPost(client: Call.Factory = defaultHttpClient, init: HttpPostContext.() -> Unit): Response {
     val context = HttpPostContext().apply(init)

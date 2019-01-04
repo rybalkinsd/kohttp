@@ -43,7 +43,8 @@ import okhttp3.Response
  * @see HeaderContext
  * @see BodyContext
  *
- * Created by Sergey on 23/07/2018.
+ * @since 0.2.0
+ * @author sergey
  */
 fun httpPut(client: Call.Factory = defaultHttpClient, init: HttpPutContext.() -> Unit): Response {
     val context = HttpPutContext().apply(init)

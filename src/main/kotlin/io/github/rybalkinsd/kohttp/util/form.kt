@@ -1,5 +1,10 @@
 package io.github.rybalkinsd.kohttp.util
 
+/**
+ *
+ * @since 0.1.0
+ * @author sergey
+ */
 class Form {
     private val content: MutableList<Pair<String, Any?>> = mutableListOf()
 

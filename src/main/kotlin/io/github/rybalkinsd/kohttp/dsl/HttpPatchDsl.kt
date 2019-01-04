@@ -43,7 +43,8 @@ import okhttp3.Response
  * @see HeaderContext
  * @see BodyContext
  *
- * Created by Bpaxio on 06/09/2018.
+ * @since 0.2.0
+ * @author Bpaxio
  */
 fun httpPatch(client: Call.Factory = defaultHttpClient, init: HttpPatchContext.() -> Unit): Response {
     val context = HttpPatchContext().apply(init)

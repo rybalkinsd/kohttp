@@ -41,6 +41,8 @@ import okhttp3.Response
  * @see HeaderContext
  * @see BodyContext
  *
+ * @since 0.1.0
+ * @author sergey
  */
 fun httpHead(client: Call.Factory = defaultHttpClient, init: HttpHeadContext.() -> Unit): Response {
     val context = HttpHeadContext().apply(init)

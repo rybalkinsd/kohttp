@@ -44,7 +44,8 @@ import okhttp3.Response
  * @see HeaderContext
  * @see BodyContext
  *
- * Created by Sergey on 23/07/2018.
+ * @since 0.3.2
+ * @author sergey
  */
 fun httpDelete(client: Call.Factory = defaultHttpClient, init: HttpDeleteContext.() -> Unit): Response {
     val context = HttpDeleteContext().apply(init)

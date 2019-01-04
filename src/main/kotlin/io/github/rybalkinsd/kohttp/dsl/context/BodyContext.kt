@@ -6,6 +6,12 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
 
+
+/**
+ *
+ * @since 0.1.0
+ * @author sergey, alex
+ */
 @HttpDslMarker
 class BodyContext(type: String?) {
     private val mediaType = type?.let { MediaType.get(it) }

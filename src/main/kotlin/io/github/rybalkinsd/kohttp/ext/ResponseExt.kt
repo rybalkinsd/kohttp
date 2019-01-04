@@ -27,8 +27,8 @@ import okhttp3.Response
  * may trigger an {@link OutOfMemoryError}. Prefer to stream the response body if this is a
  * possibility for your response.
  *
- * @since 0.3
- * @author sergey on 8/10/2018
+ * @since 0.3.0
+ * @author sergey
  */
 fun Response.eager() = EagerResponse(
         request = request(),
@@ -52,6 +52,9 @@ fun Response.eager() = EagerResponse(
  * except:
  *  - `headers` - they are represented as a list of type `Header`
  *  - `body` - the entire response body in memory represented as `String
+ *
+ * @since 0.3.0
+ * @author sergey
  */
 data class EagerResponse(
         val request: Request,
@@ -68,4 +71,8 @@ data class EagerResponse(
         val receivedResponseAtMillis: Long
 )
 
+/**
+ * @since 0.3.0
+ * @author sergey
+ */
 data class Header(val name: String, val value: String)

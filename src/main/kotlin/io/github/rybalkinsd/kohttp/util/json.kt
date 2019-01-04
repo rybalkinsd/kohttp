@@ -1,7 +1,18 @@
 package io.github.rybalkinsd.kohttp.util
 
+
+/**
+ *
+ * @since 0.1.0
+ * @author sergey
+ */
 fun json(init: Json.() -> Unit): String = Json().also(init).toString()
 
+/**
+ *
+ * @since 0.1.0
+ * @author sergey
+ */
 class Json {
     private val elements = mutableListOf<Pair<String, String>>()
 

@@ -26,7 +26,8 @@ import java.util.concurrent.TimeUnit
  * For specific needs it's possible to fork `defaultHttpClient`
  * @see `io.github.rybalkinsd.kohttp.client.OkHttpClientExtKt.fork`
  *
- * @author sergey 21/07/2018
+ * @since 0.0.1
+ * @author sergey
  */
 val defaultHttpClient: OkHttpClient = config.client.let {
     client {

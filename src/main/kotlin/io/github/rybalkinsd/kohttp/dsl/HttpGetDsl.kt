@@ -41,7 +41,8 @@ import okhttp3.Response
  * @see HeaderContext
  * @see BodyContext
  *
- * Created by Sergey on 22/07/2018
+ * @since 0.1.0
+ * @author sergey
  */
 fun httpGet(client: Call.Factory = defaultHttpClient, init: HttpGetContext.() -> Unit): Response {
     val context = HttpGetContext().apply(init)
