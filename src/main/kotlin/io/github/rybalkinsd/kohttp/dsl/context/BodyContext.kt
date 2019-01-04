@@ -4,6 +4,7 @@ import io.github.rybalkinsd.kohttp.util.Form
 import io.github.rybalkinsd.kohttp.util.Json
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import okhttp3.RequestBody.create
 import java.io.File
 
 
@@ -16,24 +17,16 @@ import java.io.File
 class BodyContext(type: String?) {
     private val mediaType = type?.let { MediaType.get(it) }
 
-    fun string(content: String): RequestBody = RequestBody.create(mediaType, content)
-    fun file(content: File): RequestBody = RequestBody.create(mediaType, content)
-    fun bytes(content: ByteArray): RequestBody = RequestBody.create(mediaType, content)
+    fun string(content: String): RequestBody = create(mediaType, content)
+    fun file(content: File): RequestBody = create(mediaType, content)
+    fun bytes(content: ByteArray): RequestBody = create(mediaType, content)
 
-    fun json(content: String): RequestBody = JSON.create { content }
-    fun form(content: String): RequestBody = FORM.create { content }
+    fun json(content: String): RequestBody = create(JSON, content)
+    fun form(content: String): RequestBody = create(FORM, content)
 
-    fun json(init: Json.() -> Unit): RequestBody = JSON.create { Json().also(init).toString() }
-    fun form(init: Form.() -> Unit): RequestBody = FORM.create { Form().also(init).toString() }
+    fun json(init: Json.() -> Unit): RequestBody = create(JSON, Json().also(init).toString())
+    fun form(init: Form.() -> Unit): RequestBody = create(FORM, Form().also(init).toString())
 
-    private fun MediaType.create(contentProducer: () -> Any): RequestBody {
-        return when (val content = contentProducer()) {
-            is String -> RequestBody.create(this, content)
-            is File -> RequestBody.create(this, content)
-            is ByteArray -> RequestBody.create(this, content)
-            else -> throw IllegalArgumentException("${content.javaClass.name} is not allowed as body content")
-        }
-    }
 }
 
 private val JSON = MediaType.get("application/json")
