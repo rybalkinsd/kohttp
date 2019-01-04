@@ -6,7 +6,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 /**
- * Created by Bpaxio on 06/09/2018.
+ * @author Bpaxio
  */
 class HttpPatchDslKtTest {
 

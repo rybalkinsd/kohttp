@@ -36,10 +36,7 @@ import okhttp3.Response
  * </pre>
  *
  * @see Response
- * @see HttpContext
- * @see ParamContext
- * @see HeaderContext
- * @see BodyContext
+ * @see HttpGetContext
  *
  * @since 0.1.0
  * @author sergey

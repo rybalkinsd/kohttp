@@ -1,5 +1,10 @@
 package io.github.rybalkinsd.kohttp.dsl.context
 
+/**
+ *
+ * @since 0.1.0
+ * @author sergey
+ */
 @HttpDslMarker
 class HeaderContext {
     private val map: MutableMap<String, Any> = mutableMapOf()

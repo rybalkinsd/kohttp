@@ -3,6 +3,9 @@ package io.github.rybalkinsd.kohttp.util
 import org.junit.Test
 import kotlin.test.assertEquals
 
+/**
+ * @author sergey
+ */
 class FormTest {
 
     @Test

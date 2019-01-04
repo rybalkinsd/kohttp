@@ -12,20 +12,9 @@ import okhttp3.Request
 import okhttp3.RequestBody
 
 /**
- * Other methods are not supported at the moment
+ * @since 0.1.0
+ * @author sergey
  */
-enum class Method {
-    GET, POST, PUT, DELETE, PATCH, HEAD
-}
-
-internal interface IHttpContext {
-    fun makeRequest(): Request
-}
-
-
-@DslMarker
-annotation class HttpDslMarker
-
 @HttpDslMarker
 sealed class HttpContext(private val method: Method = GET) : IHttpContext {
     private val paramContext = ParamContext()
@@ -79,12 +68,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
 
 }
 
-class HttpGetContext : HttpContext()
-class HttpHeadContext : HttpContext(method = Method.HEAD)
-class HttpPutContext: HttpPostContext(method = Method.PUT)
-class HttpPatchContext: HttpPostContext(method = Method.PATCH)
-
-open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
+open class HttpPostContext(method: Method = POST): HttpContext(method) {
     private var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
     fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
@@ -95,3 +79,21 @@ open class HttpPostContext(method: Method = Method.POST): HttpContext(method) {
 
 }
 
+class HttpGetContext : HttpContext()
+class HttpHeadContext : HttpContext(method = HEAD)
+class HttpPutContext: HttpPostContext(method = PUT)
+class HttpPatchContext: HttpPostContext(method = PATCH)
+class HttpDeleteContext: HttpPostContext(method = DELETE)
+
+enum class Method {
+    GET, POST, PUT, DELETE, PATCH, HEAD
+}
+
+
+internal interface IHttpContext {
+    fun makeRequest(): Request
+}
+
+
+@DslMarker
+annotation class HttpDslMarker

@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * Created by Sergey on 23/07/2018.
+ * @author sergey, alex
  */
 class HttpPostDslKtTest {
 
@@ -180,7 +180,7 @@ class HttpPostDslKtTest {
             path = "/post"
 
             body {
-                bytes("Blablabla".toByteArray())
+                bytes("string of bytes".toByteArray())
             }
         }
 

@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * Created by Sergey on 22/07/2018.
+ * @author sergey
  */
 class HttpHeadDslKtTest {
 

@@ -8,7 +8,7 @@ import io.github.rybalkinsd.kohttp.util.asJson
 
 
 /**
- * Created by Sergey on 22/07/2018.
+ * @author sergey, alex
  */
 class HttpGetDslKtTest {
 

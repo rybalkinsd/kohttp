@@ -4,6 +4,9 @@ import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
 import io.github.rybalkinsd.kohttp.dsl.context.HttpHeadContext
 import org.junit.Test
 
+/**
+ * @author sergey
+ */
 class HttpContextTest {
 
     @Test(expected = UnsupportedOperationException::class)

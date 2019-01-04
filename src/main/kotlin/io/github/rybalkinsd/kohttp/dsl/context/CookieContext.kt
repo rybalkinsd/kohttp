@@ -1,5 +1,9 @@
 package io.github.rybalkinsd.kohttp.dsl.context
 
+/**
+ * @since 0.1.0
+ * @author sergey
+ */
 @HttpDslMarker
 class CookieContext {
     private val cookies: MutableList<Pair<String, Any>> = mutableListOf()

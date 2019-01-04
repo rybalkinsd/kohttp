@@ -7,18 +7,23 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
+/**
+ * @author sergey
+ */
 class AsyncHttpGetDslTest {
 
     @Test
-    fun name() {
+    fun `async http get request`() {
         val expectedHeader = hashMapOf(
                 "one" to "42",
                 "two" to "123"
         )
+
         val expectedParams = hashMapOf(
                 "text" to "iphone",
                 "lr" to "213"
         )
+
         val response = asyncHttpGet {
             host = "postman-echo.com"
             path = "/get"
@@ -33,6 +38,7 @@ class AsyncHttpGetDslTest {
                 "lr" to 213
             }
         }
+
         runBlocking {
             response.await().use {
                 val parsedResponse = it.body()?.string().asJson()

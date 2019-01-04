@@ -21,6 +21,9 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+/**
+ * @author sergey
+ */
 class ClientBuilderTest {
 
     @Test
@@ -124,7 +127,7 @@ class ClientBuilderTest {
             .map {
                 try {
                     it.call(clientBuilder)
-                    assertTrue(false, "${it.name} call is successfull, but not expected to be")
+                    assertTrue(false, "${it.name} call is successful, but not expected to be")
                 } catch (ignored: InvocationTargetException) {
                 }
             }
