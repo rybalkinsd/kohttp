@@ -1,7 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import assertResponses
-import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.rybalkinsd.kohttp.assertResponses
+import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -49,10 +49,10 @@ class HttpPutDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = ObjectMapper().readValue(it.body()?.byteStream(), kotlin.collections.hashMapOf<String, Any>()::class.java)
-            assertResponses(parsedResponse["headers"] as LinkedHashMap<String, Any>, expectedHeader)
-            assertResponses(parsedResponse["args"] as LinkedHashMap<String, Any>, expectedParams)
-            assertResponses(parsedResponse["form"] as LinkedHashMap<String, Any>, expectedForm)
+            val parsedResponse = it.body()?.string().asJson()
+            assertResponses(parsedResponse["headers"], expectedHeader)
+            assertResponses(parsedResponse["args"], expectedParams)
+            assertResponses(parsedResponse["form"], expectedForm)
             assertEquals(200, it.code())
         }
     }
@@ -97,10 +97,10 @@ class HttpPutDslKtTest {
         }
 
         response.use {
-            val parsedResponse = ObjectMapper().readValue(it.body()?.byteStream(), kotlin.collections.hashMapOf<String, Any>()::class.java)
-            assertResponses(parsedResponse["headers"] as LinkedHashMap<String, Any>, expectedHeader)
-            assertResponses(parsedResponse["args"] as LinkedHashMap<String, Any>, expectedParams)
-            assertResponses(parsedResponse["json"] as LinkedHashMap<String, Any>, expectedJson)
+            val parsedResponse = it.body()?.string().asJson()
+            assertResponses(parsedResponse["headers"], expectedHeader)
+            assertResponses(parsedResponse["args"], expectedParams)
+            assertResponses(parsedResponse["json"], expectedJson)
             assertEquals(200, it.code())
         }
     }
