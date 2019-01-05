@@ -134,7 +134,7 @@ class HttpPostDslKtTest {
             val headers = parsedResponse["headers"]
             assertResponses(headers, expectedHeader)
             assertResponses(parsedResponse["args"], expectedParams)
-            assertEquals("0", headers.get("content-length").asText(""))
+            assertEquals("0", headers["content-length"].asText(""))
             assertEquals(200, it.code())
         }
     }

@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
  */
 fun assertResponses(actual: JsonNode, expected: Map<String, String>) {
     expected.forEach { t, u ->
-        assertEquals(u, actual.get(t).asText(""))
+        assertEquals(u, actual[t].asText(""))
     }
 }
 
