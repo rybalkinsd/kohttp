@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals

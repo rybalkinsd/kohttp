@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
+import io.github.rybalkinsd.kohttp.assertResponses
 import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -11,6 +12,19 @@ class HttpPostDslKtTest {
 
     @Test
     fun `post request with form # postman echo`() {
+        val expectedHeader = hashMapOf(
+                "one" to "42",
+                "cookie" to "aaa=bbb; ccc=42"
+        )
+
+        val expectedParams = hashMapOf(
+                "arg" to "iphone"
+        )
+
+        val expectedForm = hashMapOf(
+                "login" to "user",
+                "email" to "john.doe@gmail.com"
+        )
         httpPost {
             host = "postman-echo.com"
             path = "/post"
@@ -34,12 +48,29 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            println(it.body()?.string())
+            val parsedResponse = it.body()?.string().asJson()
+            assertResponses(parsedResponse["headers"], expectedHeader)
+            assertResponses(parsedResponse["args"], expectedParams)
+            assertResponses(parsedResponse["form"], expectedForm)
+            assertEquals(200, it.code())
         }
     }
 
     @Test
     fun `post request with json # postman echo`() {
+        val expectedHeader = hashMapOf(
+                "one" to "42",
+                "cookie" to "aaa=bbb; ccc=42"
+        )
+
+        val expectedParams = hashMapOf(
+                "arg" to "iphone"
+        )
+
+        val expectedJson= hashMapOf(
+                "login" to "user",
+                "email" to "john.doe@gmail.com"
+        )
         val response = httpPost {
             host = "postman-echo.com"
             path = "/post"
@@ -65,12 +96,24 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            println(it.body()?.string())
+            val parsedResponse = it.body()?.string().asJson()
+            assertResponses(parsedResponse["headers"], expectedHeader)
+            assertResponses(parsedResponse["args"], expectedParams)
+            assertResponses(parsedResponse["json"], expectedJson)
+            assertEquals(200, it.code())
         }
     }
 
     @Test
     fun `post request with empty body# postman echo`() {
+        val expectedHeader = hashMapOf(
+                "one" to "42",
+                "cookie" to "aaa=bbb; ccc=42"
+        )
+
+        val expectedParams = hashMapOf(
+                "arg" to "iphone"
+        )
         httpPost {
             host = "postman-echo.com"
             path = "/post"
@@ -87,7 +130,12 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            assertEquals(0, it.body()?.string().asJson()["headers"]["content-length"].asInt())
+            val parsedResponse = it.body()?.string().asJson()
+            val headers = parsedResponse["headers"]
+            assertResponses(headers, expectedHeader)
+            assertResponses(parsedResponse["args"], expectedParams)
+            assertEquals("0", headers["content-length"].asText(""))
+            assertEquals(200, it.code())
         }
     }
 }
