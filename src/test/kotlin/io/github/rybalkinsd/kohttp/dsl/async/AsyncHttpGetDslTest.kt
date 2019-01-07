@@ -1,7 +1,6 @@
-package io.github.rybalkinsd.kohttp.dsl
+package io.github.rybalkinsd.kohttp.dsl.async
 
 import io.github.rybalkinsd.kohttp.assertResponses
-import io.github.rybalkinsd.kohttp.dsl.async.asyncHttpGet
 import io.github.rybalkinsd.kohttp.util.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -14,12 +13,12 @@ class AsyncHttpGetDslTest {
 
     @Test
     fun `async http get request`() {
-        val expectedHeader = hashMapOf(
+        val expectedHeader = mapOf(
                 "one" to "42",
                 "two" to "123"
         )
 
-        val expectedParams = hashMapOf(
+        val expectedParams = mapOf(
                 "text" to "iphone",
                 "lr" to "213"
         )
@@ -42,8 +41,8 @@ class AsyncHttpGetDslTest {
         runBlocking {
             response.await().use {
                 val parsedResponse = it.body()?.string().asJson()
-                assertResponses(parsedResponse["headers"], expectedHeader)
-                assertResponses(parsedResponse["args"], expectedParams)
+                assertResponses(expectedHeader, parsedResponse["headers"])
+                assertResponses(expectedParams, parsedResponse["args"])
                 assertEquals(200, it.code())
             }
         }

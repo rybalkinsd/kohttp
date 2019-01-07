@@ -1,6 +1,5 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -61,7 +60,7 @@ class HttpHeadDslKtTest {
         }
 
         response.use {
-            assertTrue { it.body()!!.string()!!.isEmpty() }
+            assertTrue { it.body()!!.string().isEmpty() }
             assertEquals(200, it.code())
         }
     }

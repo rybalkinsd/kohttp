@@ -6,22 +6,22 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 /**
- * @author sergey
+ * @author sergey, gokul
  */
 class HttpDeleteDslKtTest {
 
     @Test
     fun `delete request with form # postman echo`() {
-        val expectedHeader = hashMapOf(
+        val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
         )
 
-        val expectedParams = hashMapOf(
+        val expectedParams = mapOf(
                 "arg" to "iphone"
         )
 
-        val expectedForm = hashMapOf(
+        val expectedForm = mapOf(
                 "login" to "user",
                 "email" to "john.doe@gmail.com"
         )
@@ -50,25 +50,25 @@ class HttpDeleteDslKtTest {
             }
         }.use {
             val parsedResponse = it.body()?.string().asJson()
-            assertResponses(parsedResponse["headers"], expectedHeader)
-            assertResponses(parsedResponse["args"], expectedParams)
-            assertResponses(parsedResponse["form"], expectedForm)
+            assertResponses(expectedHeader, parsedResponse["headers"])
+            assertResponses(expectedParams, parsedResponse["args"])
+            assertResponses(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
         }
     }
 
     @Test
     fun `delete request with json # postman echo`() {
-        val expectedHeader = hashMapOf(
+        val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
         )
 
-        val expectedParams = hashMapOf(
+        val expectedParams = mapOf(
                 "arg" to "iphone"
         )
 
-        val expectedJson= hashMapOf(
+        val expectedJson= mapOf(
                 "login" to "user",
                 "email" to "john.doe@gmail.com"
         )
@@ -99,9 +99,9 @@ class HttpDeleteDslKtTest {
 
         response.use {
             val parsedResponse = it.body()?.string().asJson()
-            assertResponses(parsedResponse["headers"], expectedHeader)
-            assertResponses(parsedResponse["args"], expectedParams)
-            assertResponses(parsedResponse["json"], expectedJson)
+            assertResponses(expectedHeader, parsedResponse["headers"])
+            assertResponses(expectedParams, parsedResponse["args"])
+            assertResponses(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
     }

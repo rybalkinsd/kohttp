@@ -8,22 +8,22 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * @author sergey, alex
+ * @author sergey, alex, gokul
  */
 class HttpPostDslKtTest {
 
     @Test
     fun `post request with form # postman echo`() {
-        val expectedHeader = hashMapOf(
+        val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
         )
 
-        val expectedParams = hashMapOf(
+        val expectedParams = mapOf(
                 "arg" to "iphone"
         )
 
-        val expectedForm = hashMapOf(
+        val expectedForm = mapOf(
                 "login" to "user",
                 "email" to "john.doe@gmail.com"
         )
@@ -52,9 +52,9 @@ class HttpPostDslKtTest {
             }
         }.use {
             val parsedResponse = it.body()?.string().asJson()
-            assertResponses(parsedResponse["headers"], expectedHeader)
-            assertResponses(parsedResponse["args"], expectedParams)
-            assertResponses(parsedResponse["form"], expectedForm)
+            assertResponses(expectedHeader, parsedResponse["headers"])
+            assertResponses(expectedParams, parsedResponse["args"])
+            assertResponses(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
         }
     }
@@ -75,16 +75,16 @@ class HttpPostDslKtTest {
 
     @Test
     fun `post request with json # postman echo`() {
-        val expectedHeader = hashMapOf(
+        val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
         )
 
-        val expectedParams = hashMapOf(
+        val expectedParams = mapOf(
                 "arg" to "iphone"
         )
 
-        val expectedJson= hashMapOf(
+        val expectedJson= mapOf(
                 "login" to "user",
                 "email" to "john.doe@gmail.com"
         )
@@ -114,9 +114,9 @@ class HttpPostDslKtTest {
 
         response.use {
             val parsedResponse = it.body()?.string().asJson()
-            assertResponses(parsedResponse["headers"], expectedHeader)
-            assertResponses(parsedResponse["args"], expectedParams)
-            assertResponses(parsedResponse["json"], expectedJson)
+            assertResponses(expectedHeader, parsedResponse["headers"])
+            assertResponses(expectedParams, parsedResponse["args"])
+            assertResponses(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
     }
@@ -132,8 +132,15 @@ class HttpPostDslKtTest {
             }
         }
 
+        val expectedJson= mapOf(
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
+        )
+
         response.use {
-            println(it.body()?.string())
+            val parsedResponse = it.body()?.string().asJson()
+            assertResponses(expectedJson, parsedResponse["json"])
+            assertEquals(200, it.code())
         }
     }
 
@@ -148,8 +155,15 @@ class HttpPostDslKtTest {
             }
         }
 
+        val expectedJson= mapOf(
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
+        )
+
         response.use {
-            println(it.body()?.string())
+            val parsedResponse = it.body()?.string().asJson()
+            assertResponses(expectedJson, parsedResponse["json"])
+            assertEquals(200, it.code())
         }
     }
 
@@ -167,8 +181,8 @@ class HttpPostDslKtTest {
 
         response.use {
             with(it.body()?.string()) {
-                println(this)
                 assertTrue { asJson()["headers"]["content-length"].asLong() > 100_000 }
+                assertEquals(200, it.code())
             }
         }
     }
@@ -185,18 +199,20 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            println(it.body()?.string())
+            val parsedResponse = it.body()?.string().asJson()
+            assertEquals(15, parsedResponse["headers"]["content-length"].asInt())
+            assertEquals(200, it.code())
         }
     }
 
     @Test
     fun `post request with empty body# postman echo`() {
-        val expectedHeader = hashMapOf(
+        val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
         )
 
-        val expectedParams = hashMapOf(
+        val expectedParams = mapOf(
                 "arg" to "iphone"
         )
 
@@ -218,9 +234,9 @@ class HttpPostDslKtTest {
         }.use {
             val parsedResponse = it.body()?.string().asJson()
             val headers = parsedResponse["headers"]
-            assertResponses(headers, expectedHeader)
-            assertResponses(parsedResponse["args"], expectedParams)
-            assertEquals("0", headers["content-length"].asText(""))
+            assertResponses(expectedHeader, headers)
+            assertResponses(expectedParams, parsedResponse["args"])
+            assertEquals(0, headers["content-length"].asInt())
             assertEquals(200, it.code())
         }
     }

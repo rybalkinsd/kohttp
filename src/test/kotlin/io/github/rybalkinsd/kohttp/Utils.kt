@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode
 import kotlin.test.assertEquals
 
 /**
- * Created by Gokul on 03/01/2019.
+ * @author gokul
  */
-fun assertResponses(actual: JsonNode, expected: Map<String, String>) {
+fun assertResponses(expected: Map<String, String>, actual: JsonNode) {
     expected.forEach { t, u ->
-        assertEquals(u, actual[t].asText(""))
+        assertEquals(u, actual[t].asText())
     }
 }
 

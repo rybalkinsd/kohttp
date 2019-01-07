@@ -1,7 +1,5 @@
-package io.github.rybalkinsd.kohttp.dsl
+package io.github.rybalkinsd.kohttp.dsl.context
 
-import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
-import io.github.rybalkinsd.kohttp.dsl.context.HttpHeadContext
 import org.junit.Test
 
 /**

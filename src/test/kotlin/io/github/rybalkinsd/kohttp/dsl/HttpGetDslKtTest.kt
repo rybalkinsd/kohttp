@@ -1,14 +1,14 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.assertResponses
+import io.github.rybalkinsd.kohttp.util.asJson
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals
-import io.github.rybalkinsd.kohttp.util.asJson
 
 
 /**
- * @author sergey, alex
+ * @author sergey, alex, gokul
  */
 class HttpGetDslKtTest {
 
@@ -53,14 +53,14 @@ class HttpGetDslKtTest {
     @Test
     fun `single sync http get invocation with param and header`() {
         val variable = 123L
-        val expectedHeader = hashMapOf(
+        val expectedHeader = mapOf(
                 "one" to "42",
                 "two" to variable.toString(),
                 "three" to """{"a":$variable,"b":{"b1":"512"},"c":[1,2.0,3]}""",
                 "cookie" to "aaa=bbb; ccc=42"
         )
 
-        val expectedParams = hashMapOf(
+        val expectedParams = mapOf(
                 "text" to "iphone",
                 "lr" to "213"
         )
@@ -92,8 +92,8 @@ class HttpGetDslKtTest {
         }
         response.use {
             val parsedResponse = it.body()?.string().asJson()
-            assertResponses(parsedResponse["headers"], expectedHeader)
-            assertResponses(parsedResponse["args"], expectedParams)
+            assertResponses(expectedHeader, parsedResponse["headers"])
+            assertResponses(expectedParams, parsedResponse["args"])
             assertEquals(200, it.code())
         }
     }
