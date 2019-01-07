@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.dsl.context.HttpHeadContext
 import okhttp3.Call
 import okhttp3.Response
 
@@ -35,11 +36,10 @@ import okhttp3.Response
  * </pre>
  *
  * @see Response
- * @see HttpContext
- * @see ParamContext
- * @see HeaderContext
- * @see BodyContext
+ * @see HttpHeadContext
  *
+ * @since 0.1.0
+ * @author sergey
  */
 fun httpHead(client: Call.Factory = defaultHttpClient, init: HttpHeadContext.() -> Unit): Response {
     val context = HttpHeadContext().apply(init)

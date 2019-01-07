@@ -29,7 +29,8 @@ import okhttp3.Response
  * <p>Response This class implements {@link Closeable}. Closing it simply closes its response body. See
  * {@link ResponseBody} for an explanation and examples.
  *
- * @author sergey on 21/07/2018
+ * @since 0.1.0
+ * @author sergey
  */
 fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
     client.call(Request.Builder().url(this).build())
@@ -57,7 +58,8 @@ fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
  * <p>Response This class implements {@link Closeable}. Closing it simply closes its response body. See
  * {@link ResponseBody} for an explanation and examples.
  *
- * @author sergey on 21/07/2018
+ * @since 0.1.0
+ * @author sergey
  */
 fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
     GlobalScope.async(context = Unconfined) {

@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
 import okhttp3.Call
 import okhttp3.Response
 
@@ -35,12 +36,10 @@ import okhttp3.Response
  * </pre>
  *
  * @see Response
- * @see HttpContext
- * @see ParamContext
- * @see HeaderContext
- * @see BodyContext
+ * @see HttpGetContext
  *
- * Created by Sergey on 22/07/2018
+ * @since 0.1.0
+ * @author sergey
  */
 fun httpGet(client: Call.Factory = defaultHttpClient, init: HttpGetContext.() -> Unit): Response {
     val context = HttpGetContext().apply(init)

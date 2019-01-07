@@ -24,6 +24,8 @@ import javax.net.ssl.SSLSocketFactory
  * https://youtrack.jetbrains.com/issue/KT-3110
  * will be implemented
  *
+ * @since 0.5.0
+ * @author sergey
  */
 interface ClientBuilder : ForkClientBuilder {
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")

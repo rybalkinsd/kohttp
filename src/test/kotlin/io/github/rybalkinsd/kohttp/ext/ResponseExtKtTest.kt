@@ -8,7 +8,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 /**
- * Created by Sergey Rybalkin on 07/10/2018.
+ * @author sergey
  */
 class ResponseExtKtTest {
 

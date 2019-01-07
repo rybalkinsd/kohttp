@@ -1,7 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.dsl.Method.DELETE
+import io.github.rybalkinsd.kohttp.dsl.context.HttpDeleteContext
 import okhttp3.Call
 import okhttp3.Response
 
@@ -38,16 +38,12 @@ import okhttp3.Response
  * </pre>
  *
  * @see Response
- * @see HttpContext
- * @see ParamContext
- * @see HeaderContext
- * @see BodyContext
+ * @see HttpDeleteContext
  *
- * Created by Sergey on 23/07/2018.
+ * @since 0.3.2
+ * @author sergey
  */
 fun httpDelete(client: Call.Factory = defaultHttpClient, init: HttpDeleteContext.() -> Unit): Response {
     val context = HttpDeleteContext().apply(init)
     return client.newCall(context.makeRequest()).execute()
 }
-
-class HttpDeleteContext: HttpPostContext(method = DELETE)

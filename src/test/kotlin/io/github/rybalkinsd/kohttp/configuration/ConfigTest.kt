@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * Created by Sergey on 19/08/2018.
+ * @author sergey
  */
 class ConfigTest {
 

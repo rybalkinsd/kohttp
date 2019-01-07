@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.dsl.context.HttpPatchContext
 import okhttp3.Call
 import okhttp3.Response
 
@@ -37,12 +38,10 @@ import okhttp3.Response
  * </pre>
  *
  * @see Response
- * @see HttpContext
- * @see ParamContext
- * @see HeaderContext
- * @see BodyContext
+ * @see HttpPatchContext
  *
- * Created by Bpaxio on 06/09/2018.
+ * @since 0.2.0
+ * @author Bpaxio
  */
 fun httpPatch(client: Call.Factory = defaultHttpClient, init: HttpPatchContext.() -> Unit): Response {
     val context = HttpPatchContext().apply(init)

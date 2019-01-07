@@ -21,6 +21,9 @@ import javax.net.ssl.SSLSocketFactory
 
 /**
  * DSL builder for OkHttpClient
+ *
+ * @since 0.5.0
+ * @author sergey
  */
 fun client(block: ClientBuilder.() -> Unit) = ClientBuilderImpl().apply(block).build()
 

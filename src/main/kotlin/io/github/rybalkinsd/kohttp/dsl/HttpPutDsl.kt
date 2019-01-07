@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.dsl.context.HttpPutContext
 import okhttp3.Call
 import okhttp3.Response
 
@@ -37,12 +38,10 @@ import okhttp3.Response
  * </pre>
  *
  * @see Response
- * @see HttpContext
- * @see ParamContext
- * @see HeaderContext
- * @see BodyContext
+ * @see HttpPutContext
  *
- * Created by Sergey on 23/07/2018.
+ * @since 0.2.0
+ * @author sergey
  */
 fun httpPut(client: Call.Factory = defaultHttpClient, init: HttpPutContext.() -> Unit): Response {
     val context = HttpPutContext().apply(init)

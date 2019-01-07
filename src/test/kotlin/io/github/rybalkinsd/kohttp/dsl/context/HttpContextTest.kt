@@ -1,7 +1,10 @@
-package io.github.rybalkinsd.kohttp.dsl
+package io.github.rybalkinsd.kohttp.dsl.context
 
 import org.junit.Test
 
+/**
+ * @author sergey
+ */
 class HttpContextTest {
 
     @Test(expected = UnsupportedOperationException::class)

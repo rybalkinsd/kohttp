@@ -7,7 +7,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 /**
- * Created by Sergey Rybalkin on 26/11/2018.
+ * @author sergey
  */
 class OkHttpClientExtKtTest {
 

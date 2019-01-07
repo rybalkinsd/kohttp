@@ -100,8 +100,13 @@ val response: Response = httpPost {
             "email" to "john.doe@gmail.com" //  email=john.doe@gmail.com
         }
     }
+    // or
+    body {
+        form("login=user&email=john.doe@gmail.com")
+    }
 }
 ```
+
 
 ##### POST with `json` body.
 `json` body has a `application/json` content type
@@ -120,9 +125,45 @@ val response: Response = httpPost {
             "email" to "john.doe@gmail.com" //      "email": "john.doe@gmail.com" 
         }                                   //  }
     }
+    // or
+    body {
+        json("""{"login":"user","email":"john.doe@gmail.com"}""")
+    }
 }
 ```
 
+##### POST with various content type
+In addition to `form` or `json` body content types it is possible to declare a custom content type.
+
+`body` DSL support three data sources: `file()`, `bytes()` and `string()`
+
+```kotlin
+httpPost {
+    body("application/json") {
+        string("""{"login":"user","email":"john.doe@gmail.com"}""")
+    }
+}
+```
+
+```kotlin
+val imageFile = File(getResource("/cat.gif").toURI())
+httpPost {
+    body(type = "image/gif") {
+        file(imageFile)
+    }
+}
+```
+
+```kotlin
+httpPost {
+    body { // content type is optional, null by default
+        bytes("string of bytes".toByteArray())
+    }
+}
+```
+
+
+   
 #### HEAD
 
 You can use same syntax as in [GET](#get)
@@ -153,7 +194,7 @@ val response = httpDelete { }
 
 ### Async http calls
 
-#### GET
+#### async GET
 
 ##### `String.asyncHttpGet()` extension function
 This function starts a new coroutine with *Unconfined* dispatcher. 
