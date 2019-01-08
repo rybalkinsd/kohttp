@@ -12,7 +12,7 @@ class HttpPostContextTest {
         val expectedContentType = "application/x-www-form-urlencoded; charset=utf-8"
         val context = HttpPostContext()
         context.body { form { } }
-        assertEquals(context.makeBody().contentType().toString(), expectedContentType)
+        assertEquals(expectedContentType, context.makeBody().contentType().toString())
     }
 
     @Test
@@ -20,7 +20,7 @@ class HttpPostContextTest {
         val expectedContentType = "application/json; charset=utf-8"
         val context = HttpPostContext()
         context.body { json { } }
-        assertEquals(context.makeBody().contentType().toString(), expectedContentType)
+        assertEquals(expectedContentType, context.makeBody().contentType().toString())
     }
 
     @Test
@@ -28,7 +28,7 @@ class HttpPostContextTest {
         val contentType = "application/xml; charset=utf-8"
         val context = HttpPostContext()
         context.header { "Content-Type" to contentType }
-        assertEquals(context.makeBody().contentType().toString(), contentType)
+        assertEquals(contentType, context.makeBody().contentType().toString())
     }
 
     @Test
@@ -36,16 +36,16 @@ class HttpPostContextTest {
         val contentType = "application/xml; charset=utf-8"
         val context = HttpPostContext()
         context.body(contentType) { string("content") }
-        assertEquals(context.makeBody().contentType().toString(), contentType)
+        assertEquals(contentType, context.makeBody().contentType().toString())
     }
 
     @Test
-    fun `when custom type is provided and body is form, content type should be form`() {
-        val contentType = "application/xml; charset=utf-8"
-        val expectedContentType = "application/x-www-form-urlencoded; charset=utf-8"
+    fun `should override custom content type with type inside body`() {
+        val customContentType = "application/xml; charset=utf-8"
+        val bodyContentType = "application/x-www-form-urlencoded; charset=utf-8"
         val context = HttpPostContext()
-        context.body(contentType) { form {} }
-        assertEquals(context.makeBody().contentType().toString(), expectedContentType)
+        context.body(customContentType) { form {} }
+        assertEquals(bodyContentType, context.makeBody().contentType().toString())
     }
 
     @Test
@@ -54,7 +54,7 @@ class HttpPostContextTest {
         val expectedContentType = "application/json; charset=utf-8"
         val context = HttpPostContext()
         context.body(contentType) { json {} }
-        assertEquals(context.makeBody().contentType().toString(), expectedContentType)
+        assertEquals(expectedContentType, context.makeBody().contentType().toString())
     }
 
 }
