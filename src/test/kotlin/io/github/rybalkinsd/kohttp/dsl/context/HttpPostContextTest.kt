@@ -24,10 +24,18 @@ class HttpPostContextTest {
     }
 
     @Test
-    fun `should accept custom content type`() {
+    fun `should set content type from header`() {
         val contentType = "application/xml; charset=utf-8"
         val context = HttpPostContext()
-        context.body(contentType) { string("content")  }
+        context.header { "Content-Type" to contentType }
+        assertEquals(context.makeBody().contentType().toString(), contentType)
+    }
+
+    @Test
+    fun `should set custom content type from body`() {
+        val contentType = "application/xml; charset=utf-8"
+        val context = HttpPostContext()
+        context.body(contentType) { string("content") }
         assertEquals(context.makeBody().contentType().toString(), contentType)
     }
 
@@ -36,7 +44,7 @@ class HttpPostContextTest {
         val contentType = "application/xml; charset=utf-8"
         val expectedContentType = "application/x-www-form-urlencoded; charset=utf-8"
         val context = HttpPostContext()
-        context.body(contentType) { form {}  }
+        context.body(contentType) { form {} }
         assertEquals(context.makeBody().contentType().toString(), expectedContentType)
     }
 
@@ -45,8 +53,9 @@ class HttpPostContextTest {
         val contentType = "application/xml; charset=utf-8"
         val expectedContentType = "application/json; charset=utf-8"
         val context = HttpPostContext()
-        context.body(contentType) { json {}  }
+        context.body(contentType) { json {} }
         assertEquals(context.makeBody().contentType().toString(), expectedContentType)
     }
+
 }
 
