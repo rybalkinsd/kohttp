@@ -41,6 +41,16 @@ class HttpPostContextTest {
     }
 
     @Test
+    fun `should override header content type with custom content type`() {
+        val headerContentType = "text/css; charset=utf-8"
+        val customContentType = "text/html; charset=utf-8"
+        val context = HttpPostContext()
+        context.header { "Content-Type" to headerContentType }
+        context.body(customContentType) { string("content") }
+        assertEquals(customContentType, context.makeBody().contentType().toString())
+    }
+
+    @Test
     fun `should override custom content type with type inside body`() {
         val customContentType = "application/xml; charset=utf-8"
         val bodyContentType = "application/x-www-form-urlencoded; charset=utf-8"
@@ -48,6 +58,5 @@ class HttpPostContextTest {
         context.body(customContentType) { form {} }
         assertEquals(bodyContentType, context.makeBody().contentType().toString())
     }
-
 }
 
