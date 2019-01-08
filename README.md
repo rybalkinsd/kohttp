@@ -162,6 +162,25 @@ httpPost {
 }
 ```
 
+You may also specify a custom content type in the request's header :
+```kotlin
+httpPost {
+    header { "Content-Type" to "text/html" }
+    body {
+        string("<html><body><h1>Hello world</h1></body></html>")
+    }
+}
+```
+
+
+##### Content type priority
+
+Content type is set according to the following priority levels (higher is prioritized) :
+
+1. Header : ```kotlin ... header { "Content-Type" to "$myContenType" } ... ```  
+2. Custom body type : ```kotlin ... body(myContentType) { ... } ...```
+3. Form or Json in body :  ```kotlin ... body() { json { ... } } ...```
+
 
    
 #### HEAD
