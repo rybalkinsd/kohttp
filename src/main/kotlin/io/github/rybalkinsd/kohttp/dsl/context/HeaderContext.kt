@@ -18,4 +18,8 @@ class HeaderContext {
     }
 
     internal fun forEach(action: (k: String, v: Any) -> Unit) = map.forEach(action)
+
+    fun getContentType(): String? {
+        return map["Content-Type"] as String?
+    }
 }

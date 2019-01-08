@@ -28,6 +28,7 @@ class HttpPostContextTest {
         val contentType = "application/xml; charset=utf-8"
         val context = HttpPostContext()
         context.header { "Content-Type" to contentType }
+        context.body { string("content") }
         assertEquals(contentType, context.makeBody().contentType().toString())
     }
 
@@ -56,6 +57,5 @@ class HttpPostContextTest {
         context.body(contentType) { json {} }
         assertEquals(expectedContentType, context.makeBody().contentType().toString())
     }
-
 }
 

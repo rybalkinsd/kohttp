@@ -26,7 +26,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
     var path: String? = null
 
     fun param(init: ParamContext.() -> Unit) {
-         paramContext.init()
+        paramContext.init()
     }
 
     fun header(init: HeaderContext.() -> Unit) {
@@ -66,12 +66,16 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
 
     open fun makeBody(): RequestBody = throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
 
+    fun getHeaderContentType(): String? {
+        return headerContext.getContentType()
+    }
+
 }
 
-open class HttpPostContext(method: Method = POST): HttpContext(method) {
+open class HttpPostContext(method: Method = POST) : HttpContext(method) {
     private var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
-    fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
+    fun body(contentType: String? = getHeaderContentType(), init: BodyContext.() -> RequestBody) {
         body = BodyContext(contentType).init()
     }
 
@@ -81,9 +85,9 @@ open class HttpPostContext(method: Method = POST): HttpContext(method) {
 
 class HttpGetContext : HttpContext()
 class HttpHeadContext : HttpContext(method = HEAD)
-class HttpPutContext: HttpPostContext(method = PUT)
-class HttpPatchContext: HttpPostContext(method = PATCH)
-class HttpDeleteContext: HttpPostContext(method = DELETE)
+class HttpPutContext : HttpPostContext(method = PUT)
+class HttpPatchContext : HttpPostContext(method = PATCH)
+class HttpDeleteContext : HttpPostContext(method = DELETE)
 
 enum class Method {
     GET, POST, PUT, DELETE, PATCH, HEAD
