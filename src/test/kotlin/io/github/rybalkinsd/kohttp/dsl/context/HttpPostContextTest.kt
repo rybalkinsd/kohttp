@@ -49,13 +49,5 @@ class HttpPostContextTest {
         assertEquals(bodyContentType, context.makeBody().contentType().toString())
     }
 
-    @Test
-    fun `when custom type is provided and body is json, content type should be json`() {
-        val contentType = "application/xml; charset=utf-8"
-        val expectedContentType = "application/json; charset=utf-8"
-        val context = HttpPostContext()
-        context.body(contentType) { json {} }
-        assertEquals(expectedContentType, context.makeBody().contentType().toString())
-    }
 }
 
