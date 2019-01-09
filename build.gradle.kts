@@ -8,6 +8,13 @@ plugins {
     id("org.jetbrains.dokka") version "0.9.16"
     `maven-publish`
     signing
+
+    /**
+     * Remove when
+     * https://youtrack.jetbrains.com/issue/KT-28355
+     * will be fixed
+     */
+    `java-library`
 }
 
 group = "io.github.rybalkinsd"
@@ -26,7 +33,7 @@ dependencies {
     implementation(jackson("core"), "jackson-databind", jacksonVersion)
     implementation(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
     implementation(jackson("module"), "jackson-module-kotlin", jacksonVersion)
-    implementation("com.squareup.okhttp3", "okhttp", "3.12.0")
+    api("com.squareup.okhttp3", "okhttp", "3.12.0")
 
     testImplementation(kotlin("test-junit"))
 }
