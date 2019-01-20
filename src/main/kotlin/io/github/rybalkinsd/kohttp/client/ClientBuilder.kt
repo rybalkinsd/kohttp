@@ -73,7 +73,7 @@ interface ClientBuilder : ForkClientBuilder {
 
 interface ForkClientBuilder {
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var interceptors: List<Interceptor>
+    var interceptors:  List<Interceptor>
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var networkInterceptors: List<Interceptor>
@@ -104,4 +104,8 @@ interface ForkClientBuilder {
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var pingInterval: Long
+
+    fun interceptors(block: InterceptorsDsl.() -> Unit) {
+        this.interceptors = InterceptorsDsl().apply(block).list()
+    }
 }
