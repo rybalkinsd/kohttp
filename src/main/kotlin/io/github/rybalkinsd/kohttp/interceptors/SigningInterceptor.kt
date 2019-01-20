@@ -7,17 +7,19 @@ import okhttp3.Response
 
 class SigningInterceptor(private val parameterName: String, private val signer: HttpUrl.() -> String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val userRequest: Request = chain.request()
-        val requestBuilder = userRequest.newBuilder()
 
-        val url = userRequest.url()
-        val urlBuilder = url.newBuilder()
+        return with(chain.request()) {
+            val signedKey = signer(url())
 
-        val signedKey = signer(url)
+            val requestUrl = with(url().newBuilder()) {
+                addQueryParameter(parameterName, signedKey)
+                build()
+            }
 
-        urlBuilder.addQueryParameter(parameterName, signedKey).build()
-        requestBuilder.url(urlBuilder.build())
-
-        return chain.proceed(requestBuilder.build())
+            with(newBuilder()) {
+                url(requestUrl)
+                chain.proceed(build())
+            }
+        }
     }
 }
