@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.client
 
+import io.github.rybalkinsd.kohttp.client.dsl.InterceptorsDsl
 import okhttp3.Authenticator
 import okhttp3.Cache
 import okhttp3.CertificatePinner
