@@ -12,6 +12,7 @@ import java.time.Instant
  *
  * @param logger function to print message
  *
+ * Sample Output: [2019-01-28T04:17:42.885Z] GET 200 - 1743ms https://postman-echo.com/get
  * @since 0.8.0
  * @author gokul
  */
