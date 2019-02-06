@@ -1,16 +1,22 @@
 package io.github.rybalkinsd.kohttp.util
 
+import okhttp3.FormBody
+
 /**
  *
  * @since 0.1.0
  * @author sergey
  */
 class Form {
-    private val content: MutableList<Pair<String, Any?>> = mutableListOf()
+    private val bodyBuilder = FormBody.Builder()
 
-    infix fun String.to(v: Any) {
-        content += Pair(this, v)
+    infix fun String.to(v: String) {
+        bodyBuilder.add(this, v)
     }
 
-    override fun toString() = content.joinToString(separator = "&") { "${it.first}=${it.second}" }
+    fun addEncoded(k: String, v: String) {
+        bodyBuilder.addEncoded(k, v)
+    }
+
+    fun makeBody(): FormBody = bodyBuilder.build()
 }

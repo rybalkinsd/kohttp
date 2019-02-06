@@ -25,7 +25,7 @@ class BodyContext(type: String?) {
     fun form(content: String): RequestBody = create(FORM, content)
 
     fun json(init: Json.() -> Unit): RequestBody = create(JSON, Json().also(init).toString())
-    fun form(init: Form.() -> Unit): RequestBody = create(FORM, Form().also(init).toString())
+    fun form(init: Form.() -> Unit): RequestBody = Form().also(init).makeBody()
 
 }
 
