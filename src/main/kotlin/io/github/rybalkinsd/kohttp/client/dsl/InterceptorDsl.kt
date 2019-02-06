@@ -23,13 +23,11 @@ import okhttp3.Interceptor
  * @since 0.8.0
  * @author gokul
  */
-
-
 class InterceptorsDsl(private val interceptors: MutableList<Interceptor> = mutableListOf()) {
 
     operator fun Interceptor.unaryPlus() {
-        interceptors.add(this)
+        interceptors += this
     }
 
-    fun list() = this.interceptors.toList()
+    fun list(): List<Interceptor> = this.interceptors
 }

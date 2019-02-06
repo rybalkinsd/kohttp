@@ -14,17 +14,19 @@ class SigningInterceptorTest {
     @Test
     fun `signs request with MD5 algorithm`() {
         val urlEncoder = Base64.getUrlEncoder()
-        val algorithm = MessageDigest.getInstance("md5")
+        val md5 = MessageDigest.getInstance("md5")
 
         val client = defaultHttpClient.fork {
-            interceptors = listOf(SigningInterceptor("key") {
-                val query = (query() ?: "").toByteArray()
-                urlEncoder.encodeToString(algorithm.digest(query))
-            })
+            interceptors {
+                +SigningInterceptor("key") {
+                    val query = (query() ?: "").toByteArray()
+                    urlEncoder.encodeToString(md5.digest(query))
+                }
+            }
         }
 
         val s = "foo=bar&random=213".toByteArray(Charsets.UTF_8)
-        val expected = urlEncoder.encodeToString(MessageDigest.getInstance("md5").digest(s))
+        val expected = urlEncoder.encodeToString(md5.digest(s))
 
         httpGet(client = client) {
             host = "postman-echo.com"

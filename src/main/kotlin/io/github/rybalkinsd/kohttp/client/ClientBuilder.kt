@@ -107,6 +107,6 @@ interface ForkClientBuilder {
     var pingInterval: Long
 
     fun interceptors(block: InterceptorsDsl.() -> Unit) {
-        this.interceptors = InterceptorsDsl().apply(block).list()
+        interceptors = InterceptorsDsl().apply(block).list()
     }
 }
