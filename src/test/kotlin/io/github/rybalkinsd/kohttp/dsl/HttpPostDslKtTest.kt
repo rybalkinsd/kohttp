@@ -62,8 +62,8 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with form encoded # postman echo`() {
         val expectedForm = mapOf(
-            "encoded" to "%20",
-            "notEncoded" to " "
+            "encoded" to " ",
+            "notEncoded" to "%20"
         )
 
         httpPost {
