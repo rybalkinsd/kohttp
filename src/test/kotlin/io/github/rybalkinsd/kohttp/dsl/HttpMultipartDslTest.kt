@@ -4,6 +4,7 @@ import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.interceptors.LoggingInterceptor
 import org.junit.Test
+import java.io.File
 
 class HttpMultipartDslTest {
 
@@ -14,13 +15,14 @@ class HttpMultipartDslTest {
                 +LoggingInterceptor(::println)
             }
         }
-        val r = httpPost(client) {
+        val r =
+        httpPost(client) {
             host = "postman-echo.com"
             path = "/post"
 
             multipartBody {
-                +string("123")
-                +form("a=c&d=e")
+                +form("cat", File(this.javaClass.getResource("/cat.gif").toURI()))
+                +form("cat1", File(this.javaClass.getResource("/cat.gif").toURI()))
             }
 //            body {
 //                multipart {
