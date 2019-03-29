@@ -5,15 +5,17 @@ import okhttp3.RequestBody
 
 @HttpDslMarker
 class MultipartBodyContext(type: String?) : BodyContext(type) {
-    private val builder = MultipartBody.Builder()
-
-    fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
-        BodyContext(contentType).init()
-    }
+    val builder = MultipartBody.Builder()
 
     operator fun RequestBody.unaryPlus() {
         builder.addPart(this)
     }
 
+//    operator fun unaryPlus(name: String, value: String) {
+//        builder.addFormDataPart(name, value)
+//    }
+
+
     fun build(): MultipartBody = builder.build()
 }
+

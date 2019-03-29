@@ -1,24 +1,38 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.ext.eager
+import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.client.fork
+import io.github.rybalkinsd.kohttp.interceptors.LoggingInterceptor
 import org.junit.Test
-import java.io.File
 
 class HttpMultipartDslTest {
 
     @Test
     fun `simple multipart request`() {
-        val r = httpPost {
+        val client = defaultHttpClient.fork {
+            interceptors {
+                +LoggingInterceptor(::println)
+            }
+        }
+        val r = httpPost(client) {
             host = "postman-echo.com"
             path = "/post"
 
-            body {
-                multipart {
-                    +file(File( this.javaClass.getResource("/cat.gif").toURI()))
-                }
+            multipartBody {
+                +string("123")
+                +form("a=c&d=e")
             }
+//            body {
+//                multipart {
+//                    builder.addFormDataPart("file", "filename", file(File(this.javaClass.getResource("/cat.gif").toURI())))
+//                    +form { "1" to 2 }
+//                }
+//
+//            }
+//                    +file(File(this.javaClass.getResource("/cat.gif").toURI()))
         }
 
-        val re = r.eager()
+        println(r)
     }
+
 }

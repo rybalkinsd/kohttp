@@ -2,6 +2,7 @@ package io.github.rybalkinsd.kohttp.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import okio.Buffer
 
 /**
  * Request Logging Interceptor
@@ -21,6 +22,11 @@ class LoggingInterceptor(private val log: (String) -> Unit) : Interceptor {
         val startTime = System.currentTimeMillis()
         return chain.proceed(request).also {
             log("${request.method()} ${it.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
+            with(Buffer()) {
+//                request.headers().
+                request.body()?.writeTo(this)
+                log(this.readByteString().utf8())
+            }
         }
     }
 }

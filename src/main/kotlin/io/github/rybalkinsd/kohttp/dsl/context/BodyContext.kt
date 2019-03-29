@@ -26,10 +26,6 @@ open class BodyContext(type: String?) {
 
     fun json(init: Json.() -> Unit): RequestBody = create(JSON, Json().also(init).toString())
     fun form(init: Form.() -> Unit): RequestBody = Form().also(init).makeBody()
-
-    fun multipart(contentType: String? = null, init: MultipartBodyContext.() -> Unit): RequestBody =
-        MultipartBodyContext(contentType).apply(init).build()
-
 }
 
 private val JSON = MediaType.get("application/json")
