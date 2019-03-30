@@ -1,10 +1,15 @@
 package io.github.rybalkinsd.kohttp.ext
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.Handshake
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 
+internal val stringMapper = ObjectMapper()
+fun String?.asJson(): JsonNode =
+        if (isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)
 
 /**
  * This feature is EXPERIMENTAL, API could be changed in the future releases.
@@ -76,3 +81,9 @@ data class EagerResponse(
  * @author sergey
  */
 data class Header(val name: String, val value: String)
+
+internal fun Response.asJson() = with(body()?.string()) {
+    asJson()
+}
+
+internal fun Response.asString() = body()?.string()
