@@ -75,4 +75,39 @@ class ResponseExtKtTest {
         }.asJson()
         assertEquals(response, expected)
     }
+
+    @Test
+    fun `streams response # ext`() {
+        val response = "https://postman-echo.com/stream/2".httpGet().asStream()
+        val arr = response?.readBytes()
+        val actual = arr?.let { String(it) }
+        val expected = "{\n" +
+                "  \"args\": {\n" +
+                "    \"n\": \"2\"\n" +
+                "  },\n" +
+                "  \"headers\": {\n" +
+                "    \"x-forwarded-proto\": \"https\",\n" +
+                "    \"host\": \"postman-echo.com\",\n" +
+                "    \"accept-encoding\": \"gzip\",\n" +
+                "    \"user-agent\": \"okhttp/3.12.0\",\n" +
+                "    \"x-forwarded-port\": \"443\"\n" +
+                "  },\n" +
+                "  \"url\": \"https://postman-echo.com/stream/2\"\n" +
+                "}{\n" +
+                "  \"args\": {\n" +
+                "    \"n\": \"2\"\n" +
+                "  },\n" +
+                "  \"headers\": {\n" +
+                "    \"x-forwarded-proto\": \"https\",\n" +
+                "    \"host\": \"postman-echo.com\",\n" +
+                "    \"accept-encoding\": \"gzip\",\n" +
+                "    \"user-agent\": \"okhttp/3.12.0\",\n" +
+                "    \"x-forwarded-port\": \"443\"\n" +
+                "  },\n" +
+                "  \"url\": \"https://postman-echo.com/stream/2\"\n" +
+                "}"
+        assertEquals(actual, expected)
+
+
+    }
 }

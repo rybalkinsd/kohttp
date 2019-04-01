@@ -87,3 +87,5 @@ internal fun Response.asJson() = with(body()?.string()) {
 }
 
 internal fun Response.asString() = body()?.string()
+
+internal fun Response.asStream() = body()?.byteStream()
