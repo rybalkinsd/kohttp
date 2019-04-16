@@ -9,14 +9,17 @@ import kotlin.test.assertTrue
 class LoggingInterceptorTest {
     @Test
     fun `calls passed logging method with message`() {
+        var logSize = 0
         val client = defaultHttpClient.fork {
             interceptors {
                 +LoggingInterceptor {
-                    assertTrue(it.isNotEmpty())
+                    logSize += it.length
                 }
             }
         }
 
-        "https://postman-echo.com/get".httpGet(client = client)
+        "https://postman-echo.com/get".httpGet(client)
+
+        assertTrue { logSize > 0 }
     }
 }
