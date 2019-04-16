@@ -5,10 +5,17 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
+/**
+ *
+ * @since 0.8.0
+ * @author sergey
+ */
 @HttpDslMarker
 class MultipartBodyContext(type: String?) {
     private val mediaType = type?.let { MediaType.get(it) }
-    private val builder = MultipartBody.Builder()
+    private val builder = MultipartBody.Builder().also { builder ->
+        mediaType?.let { builder.setType(mediaType) }
+    }
 
     operator fun Triple<String, String?, RequestBody>.unaryPlus() {
         builder.addFormDataPart(first, second, third)
@@ -21,11 +28,5 @@ class MultipartBodyContext(type: String?) {
         builder.addPart(this)
     }
 
-//    operator fun unaryPlus(name: String, value: String) {
-//        builder.addFormDataPart(name, value)
-//    }
-
-
     fun build(): MultipartBody = builder.build()
 }
-

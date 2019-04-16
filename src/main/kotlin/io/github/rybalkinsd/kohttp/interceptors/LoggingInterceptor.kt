@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.interceptors
 
+import io.github.rybalkinsd.kohttp.ext.asSequence
 import okhttp3.Interceptor
 import okhttp3.Response
 import okio.Buffer
@@ -20,12 +21,14 @@ class LoggingInterceptor(private val log: (String) -> Unit) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val startTime = System.currentTimeMillis()
-        return chain.proceed(request).also {
-            log("${request.method()} ${it.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
-            with(Buffer()) {
-//                request.headers().
-                request.body()?.writeTo(this)
-                log(this.readByteString().utf8())
+        return chain.proceed(request).also { response ->
+            log("${request.method()} ${response.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
+
+            request.headers().asSequence().forEach { log("${it.name}: ${it.value}") }
+
+            Buffer().use {
+                request.body()?.writeTo(it)
+                log(it.readByteString().utf8())
             }
         }
     }
