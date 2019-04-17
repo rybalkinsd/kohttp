@@ -1,8 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.assertResponses
-import io.github.rybalkinsd.kohttp.client.client
-import io.github.rybalkinsd.kohttp.interceptors.LoggingInterceptor
 import io.github.rybalkinsd.kohttp.util.asJson
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
@@ -66,11 +64,7 @@ class HttpGetDslKtTest {
                 "text" to "iphone",
                 "lr" to "213"
         )
-        val response = httpGet(client {
-            interceptors {
-                +LoggingInterceptor(::println)
-            }
-        }) {
+        val response = httpGet {
             host = "postman-echo.com"
             path = "/get"
 

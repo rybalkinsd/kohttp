@@ -17,7 +17,7 @@ import okio.Buffer
  * @since 0.8.0
  * @author gokul
  */
-class LoggingInterceptor(private val log: (String) -> Unit) : Interceptor {
+class LoggingInterceptor(private val log: (String) -> Unit = ::println) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val startTime = System.currentTimeMillis()

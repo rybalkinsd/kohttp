@@ -1,28 +1,23 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.client.client
-import io.github.rybalkinsd.kohttp.interceptors.LoggingInterceptor
 import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class UploadDslKtTest {
 
     @Test
     fun `small file upload`() {
-        val client = client {
-            interceptors {
-                +LoggingInterceptor(::println)
-            }
-        }
-
-        val r  = upload(client) {
+        val r  = upload {
             url("http://postman-echo.com/post")
             val fileUri = this.javaClass.getResource("/cat.gif").toURI()
             file(fileUri)
         }
 
-        println(r)
+        val parsedResponse = r.body()?.string().asJson()
+        assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
+        assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }
 
     @Test

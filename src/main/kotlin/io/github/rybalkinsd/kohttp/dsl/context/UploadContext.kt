@@ -23,6 +23,7 @@ class UploadContext(private val context: HttpPostContext = HttpPostContext()) : 
     fun file(content: URI) {
         file(File(content))
     }
+
     fun bytes(filename: String, content: ByteArray) {
         context.multipartBody {
             +form("file", filename, content)

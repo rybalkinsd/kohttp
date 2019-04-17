@@ -1,8 +1,5 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.client.fork
-import io.github.rybalkinsd.kohttp.interceptors.LoggingInterceptor
 import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
 import java.io.File
@@ -13,13 +10,7 @@ class HttpMultipartDslTest {
 
     @Test
     fun `multipart request with file`() {
-        val client = defaultHttpClient.fork {
-            interceptors {
-                +LoggingInterceptor(::println)
-            }
-        }
-
-        val response = httpPost(client) {
+        val response = httpPost {
             host = "postman-echo.com"
             path = "/post"
 

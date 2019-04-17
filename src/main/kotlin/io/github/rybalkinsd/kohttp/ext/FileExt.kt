@@ -10,8 +10,17 @@ import java.net.URL
  * @since 0.8.0
  * @author sergey
  */
-fun File.upload(url: URL): Response = io.github.rybalkinsd.kohttp.dsl.upload {
-    url(url)
+fun File.upload(destination: URL): Response = io.github.rybalkinsd.kohttp.dsl.upload {
+    url(destination)
+    file(this@upload)
+}
+
+/**
+ * @since 0.8.0
+ * @author sergey
+ */
+fun File.upload(destination: String): Response = io.github.rybalkinsd.kohttp.dsl.upload {
+    url(destination)
     file(this@upload)
 }
 
@@ -21,8 +30,8 @@ fun File.upload(url: URL): Response = io.github.rybalkinsd.kohttp.dsl.upload {
  * @since 0.8.0
  * @author sergey
  */
-fun File.asyncUpload(url: URL): Deferred<Response> = asyncHttpPost {
-    url(url)
+fun File.asyncUpload(destination: URL): Deferred<Response> = asyncHttpPost {
+    url(destination)
 
     multipartBody {
         +form("file", this@asyncUpload)
