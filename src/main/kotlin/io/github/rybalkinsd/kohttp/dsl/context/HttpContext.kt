@@ -75,15 +75,18 @@ open class HttpPostContext(method: Method = POST): HttpContext(method) {
         body = BodyContext(contentType).init()
     }
 
-    override fun makeBody(): RequestBody = body
+    fun multipartBody(contentType: String? = null, init: MultipartBodyContext.() -> Unit) {
+        body = MultipartBodyContext(contentType).apply { init() }.build()
+    }
 
+    override fun makeBody(): RequestBody = body
 }
 
 class HttpGetContext : HttpContext()
 class HttpHeadContext : HttpContext(method = HEAD)
-class HttpPutContext: HttpPostContext(method = PUT)
-class HttpPatchContext: HttpPostContext(method = PATCH)
-class HttpDeleteContext: HttpPostContext(method = DELETE)
+class HttpPutContext : HttpPostContext(method = PUT)
+class HttpPatchContext : HttpPostContext(method = PATCH)
+class HttpDeleteContext : HttpPostContext(method = DELETE)
 
 enum class Method {
     GET, POST, PUT, DELETE, PATCH, HEAD

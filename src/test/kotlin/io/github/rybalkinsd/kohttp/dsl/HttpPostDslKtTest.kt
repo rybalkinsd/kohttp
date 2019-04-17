@@ -60,6 +60,31 @@ class HttpPostDslKtTest {
     }
 
     @Test
+    fun `post request with form encoded # postman echo`() {
+        val expectedForm = mapOf(
+            "encoded" to " ",
+            "notEncoded" to "%20"
+        )
+
+        httpPost {
+            host = "postman-echo.com"
+            path = "/post"
+
+            body {
+                form {
+                    addEncoded("encoded", "%20")
+                    "notEncoded" to "%20"
+                }
+            }
+        }.use {
+            val parsedResponse = it.body()?.string().asJson()
+            println(parsedResponse)
+            assertResponses(expectedForm, parsedResponse["form"])
+            assertEquals(200, it.code())
+        }
+    }
+
+    @Test
     fun `post request with form string # postman echo`() {
         httpPost {
             host = "postman-echo.com"
