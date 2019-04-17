@@ -2,8 +2,10 @@ package io.github.rybalkinsd.kohttp.interceptors
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
+import io.github.rybalkinsd.kohttp.dsl.upload
 import io.github.rybalkinsd.kohttp.ext.httpGet
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class LoggingInterceptorTest {
@@ -24,13 +26,33 @@ class LoggingInterceptorTest {
     }
 
     @Test
-    fun `default logging happenes without exceptions`() {
+    fun `default logging happens without exceptions`() {
         val client = defaultHttpClient.fork {
             interceptors {
                 +LoggingInterceptor()
             }
         }
 
-        "https://postman-echo.com/get".httpGet(client)
+        val response =  "https://postman-echo.com/get".httpGet(client)
+
+        assertEquals(200, response.code())
     }
+
+    @Test
+    fun `default logging happens without exceptions when we have response body`() {
+        val client = defaultHttpClient.fork {
+            interceptors {
+                +LoggingInterceptor()
+            }
+        }
+
+        val fileUri = this.javaClass.getResource("/cat.gif").toURI()
+        val response = upload(client) {
+            url("http://postman-echo.com/post")
+            file(fileUri)
+        }
+
+        assertEquals(200, response.code())
+    }
+
 }
