@@ -12,7 +12,7 @@ import kotlin.test.assertTrue
 class HttpMultipartDslTest {
 
     @Test
-    fun `simple multipart request`() {
+    fun `multipart request with file`() {
         val client = defaultHttpClient.fork {
             interceptors {
                 +LoggingInterceptor(::println)

@@ -27,10 +27,6 @@ class MultipartBodyContext(type: String?) {
     fun form(name: String, filename: String, content: ByteArray): FormDataPart
         = FormDataPart(name, filename, RequestBody.create(null, content))
 
-    operator fun RequestBody.unaryPlus() {
-        builder.addPart(this)
-    }
-
     fun build(): MultipartBody = builder.build()
 }
 
