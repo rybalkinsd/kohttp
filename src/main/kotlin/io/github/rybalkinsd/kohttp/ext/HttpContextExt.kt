@@ -8,10 +8,13 @@ import java.net.URL
  * @author sergey
  */
 fun HttpContext.url(url: URL) {
-    url.host?.let { host = it }
-    if (url.port != -1) { port = url.port }
-    url.path?.let { path = it }
+    if (url.protocol != "http" && url.protocol != "https") throw IllegalArgumentException("unexpected scheme: $scheme")
     url.protocol?.let { scheme = it }
+
+    host = url.host ?: throw IllegalArgumentException("unexpected host: $host")
+
+    if (url.port != -1) { port = url.port }
+    path = url.path
 }
 
 /**

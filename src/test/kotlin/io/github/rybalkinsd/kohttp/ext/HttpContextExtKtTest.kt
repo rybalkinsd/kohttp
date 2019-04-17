@@ -3,6 +3,7 @@ package io.github.rybalkinsd.kohttp.ext
 import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
 import org.junit.Test
 import java.net.MalformedURLException
+import java.net.URL
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -39,4 +40,22 @@ class HttpContextExtKtTest {
         assertEquals("", context.path)
         assertNull(context.port)
     }
+
+    // expecting NPE for b/c of protocol
+    @Test(expected = NullPointerException::class)
+    fun `null protocol url`() {
+        HttpGetContext().apply { url(URL(null, null,0, "cat.gif")) }
+    }
+
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `not http or https protocol url`() {
+        HttpGetContext().apply { url(URL("file", null,0, "cat.gif")) }
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `null host url`() {
+        HttpGetContext().apply { url(URL("https", null,0, "cat.gif")) }
+    }
+
 }

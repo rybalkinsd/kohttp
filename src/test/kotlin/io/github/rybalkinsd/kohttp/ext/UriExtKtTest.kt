@@ -29,5 +29,4 @@ class UriExtKtTest {
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }
-
 }
