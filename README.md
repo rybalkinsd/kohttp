@@ -53,6 +53,17 @@ val response: Response = httpGet {
    }
 }
 ```
+or
+```kotlin
+val response: Response = httpGet {
+   url("https://google.com/search")
+   param {
+       "q" to "iphone"
+       "safe" to "off"
+   }
+}
+
+```
 
 ##### GET with header and cookies
 ```kotlin
@@ -162,8 +173,18 @@ httpPost {
 }
 ```
 
+##### POST with multipart body
+```kotlin
+val response = httpPost {
+    url("http://postman-echo.com/post")
 
-   
+    multipartBody {
+        +form("cat", File(this.javaClass.getResource("/cat.gif").toURI()))
+        +form("dog", File("/mydog.img"))
+    }
+}
+```
+
 #### HEAD
 
 You can use same syntax as in [GET](#get)
@@ -191,6 +212,32 @@ You can use same syntax as in [POST](#post)
 ```kotlin
 val response = httpDelete { }
 ```
+
+### Upload files
+
+#### Upload DSL
+You can upload file by `URI` or `File` 
+```kotlin
+val fileUri = this.javaClass.getResource("/cat.gif").toURI()
+
+val response = upload {
+    url("http://postman-echo.com/post")
+    file(fileUri)
+}
+```
+
+#### Upload `File` extensions
+```kotlin
+val file = File(this.javaClass.getResource("/cat.gif").toURI())
+val response = file.upload( string or url )
+``` 
+
+#### Upload `URI` extensions
+```kotlin
+val fileUri = this.javaClass.getResource("/cat.gif").toURI()
+val response = fileUri.upload( string or url )
+``` 
+   
 
 ### Async http calls
 
