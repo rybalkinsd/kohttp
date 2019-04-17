@@ -1,24 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
 plugins {
-    kotlin("jvm") version "1.3.11"
+    kotlin("jvm") version "1.3.20"
     jacoco
 
     id("org.jetbrains.dokka") version "0.9.16"
     `maven-publish`
     signing
 
-    /**
-     * Remove when
-     * https://youtrack.jetbrains.com/issue/KT-28355
-     * will be fixed
-     */
-    `java-library`
 }
 
 group = "io.github.rybalkinsd"
-version = "0.8.0-SNAPSHOT"
+version = "0.8.0"
 
 repositories {
     mavenCentral()

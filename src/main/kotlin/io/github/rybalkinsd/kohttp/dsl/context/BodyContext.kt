@@ -14,7 +14,7 @@ import java.io.File
  * @author sergey, alex
  */
 @HttpDslMarker
-class BodyContext(type: String?) {
+open class BodyContext(type: String?) {
     private val mediaType = type?.let { MediaType.get(it) }
 
     fun string(content: String): RequestBody = create(mediaType, content)
@@ -25,8 +25,7 @@ class BodyContext(type: String?) {
     fun form(content: String): RequestBody = create(FORM, content)
 
     fun json(init: Json.() -> Unit): RequestBody = create(JSON, Json().also(init).toString())
-    fun form(init: Form.() -> Unit): RequestBody = create(FORM, Form().also(init).toString())
-
+    fun form(init: Form.() -> Unit): RequestBody = Form().also(init).makeBody()
 }
 
 private val JSON = MediaType.get("application/json")

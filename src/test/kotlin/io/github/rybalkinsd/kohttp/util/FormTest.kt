@@ -1,7 +1,8 @@
 package io.github.rybalkinsd.kohttp.util
 
+import okhttp3.FormBody
 import org.junit.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
  * @author sergey
@@ -14,8 +15,23 @@ class FormTest {
             "a" to "x"
             "b" to 4
             "c" to 2.1
-        }
+            " " to " "
+            addEncoded("+", "+")
+        }.makeBody()
 
-        assertEquals("a=x&b=4&c=2.1", form.toString())
+        assertTrue("a" in form)
+        assertTrue("b" in form)
+        assertTrue("c" in form)
+
+        assertTrue("%20" in form)
+        assertTrue(" " !in form)
+
+        assertTrue("+" in form)
+        assertTrue("%2B" !in form)
+
     }
+
+    private operator fun FormBody.contains(k: String) =
+        (0 until size()).asSequence().any { encodedName(it) == k }
+
 }

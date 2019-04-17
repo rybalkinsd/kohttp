@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.client
 
+import io.github.rybalkinsd.kohttp.client.dsl.InterceptorsDsl
 import okhttp3.Authenticator
 import okhttp3.Cache
 import okhttp3.CertificatePinner
@@ -73,7 +74,7 @@ interface ClientBuilder : ForkClientBuilder {
 
 interface ForkClientBuilder {
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var interceptors: List<Interceptor>
+    var interceptors:  List<Interceptor>
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var networkInterceptors: List<Interceptor>
@@ -104,4 +105,8 @@ interface ForkClientBuilder {
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var pingInterval: Long
+
+    fun interceptors(block: InterceptorsDsl.() -> Unit) {
+        interceptors = InterceptorsDsl().apply(block).list()
+    }
 }

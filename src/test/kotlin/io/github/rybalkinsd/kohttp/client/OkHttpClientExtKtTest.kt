@@ -29,4 +29,5 @@ class OkHttpClientExtKtTest {
             assertTrue { it.code() == 200 }
         }
     }
+
 }
