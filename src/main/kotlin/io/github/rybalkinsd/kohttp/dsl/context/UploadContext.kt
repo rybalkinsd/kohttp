@@ -5,6 +5,11 @@ import java.io.File
 import java.net.URI
 import java.net.URL
 
+/**
+ *
+ * @since 0.8.0
+ * @author sergey
+ */
 class UploadContext(private val context: HttpPostContext = HttpPostContext()) : IHttpContext by context {
     fun url(url: URL) {
         context.url(url)

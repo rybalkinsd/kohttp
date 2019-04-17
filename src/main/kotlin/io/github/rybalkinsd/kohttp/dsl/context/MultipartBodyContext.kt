@@ -22,7 +22,7 @@ class MultipartBodyContext(type: String?) {
     }
 
     fun form(name: String, file: File): FormDataPart
-        = Triple(name, file.name, RequestBody.create(null, file))
+        = FormDataPart(name, file.name, RequestBody.create(null, file))
 
     fun form(name: String, filename: String, content: ByteArray): FormDataPart
         = FormDataPart(name, filename, RequestBody.create(null, content))
