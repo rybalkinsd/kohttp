@@ -2,6 +2,10 @@ package io.github.rybalkinsd.kohttp.ext
 
 import okhttp3.Headers
 
+/**
+ * @since 0.8.0
+ * @author sergey
+ */
 fun Headers.asSequence(): Sequence<Header> = Sequence {
     object : Iterator<Header> {
         private var cursor: Int = 0

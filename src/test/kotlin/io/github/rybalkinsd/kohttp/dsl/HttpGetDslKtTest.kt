@@ -103,21 +103,4 @@ class HttpGetDslKtTest {
             assertEquals(200, it.code())
         }
     }
-
-    @Test
-    fun `download file`() {
-        val r = httpGet {
-            host = "ipv4.download.thinkbroadband.com"
-            path = "/10MB.zip"
-        }
-
-        assertEquals(200 ,r.code())
-        assertEquals(10485760, r.body()?.contentLength())
-
-        val data = r.body()?.bytes()
-
-        println(data)
-
-
-    }
 }

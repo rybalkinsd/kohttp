@@ -1,10 +1,16 @@
 package io.github.rybalkinsd.kohttp.dsl.context
 
+import io.github.rybalkinsd.kohttp.ext.url
 import java.io.File
+import java.net.URI
 import java.net.URL
 
 class UploadContext(private val context: HttpPostContext = HttpPostContext()) : IHttpContext by context {
     fun url(url: URL) {
+        context.url(url)
+    }
+
+    fun url(url: String) {
         context.url(url)
     }
 
@@ -14,6 +20,9 @@ class UploadContext(private val context: HttpPostContext = HttpPostContext()) : 
         }
     }
 
+    fun file(content: URI) {
+        file(File(content))
+    }
     fun bytes(filename: String, content: ByteArray) {
         context.multipartBody {
             +form("file", filename, content)
