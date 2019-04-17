@@ -80,7 +80,6 @@ open class HttpPostContext(method: Method = POST): HttpContext(method) {
     }
 
     override fun makeBody(): RequestBody = body
-
 }
 
 class HttpGetContext : HttpContext()

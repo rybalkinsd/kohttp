@@ -1,29 +1,11 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.dsl.async.asyncHttpPost
-import kotlinx.coroutines.Deferred
-import okhttp3.Response
-import java.io.File
-import java.net.URL
+import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.dsl.context.UploadContext
+import okhttp3.Call
 
-fun File.upload(url: URL): Response = httpPost {
-    host = url.host
-    port = url.port
-    path = url.path
-    scheme = url.protocol
 
-    multipartBody {
-        +form("file", this@upload)
-    }
+fun upload(client: Call.Factory = defaultHttpClient, init: UploadContext.() -> Unit) {
+    client.newCall(UploadContext().apply(init).makeRequest()).execute()
 }
 
-fun File.asyncUpload(url: URL): Deferred<Response> = asyncHttpPost {
-    host = url.host
-    port = url.port
-    path = url.path
-    scheme = url.protocol
-
-    multipartBody {
-        +form("file", this@asyncUpload)
-    }
-}

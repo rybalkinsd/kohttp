@@ -17,12 +17,15 @@ class MultipartBodyContext(type: String?) {
         mediaType?.let { builder.setType(mediaType) }
     }
 
-    operator fun Triple<String, String?, RequestBody>.unaryPlus() {
+    operator fun FormDataPart.unaryPlus() {
         builder.addFormDataPart(first, second, third)
     }
 
-    fun form(name: String, file: File): Triple<String, String?, RequestBody>
+    fun form(name: String, file: File): FormDataPart
         = Triple(name, file.name, RequestBody.create(null, file))
+
+    fun form(name: String, filename: String, content: ByteArray): FormDataPart
+        = FormDataPart(name, filename, RequestBody.create(null, content))
 
     operator fun RequestBody.unaryPlus() {
         builder.addPart(this)
@@ -30,3 +33,5 @@ class MultipartBodyContext(type: String?) {
 
     fun build(): MultipartBody = builder.build()
 }
+
+typealias FormDataPart = Triple<String, String?, RequestBody>

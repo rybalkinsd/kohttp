@@ -112,5 +112,12 @@ class HttpGetDslKtTest {
         }
 
         assertEquals(200 ,r.code())
+        assertEquals(10485760, r.body()?.contentLength())
+
+        val data = r.body()?.bytes()
+
+        println(data)
+
+
     }
 }
