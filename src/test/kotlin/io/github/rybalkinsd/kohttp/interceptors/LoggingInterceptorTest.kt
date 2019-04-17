@@ -22,4 +22,15 @@ class LoggingInterceptorTest {
 
         assertTrue { logSize > 0 }
     }
+
+    @Test
+    fun `default logging happenes without exceptions`() {
+        val client = defaultHttpClient.fork {
+            interceptors {
+                +LoggingInterceptor()
+            }
+        }
+
+        "https://postman-echo.com/get".httpGet(client)
+    }
 }

@@ -9,7 +9,7 @@ import java.net.URL
  */
 fun HttpContext.url(url: URL) {
     if (url.protocol != "http" && url.protocol != "https") throw IllegalArgumentException("unexpected scheme: $scheme")
-    url.protocol?.let { scheme = it }
+    scheme = url.protocol
 
     host = url.host ?: throw IllegalArgumentException("unexpected host: $host")
 
