@@ -82,30 +82,30 @@ class ResponseExtKtTest {
         val arr = response?.readBytes()
         val actual = arr?.let { String(it) }
         val expected = """{
-  "args": {
-    "n": "2"
-  },
-  "headers": {
-    "x-forwarded-proto": "https",
-    "host": "postman-echo.com",
-    "accept-encoding": "gzip",
-    "user-agent": "okhttp/3.12.0",
-    "x-forwarded-port": "443"
-  },
-  "url": "https://postman-echo.com/stream/2"
-}{
-  "args": {
-    "n": "2"
-  },
-  "headers": {
-    "x-forwarded-proto": "https",
-    "host": "postman-echo.com",
-    "accept-encoding": "gzip",
-    "user-agent": "okhttp/3.12.0",
-    "x-forwarded-port": "443"
-  },
-  "url": "https://postman-echo.com/stream/2"
-}"""
+        |  "args": {
+        |    "n": "2"
+        |  },
+        |  "headers": {
+        |    "x-forwarded-proto": "https",
+        |    "host": "postman-echo.com",
+        |    "accept-encoding": "gzip",
+        |    "user-agent": "okhttp/3.12.0",
+        |    "x-forwarded-port": "443"
+        |  },
+        |  "url": "https://postman-echo.com/stream/2"
+        |}{
+        |  "args": {
+        |    "n": "2"
+        |  },
+        |  "headers": {
+        |    "x-forwarded-proto": "https",
+        |    "host": "postman-echo.com",
+        |    "accept-encoding": "gzip",
+        |    "user-agent": "okhttp/3.12.0",
+        |    "x-forwarded-port": "443"
+        |  },
+        |  "url": "https://postman-echo.com/stream/2"
+        |}""".trimMargin("|")
         assertEquals(actual, expected)
 
 
