@@ -82,10 +82,10 @@ data class Header(val name: String, val value: String)
 internal val stringMapper = ObjectMapper()
 fun String?.asJson(): JsonNode = if (isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)
 
-internal fun Response.asJson() = with(body()?.string()) {
+fun Response.asJson() = with(body()?.string()) {
     asJson()
 }
 
-internal fun Response.asString() = body()?.string()
+fun Response.asString() = body()?.string()
 
-internal fun Response.asStream() = body()?.byteStream()
+fun Response.asStream() = body()?.byteStream()
