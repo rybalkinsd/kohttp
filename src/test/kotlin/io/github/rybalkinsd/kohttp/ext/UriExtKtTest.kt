@@ -1,6 +1,5 @@
 package io.github.rybalkinsd.kohttp.ext
 
-import io.github.rybalkinsd.kohttp.util.asJson
 import org.junit.Test
 import java.net.URL
 import kotlin.test.assertEquals
