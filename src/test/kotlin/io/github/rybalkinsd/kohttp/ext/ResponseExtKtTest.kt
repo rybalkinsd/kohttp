@@ -55,7 +55,7 @@ class ResponseExtKtTest {
     @Test
     fun `gets response as string # ext`() {
         val response = "https://postman-echo.com/get".httpGet().asString()
-        val expected = "{\"args\":{},\"headers\":{\"x-forwarded-proto\":\"https\",\"host\":\"postman-echo.com\",\"accept-encoding\":\"gzip\",\"user-agent\":\"okhttp/3.12.0\",\"x-forwarded-port\":\"443\"},\"url\":\"https://postman-echo.com/get\"}"
+        val expected = """{"args":{},"headers":{"x-forwarded-proto":"https","host":"postman-echo.com","accept-encoding":"gzip","user-agent":"okhttp/3.12.0","x-forwarded-port":"443"},"url":"https://postman-echo.com/get"}"""
         assertEquals(expected, response)
     }
 
@@ -81,31 +81,31 @@ class ResponseExtKtTest {
         val response = "https://postman-echo.com/stream/2".httpGet().asStream()
         val arr = response?.readBytes()
         val actual = arr?.let { String(it) }
-        val expected = "{\n" +
-                "  \"args\": {\n" +
-                "    \"n\": \"2\"\n" +
-                "  },\n" +
-                "  \"headers\": {\n" +
-                "    \"x-forwarded-proto\": \"https\",\n" +
-                "    \"host\": \"postman-echo.com\",\n" +
-                "    \"accept-encoding\": \"gzip\",\n" +
-                "    \"user-agent\": \"okhttp/3.12.0\",\n" +
-                "    \"x-forwarded-port\": \"443\"\n" +
-                "  },\n" +
-                "  \"url\": \"https://postman-echo.com/stream/2\"\n" +
-                "}{\n" +
-                "  \"args\": {\n" +
-                "    \"n\": \"2\"\n" +
-                "  },\n" +
-                "  \"headers\": {\n" +
-                "    \"x-forwarded-proto\": \"https\",\n" +
-                "    \"host\": \"postman-echo.com\",\n" +
-                "    \"accept-encoding\": \"gzip\",\n" +
-                "    \"user-agent\": \"okhttp/3.12.0\",\n" +
-                "    \"x-forwarded-port\": \"443\"\n" +
-                "  },\n" +
-                "  \"url\": \"https://postman-echo.com/stream/2\"\n" +
-                "}"
+        val expected = """{
+  "args": {
+    "n": "2"
+  },
+  "headers": {
+    "x-forwarded-proto": "https",
+    "host": "postman-echo.com",
+    "accept-encoding": "gzip",
+    "user-agent": "okhttp/3.12.0",
+    "x-forwarded-port": "443"
+  },
+  "url": "https://postman-echo.com/stream/2"
+}{
+  "args": {
+    "n": "2"
+  },
+  "headers": {
+    "x-forwarded-proto": "https",
+    "host": "postman-echo.com",
+    "accept-encoding": "gzip",
+    "user-agent": "okhttp/3.12.0",
+    "x-forwarded-port": "443"
+  },
+  "url": "https://postman-echo.com/stream/2"
+}"""
         assertEquals(actual, expected)
 
 
