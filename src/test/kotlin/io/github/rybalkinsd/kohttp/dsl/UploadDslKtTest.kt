@@ -15,7 +15,7 @@ class UploadDslKtTest {
             file(fileUri)
         }
 
-        val parsedResponse = r.body()?.string().asJson()
+        val parsedResponse = r.asJson()
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }
@@ -37,6 +37,6 @@ class UploadDslKtTest {
         }
 
         assertEquals(200, uploadResponse.code())
-        assertEquals(5243053, uploadResponse.body()?.string().asJson()["headers"]["content-length"].asInt())
+        assertEquals(5243053, uploadResponse.asJson()["headers"]["content-length"].asInt())
     }
 }

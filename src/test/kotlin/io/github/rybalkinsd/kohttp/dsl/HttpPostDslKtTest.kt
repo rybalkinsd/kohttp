@@ -77,7 +77,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             println(parsedResponse)
             assertResponses(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
@@ -205,7 +205,7 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            with(it.body()?.string()) {
+            with(it) {
                 assertTrue { asJson()["headers"]["content-length"].asLong() > 100_000 }
                 assertEquals(200, it.code())
             }

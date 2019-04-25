@@ -61,7 +61,7 @@ class ResponseExtKtTest {
 
     @Test
     fun `gets response as json # ext`() {
-        val response = "https://postman-echo.com/get".httpGet().asJson()
+        val response = "https://postman-echo.com/get".httpGet().asJson().toString()
         val expected = json {
             "args" to json { }
             "headers" to json {
@@ -72,7 +72,7 @@ class ResponseExtKtTest {
                 "x-forwarded-port" to "443"
             }
             "url" to "https://postman-echo.com/get"
-        }.asJson()
+        }
         assertEquals(response, expected)
     }
 
