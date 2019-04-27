@@ -79,11 +79,9 @@ data class EagerResponse(
  */
 data class Header(val name: String, val value: String)
 
-internal lateinit var stringMapper: ObjectMapper
+internal val stringMapper: ObjectMapper by lazy { ObjectMapper() }
 
 fun Response.asJson(): JsonNode = with(body()?.string()) {
-    if (!::stringMapper.isInitialized) stringMapper = ObjectMapper()
-
     if (isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)
 }
 
