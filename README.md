@@ -292,8 +292,8 @@ val forkedClient = defaultHttpClient.fork {
     Parameters:
     1.  `log: (String) -> Unit = ::println`:  function as a parameter to consume the log message. It defaults to `println`. Logs Request body when present.
     
-    Sample Output: `[2019-01-28T04:17:42.885Z] GET 200 - 1743ms https://postman-echo.com/get`
-        
+    Usage: 
+    
     ```kotlin
     val client = defaultHttpClient.fork {
                     interceptors {
@@ -302,12 +302,16 @@ val forkedClient = defaultHttpClient.fork {
                 }
     ```
     
+    Sample Output: `[2019-01-28T04:17:42.885Z] GET 200 - 1743ms https://postman-echo.com/get`
+    
 *   Signing Interceptor:
     Enables signing of query parameters. Allowing creation of presigned URLs. 
     
     Parameters:
     1.  `parameterName: String`: The name of the parameter with signed key
     2.  `signer: HttpUrl.() -> String`: Function with `okhttp3.HttpUrl` as a receiver to sign the request parameter 
+    
+    Usage: 
     
     ```kotlin
     val client = defaultHttpClient.fork {
