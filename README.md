@@ -273,8 +273,7 @@ reponse.use {
 ```
 
 ### Interceptors
-Kohttp provides a DSL to add interceptors. Custom Interceptors can be defined by implementing the `okhttp3.Interceptors`.     
-Interceptors are added by forking the `defaultHttpClient`. 
+Kohttp provides a DSL to add interceptors. Custom Interceptors can be defined by implementing the `okhttp3.Interceptors`. Interceptors are added by forking the `defaultHttpClient`. 
 
 ```kotlin
 val forkedClient = defaultHttpClient.fork {
@@ -287,8 +286,7 @@ val forkedClient = defaultHttpClient.fork {
 
 #### Built-in Interceptors
 
-*   Logging Interceptor
-
+*   Logging Interceptor:
     A Request Logging Interceptor. 
     
     Parameters:
@@ -298,14 +296,13 @@ val forkedClient = defaultHttpClient.fork {
         
     ```kotlin
     val client = defaultHttpClient.fork {
-            interceptors {
-                +LoggingInterceptor()
-            }
-        }
+                    interceptors {
+                        +LoggingInterceptor()
+                    }
+                }
     ```
     
-*   Signing Interceptor
-    
+*   Signing Interceptor:
     Enables signing of query parameters. Allowing creation of presigned URLs. 
     
     Parameters:
@@ -322,7 +319,6 @@ val forkedClient = defaultHttpClient.fork {
                     }
                 }
     ```
-
 ## Customization
 
 ### `defaultClientPool` customization
