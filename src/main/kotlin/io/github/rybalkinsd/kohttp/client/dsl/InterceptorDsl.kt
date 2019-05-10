@@ -10,8 +10,8 @@ import okhttp3.Interceptor
  * <pre>
  *  val forkedClient = defaultHttpClient.fork {
  *  interceptors {
- *        +interceptors[1]
- *        +interceptors[1]
+ *        +interceptor1
+ *        +interceptor2
  *      }
  *   }
  *

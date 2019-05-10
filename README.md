@@ -1,9 +1,9 @@
-# Kotlin dsl for OkHttp
+# Kotlin dsl for http
 [![Build Status](https://travis-ci.org/rybalkinsd/kohttp.svg?branch=master)](https://travis-ci.org/rybalkinsd/kohttp)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.rybalkinsd/kohttp/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.rybalkinsd/kohttp)
 [![codecov](https://codecov.io/gh/rybalkinsd/kohttp/branch/master/graph/badge.svg)](https://codecov.io/gh/rybalkinsd/kohttp)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e072bcbe3dcf4fce87e44443f0721537)](https://www.codacy.com/app/yan.brikl/kohttp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rybalkinsd/kohttp&amp;utm_campaign=Badge_Grade)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.3.11-blue.svg)](https://kotlinlang.org) 
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.3.20-blue.svg)](https://kotlinlang.org) 
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin) [![Join the chat at https://gitter.im/kohttp/community](https://badges.gitter.im/kohttp/community.svg)](https://gitter.im/kohttp/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Kotlin DSL http client 
@@ -272,7 +272,57 @@ reponse.use {
 }
 ```
 
+### Interceptors
+Kohttp provides a DSL to add interceptors. Custom Interceptors can be defined by implementing the `okhttp3.Interceptors`. Interceptors are added by forking the `defaultHttpClient`. 
 
+```kotlin
+val forkedClient = defaultHttpClient.fork {
+    interceptors {
+          +interceptor1
+          +interceptor2
+    }
+ }
+```
+
+#### Built-in Interceptors
+
+*   Logging Interceptor:
+    A Request Logging Interceptor. 
+    
+    Parameters:
+    1.  `log: (String) -> Unit = ::println`:  function as a parameter to consume the log message. It defaults to `println`. Logs Request body when present.
+    
+    Usage: 
+    
+    ```kotlin
+    val client = defaultHttpClient.fork {
+                    interceptors {
+                        +LoggingInterceptor()
+                    }
+                }
+    ```
+    
+    Sample Output: `[2019-01-28T04:17:42.885Z] GET 200 - 1743ms https://postman-echo.com/get`
+    
+*   Signing Interceptor:
+    Enables signing of query parameters. Allowing creation of presigned URLs. 
+    
+    Parameters:
+    1.  `parameterName: String`: The name of the parameter with signed key
+    2.  `signer: HttpUrl.() -> String`: Function with `okhttp3.HttpUrl` as a receiver to sign the request parameter 
+    
+    Usage: 
+    
+    ```kotlin
+    val client = defaultHttpClient.fork {
+                    interceptors {
+                        +SigningInterceptor("key") {
+                            val query = (query() ?: "").toByteArray()
+                            urlEncoder.encodeToString(md5.digest(query))
+                        }
+                    }
+                }
+    ```
 ## Customization
 
 ### `defaultClientPool` customization
