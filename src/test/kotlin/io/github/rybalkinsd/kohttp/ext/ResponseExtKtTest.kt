@@ -13,6 +13,8 @@ import kotlin.test.assertTrue
  */
 class ResponseExtKtTest {
 
+    private val getUrl = "https://postman-echo.com/get"
+
     @Test
     fun `make plain response from http get response  # dsl`() {
         val plainResponse = httpGet {
@@ -54,14 +56,15 @@ class ResponseExtKtTest {
 
     @Test
     fun `gets response as string # ext`() {
-        val response = "https://postman-echo.com/get".httpGet().asString()
+
+        val response = getUrl.httpGet().asString()
         val expected = """{"args":{},"headers":{"x-forwarded-proto":"https","host":"postman-echo.com","accept-encoding":"gzip","user-agent":"okhttp/3.12.0","x-forwarded-port":"443"},"url":"https://postman-echo.com/get"}"""
         assertEquals(expected, response)
     }
 
     @Test
     fun `gets response as json # ext`() {
-        val response = "https://postman-echo.com/get".httpGet().asJson().toString()
+        val response = getUrl.httpGet().asJson().toString()
         val expected = json {
             "args" to json { }
             "headers" to json {
@@ -71,7 +74,7 @@ class ResponseExtKtTest {
                 "user-agent" to "okhttp/3.12.0"
                 "x-forwarded-port" to "443"
             }
-            "url" to "https://postman-echo.com/get"
+            "url" to getUrl
         }
         assertEquals(response, expected)
     }
