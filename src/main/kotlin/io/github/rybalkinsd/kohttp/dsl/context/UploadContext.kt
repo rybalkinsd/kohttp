@@ -11,6 +11,15 @@ import java.net.URL
  * @author sergey
  */
 class UploadContext(private val context: HttpPostContext = HttpPostContext()) : IHttpContext by context {
+
+    fun param(init: ParamContext.() -> Unit) {
+        context.param(init)
+    }
+
+    fun header(init: HeaderContext.() -> Unit) {
+        context.header(init)
+    }
+
     fun url(url: URL) {
         context.url(url)
     }
