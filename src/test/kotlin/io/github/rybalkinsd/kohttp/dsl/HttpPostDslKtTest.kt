@@ -1,7 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.assertResponses
-import io.github.rybalkinsd.kohttp.util.asJson
+import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -51,7 +51,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertResponses(expectedHeader, parsedResponse["headers"])
             assertResponses(expectedParams, parsedResponse["args"])
             assertResponses(expectedForm, parsedResponse["form"])
@@ -77,7 +77,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             println(parsedResponse)
             assertResponses(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
@@ -138,7 +138,7 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertResponses(expectedHeader, parsedResponse["headers"])
             assertResponses(expectedParams, parsedResponse["args"])
             assertResponses(expectedJson, parsedResponse["json"])
@@ -163,7 +163,7 @@ class HttpPostDslKtTest {
         )
 
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertResponses(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
@@ -186,7 +186,7 @@ class HttpPostDslKtTest {
         )
 
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertResponses(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
@@ -205,7 +205,7 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            with(it.body()?.string()) {
+            with(it) {
                 assertTrue { asJson()["headers"]["content-length"].asLong() > 100_000 }
                 assertEquals(200, it.code())
             }
@@ -224,7 +224,7 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertEquals(15, parsedResponse["headers"]["content-length"].asInt())
             assertEquals(200, it.code())
         }
@@ -257,7 +257,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             val headers = parsedResponse["headers"]
             assertResponses(expectedHeader, headers)
             assertResponses(expectedParams, parsedResponse["args"])

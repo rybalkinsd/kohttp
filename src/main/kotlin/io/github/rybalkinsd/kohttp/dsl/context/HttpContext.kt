@@ -40,6 +40,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         when (method) {
             POST, PUT, PATCH, DELETE -> method(method.name, makeBody())
             HEAD -> head()
+            GET -> get()
         }
 
         return build()
