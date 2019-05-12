@@ -76,7 +76,7 @@ class UploadDslKtTest {
             file(fileUri)
         }
 
-        val parsedResponse = r.body()?.string().asJson()
+        val parsedResponse = r.asJson()
 
         assertEquals(expectedArgs["query"], parsedResponse["args"]["query"].asText())
         assertEquals(expectedArgs["listOfParams"] as List<String>, parsedResponse["args"]["listOfParams"].asIterable().map { it.asText() })
