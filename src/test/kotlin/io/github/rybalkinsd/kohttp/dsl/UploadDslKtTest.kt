@@ -12,19 +12,6 @@ class UploadDslKtTest {
     fun `small file upload`() {
         val r = upload {
 
-            header {
-                "one" to 42
-                cookie {
-                    "aaa" to "bbb"
-                    "ccc" to 42
-                }
-            }
-
-            param {
-                "listOfParams" to listOf("val1", "val2", "val3")
-                "query" to "cat"
-            }
-
             url("http://postman-echo.com/post")
             val fileUri = this.javaClass.getResource("/cat.gif").toURI()
             file(fileUri)
