@@ -51,7 +51,7 @@ class UploadDslKtTest {
         )
 
         val expectedArgs = mapOf(
-                "listOfParams" to listOf("val1", "val2", "val3"),
+                "listOfParams" to """["val1","val2","val3"]""",
                 "query" to "cat"
         )
 
@@ -79,7 +79,7 @@ class UploadDslKtTest {
         val parsedResponse = r.asJson()
 
         assertEquals(expectedArgs["query"], parsedResponse["args"]["query"].asText())
-        assertEquals(expectedArgs["listOfParams"] as List<String>, parsedResponse["args"]["listOfParams"].asIterable().map { it.asText() })
+        assertEquals(expectedArgs["listOfParams"], parsedResponse["args"]["listOfParams"].toString())
         assertResponses(expectedHeaders, parsedResponse["headers"])
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
