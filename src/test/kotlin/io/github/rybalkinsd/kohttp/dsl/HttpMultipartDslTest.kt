@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.util.asJson
+import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -19,7 +19,7 @@ class HttpMultipartDslTest {
             }
         }
 
-        val parsedResponse = response.body()?.string().asJson()
+        val parsedResponse = response.asJson()
         assertEquals(1046213, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }
@@ -35,7 +35,7 @@ class HttpMultipartDslTest {
             }
         }
 
-        val parsedResponse = response.body()?.string().asJson()
+        val parsedResponse = response.asJson()
         assertEquals(1046213, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/alternative; boundary=") }
     }

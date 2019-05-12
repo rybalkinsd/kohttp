@@ -272,6 +272,19 @@ reponse.use {
 }
 ```
 
+Response body can be retrieved as a `JSON`, `String` or `InputStream` using provided extension functions on `Response`.
+
+```kotlin
+val response = httpGet { ... }
+
+val dataAsJson: JsonNode = response.asJson()
+
+val dataAsString: String? = response.asString()
+
+val dataAsStream: InputStream? = response.asStream()
+
+``` 
+
 ### Interceptors
 Kohttp provides a DSL to add interceptors. Custom Interceptors can be defined by implementing the `okhttp3.Interceptors`. Interceptors are added by forking the `defaultHttpClient`. 
 

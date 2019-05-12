@@ -1,8 +1,8 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.assertResponses
+import io.github.rybalkinsd.kohttp.ext.asJson
 import io.github.rybalkinsd.kohttp.ext.url
-import io.github.rybalkinsd.kohttp.util.asJson
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -24,7 +24,7 @@ class HttpGetDslKtTest {
                 "text" to "iphone"
                 "lr" to 213
             }
-        }.also { println(it) }
+        }
 
         response.use {
             assertEquals(200, it.code())
@@ -92,7 +92,7 @@ class HttpGetDslKtTest {
             }
         }
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertResponses(expectedHeader, parsedResponse["headers"])
             assertResponses(expectedParams, parsedResponse["args"])
             assertEquals(200, it.code())
@@ -139,7 +139,7 @@ class HttpGetDslKtTest {
             }
         }
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertResponses(expectedHeader, parsedResponse["headers"])
             assertResponses(expectedParams, parsedResponse["args"])
             assertEquals(200, it.code())
