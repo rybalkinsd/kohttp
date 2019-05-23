@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.20"
+    kotlin("jvm") version "1.3.31"
     jacoco
 
     id("org.jetbrains.dokka") version "0.9.16"
@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "io.github.rybalkinsd"
-version = "0.9.0-SNAPSHOT"
+version = "0.10.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -20,13 +20,13 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.0.1")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.2.1")
 
-    val jacksonVersion = "2.9.7"
+    val jacksonVersion = "2.9.9"
     implementation(jackson("core"), "jackson-databind", jacksonVersion)
     implementation(jackson("dataformat"), "jackson-dataformat-yaml", jacksonVersion)
     implementation(jackson("module"), "jackson-module-kotlin", jacksonVersion)
-    api("com.squareup.okhttp3", "okhttp", "3.12.0")
+    api("com.squareup.okhttp3", "okhttp", "3.14.2")
 
     testImplementation(kotlin("test-junit"))
     testImplementation("io.mockk:mockk:1.9.3")
