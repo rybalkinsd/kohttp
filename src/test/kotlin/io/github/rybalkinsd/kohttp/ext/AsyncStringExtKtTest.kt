@@ -15,7 +15,7 @@ class AsyncStringExtKtTest {
         measureTimeMillis {
             runBlocking {
                 val tasks = List(100) {
-                    "https://www.yandex.ru/search/?text=iphone".asyncHttpGet()
+                    "https://www.yandex.ru/search/?text=iphone".httpGetAsync()
                 }
                 tasks.map { r ->
                     r.await().also { it.close() }
