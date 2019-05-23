@@ -23,7 +23,7 @@ class AsyncHttpGetDslTest {
                 "lr" to "213"
         )
 
-        val response = asyncHttpGet {
+        val response = httpGetAsync {
             host = "postman-echo.com"
             path = "/get"
 
