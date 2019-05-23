@@ -2,7 +2,7 @@ package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers.Unconfined
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import okhttp3.Call
@@ -32,8 +32,10 @@ import okhttp3.Response
  * @since 0.1.0
  * @author sergey
  */
-fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
-    client.call(Request.Builder().url(this).build())
+fun String.httpGet(
+        client: Call.Factory = defaultHttpClient
+): Response =
+        client.call(Request.Builder().url(this).build())
 
 /**
  * Async version of http GET request with the provided `String` url.
@@ -49,7 +51,7 @@ fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
  * value that may be consumed only once and then closed. All other properties are immutable.
  *
  * Usage example:
- * val response = "http://host:port/path/?a=b".asyncHttpGet()
+ * val response = "http://host:port/path/?a=b".httpGetAsync()
  * ...
  * response.await().use {
  *    your code here
@@ -61,8 +63,10 @@ fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
  * @since 0.1.0
  * @author sergey
  */
-fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
-    GlobalScope.async(context = Unconfined) {
-        client.suspendCall(Request.Builder().url(this@asyncHttpGet).build())
-    }
+fun String.httpGetAsync(
+        client: Call.Factory = defaultHttpClient
+): Deferred<Response> =
+        GlobalScope.async(context = Dispatchers.IO) {
+            client.call(Request.Builder().url(this@httpGetAsync).build())
+        }
 
