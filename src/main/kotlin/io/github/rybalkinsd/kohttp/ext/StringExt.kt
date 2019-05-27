@@ -66,7 +66,7 @@ fun String.httpGet(
 fun String.httpGetAsync(
         client: Call.Factory = defaultHttpClient
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.IO) {
+        GlobalScope.async(context = Dispatchers.Unconfined) {
             client.call(Request.Builder().url(this@httpGetAsync).build())
         }
 
