@@ -38,6 +38,7 @@ class UploadDslKtTest {
         }
 
         assertEquals(200, uploadResponse.code())
+        assertEquals(1 * 1024 * 1024 + 173, uploadResponse.asJson()["headers"]["content-length"].asInt())
         assertEquals(1048749, uploadResponse.asJson()["headers"]["content-length"].asInt())
     }
 
