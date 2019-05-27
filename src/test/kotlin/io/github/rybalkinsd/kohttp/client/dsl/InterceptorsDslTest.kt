@@ -14,7 +14,7 @@ private class TestInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val requestTime = Instant.now().epochSecond
         val response = chain.proceed(chain.request())
-        return with(response.newBuilder())  {
+        return with(response.newBuilder()) {
             addHeader("x-response-time", "${Instant.now().epochSecond - requestTime}")
             build()
         }
@@ -27,12 +27,12 @@ class InterceptorsDslTest {
     fun `adds interceptor to client`() {
         val client = defaultHttpClient.fork {
             interceptors {
-                + TestInterceptor()
+                +TestInterceptor()
             }
         }
 
         "https://postman-echo.com/get".httpGet(client = client).use {
-            assertTrue { it.header("x-response-time") != null  }
+            assertTrue { it.header("x-response-time") != null }
         }
     }
 

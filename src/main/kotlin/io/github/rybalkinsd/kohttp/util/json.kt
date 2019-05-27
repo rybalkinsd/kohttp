@@ -20,7 +20,7 @@ class Json {
 
     infix fun String.to(obj: List<*>) {
         val v = obj.joinToString(separator = ",", prefix = "[", postfix = "]") {
-            when(it) {
+            when (it) {
                 is Number, is Json -> it.toString()
                 else -> """"$it""""
             }
@@ -41,7 +41,7 @@ class Json {
     }
 
     override fun toString(): String =
-        elements.joinToString(separator = ",", prefix = "{", postfix = "}") {
-            (k,v) -> """"$k":$v"""
-        }
+            elements.joinToString(separator = ",", prefix = "{", postfix = "}") { (k, v) ->
+                """"$k":$v"""
+            }
 }

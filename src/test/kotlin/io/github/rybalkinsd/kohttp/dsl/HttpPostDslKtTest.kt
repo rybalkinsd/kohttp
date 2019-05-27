@@ -62,8 +62,8 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with form encoded # postman echo`() {
         val expectedForm = mapOf(
-            "encoded" to " ",
-            "notEncoded" to "%20"
+                "encoded" to " ",
+                "notEncoded" to "%20"
         )
 
         httpPost {
@@ -109,7 +109,7 @@ class HttpPostDslKtTest {
                 "arg" to "iphone"
         )
 
-        val expectedJson= mapOf(
+        val expectedJson = mapOf(
                 "login" to "user",
                 "email" to "john.doe@gmail.com"
         )
@@ -157,9 +157,9 @@ class HttpPostDslKtTest {
             }
         }
 
-        val expectedJson= mapOf(
-            "login" to "user",
-            "email" to "john.doe@gmail.com"
+        val expectedJson = mapOf(
+                "login" to "user",
+                "email" to "john.doe@gmail.com"
         )
 
         response.use {
@@ -180,9 +180,9 @@ class HttpPostDslKtTest {
             }
         }
 
-        val expectedJson= mapOf(
-            "login" to "user",
-            "email" to "john.doe@gmail.com"
+        val expectedJson = mapOf(
+                "login" to "user",
+                "email" to "john.doe@gmail.com"
         )
 
         response.use {

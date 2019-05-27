@@ -13,7 +13,7 @@ class JsonKtTest {
         val json = json {
             "a" to "1"
         }
-        assertEquals( """{"a":"1"}""", json)
+        assertEquals("""{"a":"1"}""", json)
     }
 
     @Test
@@ -22,7 +22,7 @@ class JsonKtTest {
             "a" to "1"
             "b" to 2
         }
-        assertEquals( """{"a":"1","b":2}""", json)
+        assertEquals("""{"a":"1","b":2}""", json)
     }
 
     @Test

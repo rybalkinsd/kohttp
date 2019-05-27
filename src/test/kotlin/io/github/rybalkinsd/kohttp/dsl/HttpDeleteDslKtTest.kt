@@ -68,7 +68,7 @@ class HttpDeleteDslKtTest {
                 "arg" to "iphone"
         )
 
-        val expectedJson= mapOf(
+        val expectedJson = mapOf(
                 "login" to "user",
                 "email" to "john.doe@gmail.com"
         )

@@ -1,7 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
 import io.github.rybalkinsd.kohttp.dsl.context.UploadContext
 import io.github.rybalkinsd.kohttp.ext.suspendCall
 import kotlinx.coroutines.Deferred
@@ -20,10 +19,10 @@ import okhttp3.Response
  *
  *  <pre>
  *  val response: Deferred<Response> = uploadAsync {
-        url("http://postman-echo.com/post")
-        val fileUri = this.javaClass.getResource("/cat.gif").toURI()
-        file(fileUri)
-    }
+ *      url("http://postman-echo.com/post")
+ *      val fileUri = this.javaClass.getResource("/cat.gif").toURI()
+ *      file(fileUri)
+ *  }
  *  response.await().use { ... }
  *  </pre>
  *
