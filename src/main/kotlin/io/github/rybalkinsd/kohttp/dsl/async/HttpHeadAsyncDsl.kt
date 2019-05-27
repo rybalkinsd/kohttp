@@ -1,7 +1,8 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.dsl.context.HttpPostContext
+import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
+import io.github.rybalkinsd.kohttp.dsl.context.HttpHeadContext
 import io.github.rybalkinsd.kohttp.ext.suspendCall
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -10,16 +11,15 @@ import kotlinx.coroutines.async
 import okhttp3.Call
 import okhttp3.Response
 
-
 /**
- * Method provides an async DSL call of HTTP POST
+ * Method provides an asynchronous DSL call of HTTP HEAD
  *
- * @return a `Response` instance.
+ * @return a deferred `Response` instance.
  *
  * Usage example using the default `defaultHttpClient`:
  *
  *  <pre>
- *  val response: Response = httpPostAsync {
+ *  val response: Deferred<Response> = httpHeadAsync {
  *      host = "yourhost"
  *      scheme = "https"
  *      port = 8080
@@ -28,32 +28,29 @@ import okhttp3.Response
  *          "your param" to "value"
  *      }
  *      header { ... }
- *      body { ... }
  *  }
- *  response.await().use {
- *      your code here
- *  }
+ *  response.await().use { ... }
  *  </pre>
  *
  *  @param client allow to use your own implementation of HttpClient.
  * `defaultHttpClient` is used by default.
  *
  * <pre>
- *  val response: Response? = httpPostAsync(customHttpClient) {
+ *  val response: Deferred<Response> = httpHeadAsync(customHttpClient) {
  *      ...
  *  }
  * </pre>
  *
  * @see Response
- * @see HttpPostContext
+ * @see HttpHeadContext
  *
- * @since 0.2.0
- * @author sergey
+ * @since 0.10.0
+ * @author evgeny
  */
-fun httpPostAsync(
+fun httpHeadAsync(
         client: Call.Factory = defaultHttpClient,
-        init: HttpPostContext.() -> Unit
+        init: HttpHeadContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.IO) {
-            client.suspendCall(HttpPostContext().apply(init).makeRequest())
+        GlobalScope.async(context = Dispatchers.Unconfined) {
+            client.suspendCall(HttpHeadContext().apply(init).makeRequest())
         }
