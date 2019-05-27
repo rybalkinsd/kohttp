@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 /**
  * @author sergey
  */
-class AsyncStringExtKtTest {
+class StringAsyncExtTest {
 
     @Test
     fun `many async invokes of httpGet`() {
