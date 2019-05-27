@@ -5,5 +5,5 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 internal val stringMapper = ObjectMapper()
 
-fun String?.asJson() : JsonNode =
-    if(isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)
+fun String?.asJson(): JsonNode =
+        if (isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)

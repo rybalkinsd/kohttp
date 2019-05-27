@@ -1,15 +1,6 @@
 package io.github.rybalkinsd.kohttp.client
 
-import okhttp3.Authenticator
-import okhttp3.CertificatePinner
-import okhttp3.ConnectionPool
-import okhttp3.ConnectionSpec
-import okhttp3.CookieJar
-import okhttp3.Dispatcher
-import okhttp3.Dns
-import okhttp3.EventListener
-import okhttp3.OkHttpClient
-import okhttp3.Protocol
+import okhttp3.*
 import okhttp3.internal.tls.OkHostnameVerifier
 import org.junit.Test
 import sun.security.ssl.SSLSocketFactoryImpl
@@ -70,29 +61,29 @@ class ClientBuilderTest {
         }
 
         val client = OkHttpClient.Builder()
-            .dispatcher(defaultDispatcher)
-            .proxy(defaultProxy)
-            .protocols(defaultProtocols)
-            .connectionSpecs(defaultConnectionSpecs)
-            .eventListenerFactory(defaultFactory)
-            .proxySelector(defaultProxySelector)
-            .cookieJar(defaultCookieJar)
-            .socketFactory(defaultSocketFactory)
-            .sslSocketFactory(defaultSslSocketFactory)
-            .hostnameVerifier(defaultHostnameVerifier)
-            .certificatePinner(defaultCertificatePinner)
-            .proxyAuthenticator(defaultAuth)
-            .authenticator(defaultAuth)
-            .connectionPool(defaultConnectionPool)
-            .dns(defaultDns)
-            .followSslRedirects(true)
-            .followRedirects(true)
-            .retryOnConnectionFailure(true)
-            .connectTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
-            .readTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
-            .writeTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
-            .pingInterval(0, TimeUnit.MILLISECONDS)
-            .build()
+                .dispatcher(defaultDispatcher)
+                .proxy(defaultProxy)
+                .protocols(defaultProtocols)
+                .connectionSpecs(defaultConnectionSpecs)
+                .eventListenerFactory(defaultFactory)
+                .proxySelector(defaultProxySelector)
+                .cookieJar(defaultCookieJar)
+                .socketFactory(defaultSocketFactory)
+                .sslSocketFactory(defaultSslSocketFactory)
+                .hostnameVerifier(defaultHostnameVerifier)
+                .certificatePinner(defaultCertificatePinner)
+                .proxyAuthenticator(defaultAuth)
+                .authenticator(defaultAuth)
+                .connectionPool(defaultConnectionPool)
+                .dns(defaultDns)
+                .followSslRedirects(true)
+                .followRedirects(true)
+                .retryOnConnectionFailure(true)
+                .connectTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
+                .readTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
+                .writeTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
+                .pingInterval(0, TimeUnit.MILLISECONDS)
+                .build()
 
         with(client) {
             assertEquals(dispatcher(), dslClient.dispatcher())
@@ -124,13 +115,13 @@ class ClientBuilderTest {
     fun `client builder getters throw exceptions`() {
         val clientBuilder = ClientBuilderImpl()
         ClientBuilderImpl::class.declaredMemberProperties.filter { !it.isFinal }
-            .map {
-                try {
-                    it.call(clientBuilder)
-                    assertTrue(false, "${it.name} call is successful, but not expected to be")
-                } catch (ignored: InvocationTargetException) {
+                .map {
+                    try {
+                        it.call(clientBuilder)
+                        assertTrue(false, "${it.name} call is successful, but not expected to be")
+                    } catch (ignored: InvocationTargetException) {
+                    }
                 }
-            }
     }
 
 }

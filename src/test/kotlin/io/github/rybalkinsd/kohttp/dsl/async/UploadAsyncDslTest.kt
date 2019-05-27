@@ -1,7 +1,5 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
-import io.github.rybalkinsd.kohttp.dsl.httpGet
-import io.github.rybalkinsd.kohttp.dsl.upload
 import io.github.rybalkinsd.kohttp.util.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -13,7 +11,7 @@ class UploadAsyncDslTest {
 
     @Test
     fun `small file upload`() {
-        val response  = uploadAsync {
+        val response = uploadAsync {
             url("http://postman-echo.com/post")
             val fileUri = this.javaClass.getResource("/cat.gif").toURI()
             file(fileUri)

@@ -12,15 +12,15 @@ import kotlin.coroutines.suspendCoroutine
 internal fun Call.Factory.call(request: Request): Response = newCall(request).execute()
 
 internal suspend fun Call.Factory.suspendCall(request: Request): Response =
-    suspendCoroutine { cont ->
-        newCall(request).enqueue(object : Callback {
-            override fun onResponse(call: Call, response: Response) {
-                cont.resume(response)
-            }
+        suspendCoroutine { cont ->
+            newCall(request).enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    cont.resume(response)
+                }
 
-            override fun onFailure(call: Call, e: IOException) {
-                cont.resumeWithException(e)
-            }
-        })
-    }
+                override fun onFailure(call: Call, e: IOException) {
+                    cont.resumeWithException(e)
+                }
+            })
+        }
 

@@ -1,12 +1,9 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
-import io.github.rybalkinsd.kohttp.dsl.httpHead
-import io.github.rybalkinsd.kohttp.util.json
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 /**
  * @author sergey

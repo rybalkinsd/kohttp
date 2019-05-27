@@ -103,15 +103,15 @@ class HttpGetDslKtTest {
     fun `single sync http get invocation with url`() {
         val variable = 123L
         val expectedHeader = mapOf(
-            "one" to "42",
-            "two" to variable.toString(),
-            "three" to """{"a":$variable,"b":{"b1":"512"},"c":[1,2.0,3]}""",
-            "cookie" to "aaa=bbb; ccc=42"
+                "one" to "42",
+                "two" to variable.toString(),
+                "three" to """{"a":$variable,"b":{"b1":"512"},"c":[1,2.0,3]}""",
+                "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-            "text" to "iphone",
-            "lr" to "213"
+                "text" to "iphone",
+                "lr" to "213"
         )
         val response = httpGet {
             url("http://postman-echo.com/get")
@@ -157,7 +157,7 @@ class HttpGetDslKtTest {
         }
 
         val expectedParams = mapOf(
-            "c" to "exists"
+                "c" to "exists"
         )
 
         response.use {

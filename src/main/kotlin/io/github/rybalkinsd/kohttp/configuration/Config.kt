@@ -16,7 +16,7 @@ internal val config = Config::class.java.getResource("/kohttp.yaml")?.let {
 
 internal data class Config(val client: ClientConfig = ClientConfig())
 
-internal data class ClientConfig (
+internal data class ClientConfig(
         val connectTimeout: Long = TimeUnit.SECONDS.toMillis(10),
         val readTimeout: Long = TimeUnit.SECONDS.toMillis(10),
         val writeTimeout: Long = TimeUnit.SECONDS.toMillis(10),
@@ -27,7 +27,7 @@ internal data class ClientConfig (
         val dispatcher: DispatcherConfig = DispatcherConfig()
 )
 
-internal data class DispatcherConfig (
+internal data class DispatcherConfig(
         /**
          * Set the maximum number of requests to execute concurrently.
          *
@@ -44,8 +44,8 @@ internal data class DispatcherConfig (
 )
 
 internal data class ConnectionPoolConfig(
-    val maxIdleConnections: Int = 5,
-    val keepAliveDuration: Long = TimeUnit.MINUTES.toMillis(5)
+        val maxIdleConnections: Int = 5,
+        val keepAliveDuration: Long = TimeUnit.MINUTES.toMillis(5)
 )
 
 

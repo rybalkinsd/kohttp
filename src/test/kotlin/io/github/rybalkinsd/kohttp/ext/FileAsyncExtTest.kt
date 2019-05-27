@@ -4,7 +4,6 @@ import io.github.rybalkinsd.kohttp.util.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.io.File
-import java.net.URL
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

@@ -9,7 +9,7 @@ class UploadDslKtTest {
 
     @Test
     fun `small file upload`() {
-        val r  = upload {
+        val r = upload {
             url("http://postman-echo.com/post")
             val fileUri = this.javaClass.getResource("/cat.gif").toURI()
             file(fileUri)
@@ -27,7 +27,7 @@ class UploadDslKtTest {
             path = "/5MB.zip"
         }
 
-        assertEquals(200 ,downloadResponse.code())
+        assertEquals(200, downloadResponse.code())
         assertEquals(5242880, downloadResponse.body()?.contentLength())
 
         val uploadResponse = upload {
