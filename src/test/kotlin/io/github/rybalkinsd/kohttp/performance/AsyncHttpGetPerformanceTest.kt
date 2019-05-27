@@ -30,7 +30,7 @@ import kotlin.system.measureTimeMillis
  * Compare result with another alternatives
  * that also presented in this class
  *
- * Time in millis will be written in console
+ * Requests' statuses and time in millis will be written in console
  * @since 0.10.0
  * @author evgeny
  */
@@ -62,7 +62,7 @@ class AsyncHttpGetPerformanceTest {
     @Test
     fun `100 simple async requests with old Call-Factory-suspendCall extension`() {
         measureTimeMillis {
-            val rs = List(1000) {
+            val rs = List(100) {
                 oldAsyncHttpGet(client = pseudoDefault) {
                     url("https://postman-echo.com/delay/2")
                 }

@@ -7,7 +7,7 @@ import java.net.URL
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class FileExtKtTest {
+class FileExtTest {
 
     @Test
     fun `upload file using File and string destination`() {
