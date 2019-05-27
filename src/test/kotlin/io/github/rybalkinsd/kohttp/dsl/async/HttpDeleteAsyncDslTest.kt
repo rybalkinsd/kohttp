@@ -1,7 +1,5 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
-import io.github.rybalkinsd.kohttp.assertResponses
-import io.github.rybalkinsd.kohttp.util.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test

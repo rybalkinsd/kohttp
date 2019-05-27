@@ -14,10 +14,10 @@ import okhttp3.Response
  *
  *  <pre>
  *  val response: Response = upload {
-        url("http://postman-echo.com/post")
-        val fileUri = this.javaClass.getResource("/cat.gif").toURI()
-        file(fileUri)
-    }
+ *      url("http://postman-echo.com/post")
+ *      val fileUri = this.javaClass.getResource("/cat.gif").toURI()
+ *      file(fileUri)
+ *  }
  *  response.use { ... }
  *  </pre>
  *

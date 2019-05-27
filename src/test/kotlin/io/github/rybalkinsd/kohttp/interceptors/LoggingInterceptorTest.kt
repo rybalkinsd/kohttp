@@ -33,7 +33,7 @@ class LoggingInterceptorTest {
             }
         }
 
-        val response =  "https://postman-echo.com/get".httpGet(client)
+        val response = "https://postman-echo.com/get".httpGet(client)
 
         assertEquals(200, response.code())
     }

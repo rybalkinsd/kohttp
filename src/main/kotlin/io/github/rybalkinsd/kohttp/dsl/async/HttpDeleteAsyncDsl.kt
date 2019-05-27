@@ -2,7 +2,6 @@ package io.github.rybalkinsd.kohttp.dsl.async
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.dsl.context.HttpDeleteContext
-import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
 import io.github.rybalkinsd.kohttp.ext.suspendCall
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
