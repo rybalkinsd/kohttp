@@ -8,17 +8,19 @@ import io.github.rybalkinsd.kohttp.dsl.async.httpGetAsync
 import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
 import io.github.rybalkinsd.kohttp.dsl.httpGet
 import io.github.rybalkinsd.kohttp.ext.url
-import kotlinx.coroutines.*
+import io.github.rybalkinsd.kohttp.getSuccessfulResponsesAmount
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import okhttp3.*
 import org.junit.Test
 import java.io.IOException
-import java.util.concurrent.Executor
+import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import kotlin.reflect.full.declaredMembers
-import kotlin.reflect.jvm.isAccessible
 import kotlin.system.measureTimeMillis
 
 
@@ -34,24 +36,24 @@ import kotlin.system.measureTimeMillis
  * @since 0.10.0
  * @author evgeny
  */
-class AsyncHttpGetPerformanceTest {
+class KohttpAsyncHttpGetPerformanceTest {
+    private val requestsAmount = 10000
+    private val targetUrl = "https://postman-echo.com/get"
+
 
     /**
      * Running 100 simple requests tu measure current realisation
      */
     @Test
-    fun `100 simple async requests with Call-Factory-suspendCall extension`() {
+    fun `1000 simple async requests with Call-Factory-suspendCall extension`() {
         measureTimeMillis {
-            val rs = List(100) {
+            val responses = List(requestsAmount) {
                 httpGetAsync {
-                    url("https://postman-echo.com/delay/2")
+                    url(targetUrl)
                 }
             }
 
-            runBlocking {
-                val code = rs.awaitAll().map { it.code() }
-                println(code)
-            }
+            println(getSuccessfulResponsesAmount(responses))
         }.also { print(it) }
     }
 
@@ -62,16 +64,13 @@ class AsyncHttpGetPerformanceTest {
     @Test
     fun `100 simple async requests with old Call-Factory-suspendCall extension`() {
         measureTimeMillis {
-            val rs = List(100) {
+            val responses = List(requestsAmount) {
                 oldAsyncHttpGet(client = pseudoDefault) {
-                    url("https://postman-echo.com/delay/2")
+                    url(targetUrl)
                 }
             }
 
-            runBlocking {
-                val code = rs.awaitAll().map { it.code() }
-                println(code)
-            }
+            println(getSuccessfulResponsesAmount(responses))
         }.also { print(it) }
     }
 
@@ -83,18 +82,15 @@ class AsyncHttpGetPerformanceTest {
     @Test
     fun `100 simple async requests with kotlin coroutines Dispatcher-Default`() {
         measureTimeMillis {
-            val rs = List(100) {
+            val responses = List(requestsAmount) {
                 GlobalScope.async(context = Dispatchers.Default) {
                     httpGet {
-                        url("https://postman-echo.com/delay/2")
+                        url(targetUrl)
                     }
                 }
             }
 
-            runBlocking {
-                val code = rs.awaitAll().map { it.code() }
-                println(code)
-            }
+            println(getSuccessfulResponsesAmount(responses))
         }.also { print(it) }
     }
 
@@ -106,32 +102,16 @@ class AsyncHttpGetPerformanceTest {
     @Test
     fun `100 simple async requests with kotlin coroutines Dispatcher-IO`() {
         measureTimeMillis {
-            val rs = List(100) {
+            val responses = List(requestsAmount) {
                 GlobalScope.async(context = Dispatchers.IO) {
                     httpGet {
-                        url("https://postman-echo.com/delay/2")
+                        url(targetUrl)
                     }
                 }
             }
 
-            runBlocking {
-                val code = rs.awaitAll().map { it.code() }
-                println(code)
-            }
+            println(getSuccessfulResponsesAmount(responses))
         }.also { print(it) }
-    }
-
-    @Test
-    fun `Check dispatcher`() {
-        val cd = Dispatchers.IO is Executor
-        println(cd)
-        println(Dispatchers.IO::class.java.name)
-        println(Runtime.getRuntime().availableProcessors())
-        println(Dispatchers.IO::class.declaredMembers
-                .firstOrNull { it.name == "parallelism" }
-                ?.also { it.isAccessible = true }
-                ?.call(Dispatchers.IO)
-        )
     }
 
     companion object {
@@ -168,9 +148,9 @@ class AsyncHttpGetPerformanceTest {
             writeTimeout = it.writeTimeout
             followRedirects = it.followRedirects
             followSslRedirects = it.followSslRedirects
-            dispatcher = Dispatcher().also {
-                it.maxRequestsPerHost = 1000
-                it.maxRequests = 1000
+            dispatcher = Dispatcher(ForkJoinPool(256)).also {
+                it.maxRequestsPerHost = 256
+                it.maxRequests = 256
             }
         }
     }
