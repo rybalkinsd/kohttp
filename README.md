@@ -12,12 +12,12 @@ Kotlin DSL http client
 
 gradle kotlin DSL:
 ```kotlin
-compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.8.0")
+implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.8.0")
 ```
 
 gradle groovy DSL:
 ```groovy
-compile 'io.github.rybalkinsd:kohttp:0.8.0'
+implementation 'io.github.rybalkinsd:kohttp:0.8.0'
 ```
 
 maven:
