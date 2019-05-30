@@ -4,6 +4,7 @@ import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.httpGet
 import io.mockk.spyk
+import io.mockk.verify
 import okhttp3.OkHttpClient
 import org.junit.Rule
 import org.junit.Test
@@ -15,6 +16,8 @@ import org.mockserver.model.HttpRequest.request
 import org.mockserver.model.HttpResponse.response
 import org.mockserver.verify.VerificationTimes
 import java.net.SocketTimeoutException
+import java.security.MessageDigest
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -93,6 +96,29 @@ class RetryInterceptorTest {
         assert(retryInterceptor.performDelay(invocationTimeout) == invocationTimeout * 2)
         assert(retryInterceptor.performDelay(invocationTimeout * 2) == invocationTimeout * 4)
         assert(retryInterceptor.performDelay(invocationTimeout * 4) == invocationTimeout * 8)
+    }
+
+    @Test
+    fun `retry just next interceptors`() {
+        val urlEncoder = Base64.getUrlEncoder()
+        val md5 = MessageDigest.getInstance("md5")
+        val signingInterceptorSpy = spyk(SigningInterceptor("key") {
+            val query = (query() ?: "").toByteArray()
+            urlEncoder.encodeToString(md5.digest(query))
+        })
+        val loggingInterceptorSpy = spyk(LoggingInterceptor())
+
+        createExpectationForGetWithResponseCode(4, 503)
+        val client = defaultHttpClient.fork {
+            interceptors {
+                +signingInterceptorSpy
+                +RetryInterceptor()
+                +loggingInterceptorSpy
+            }
+        }
+        getCall(client)
+        verify(exactly = 1) { signingInterceptorSpy.intercept(any()) }
+        verify(exactly = 4) { loggingInterceptorSpy.intercept(any()) }
     }
 
     private fun getCall(client: OkHttpClient) {
