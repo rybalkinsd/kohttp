@@ -11,17 +11,22 @@ import java.net.SocketTimeoutException
  *
  * @param failureThreshold number of attempts to get response (default value is 3)
  * @param invocationTimeout timeout (millisecond) before retry
- * @param step step for exponential increase of invocation timeout
- * @param errorStatuses error codes that you need to handle
+ * @param ratio ratio for exponential increase of invocation timeout
+ * @param _errorStatuses error codes that you need to handle
  *
  * @since 0.9.0
  * @author UDarya
  * */
-class RetryInterceptor : Interceptor {
-    private var failureThreshold: Int = 3
-    private var invocationTimeout: Long = 0
-    private var step: Int = 1
+class RetryInterceptor(
+    private val failureThreshold: Int = 3,
+    private val invocationTimeout: Long = 0,
+    private val ratio: Int = 1,
+    _errorStatuses: List<Int> = emptyList()
+) : Interceptor {
     private var errorStatuses: List<Int> = listOf(503, 504)
+    init {
+        errorStatuses += _errorStatuses
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -51,8 +56,9 @@ class RetryInterceptor : Interceptor {
     internal fun performDelay(delay: Long): Long {
         try {
             Thread.sleep(delay)
-        } catch (ignored: InterruptedException) {}
-        return delay * step
+        } catch (ignored: InterruptedException) {
+        }
+        return delay * ratio
     }
 
     private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
@@ -62,30 +68,10 @@ class RetryInterceptor : Interceptor {
     }
 
     private fun retryBecauseErrorCode(response: Response, attemptsCount: Int): Boolean {
-        if (attemptsCount >= failureThreshold || response == null) return false
+        if (attemptsCount >= failureThreshold) return false
         return when (response.code()) {
             in errorStatuses -> true
             else -> false
         }
-    }
-
-    fun withCustomErrorStatuses(vararg customErrors: Int): RetryInterceptor {
-        errorStatuses += customErrors.asList()
-        return this
-    }
-
-    fun withFailureThreshold(_failureThreshold: Int): RetryInterceptor {
-        failureThreshold = _failureThreshold
-        return this
-    }
-
-    fun withInvocationTimeout(_invocationTimeout: Long): RetryInterceptor {
-        invocationTimeout = _invocationTimeout
-        return this
-    }
-
-    fun withStep(_step: Int): RetryInterceptor {
-        step = _step
-        return this
     }
 }
