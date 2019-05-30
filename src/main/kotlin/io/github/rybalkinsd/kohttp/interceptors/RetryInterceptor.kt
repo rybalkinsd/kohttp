@@ -6,7 +6,6 @@ import java.lang.Exception
 import java.net.SocketTimeoutException
 
 // todo idempotent checking?
-// todo what about another interceptors?
 /**
  * Retry Interceptor
  *
