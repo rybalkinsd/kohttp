@@ -10,15 +10,19 @@ import java.net.SocketTimeoutException
 /**
  * Retry Interceptor
  *
- * Retry request if you got an exception or an error code.
+ * Retry request if you get an exception or an error code.
  *
- * @param numOfAttempts number of attempts to get response (default value is 3)
- * @param delay delay before retry
- * @param step step for exponential increase of delay
+ * @param failureThreshold number of attempts to get response (default value is 3)
+ * @param invocationTimeout timeout (millisecond) before retry
+ * @param step step for exponential increase of invocation timeout
+ * @param errors error codes that you need to handle
+ *
+ * @since 0.9.0
+ * @author UDarya
  * */
 class RetryInterceptor(
-    private val numOfAttempts: Int = 3,
-    private val delay: Long = 1000,
+    private val failureThreshold: Int = 3,
+    private val invocationTimeout: Long = 0,
     private val step: Int = 1,
     private val errors: List<Int> = emptyList()
 ) :
@@ -26,30 +30,43 @@ class RetryInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         var attemptsCount = 0
+        var currentDelay = invocationTimeout
         while (true) {
             try {
+                if (shouldDelay(attemptsCount)) {
+                    currentDelay = performDelay(currentDelay)
+                }
                 val response = chain.proceed(request)
                 if (retryBecauseErrorCode(response, attemptsCount)) {
                     attemptsCount++
                     continue
                 }
                 return response
-            } catch (e: Exception) {
-                if (retryBecauseEception(e, attemptsCount)) {
+            } catch (ignored: Exception) {
+                if (retryBecauseException(ignored, attemptsCount)) {
                     attemptsCount++
                     continue
                 }
-                throw e
+                throw ignored
             }
         }
     }
 
-    internal fun retryBecauseEception(exception: Exception, attemptsCount: Int): Boolean {
-        return exception is SocketTimeoutException && attemptsCount < numOfAttempts
+    internal fun performDelay(delay: Long): Long {
+        try {
+            Thread.sleep(delay)
+        } catch (ignored: InterruptedException) {}
+        return delay * step
     }
 
-    internal fun retryBecauseErrorCode(response: Response, attemptsCount: Int): Boolean {
-        if (attemptsCount >= numOfAttempts || response == null) return false
+    private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
+
+    private fun retryBecauseException(exception: Exception, attemptsCount: Int): Boolean {
+        return exception is SocketTimeoutException && attemptsCount < failureThreshold
+    }
+
+    private fun retryBecauseErrorCode(response: Response, attemptsCount: Int): Boolean {
+        if (attemptsCount >= failureThreshold || response == null) return false
         return when (response.code()) {
             in defaultResponseCodeList -> true
             in errors -> true
