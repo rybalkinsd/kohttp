@@ -51,7 +51,7 @@ class RetryInterceptorTest {
         val retryInterceptor = spyk(RetryInterceptor(failureThreshold = numOfRetry))
         try {
             getCall(getHttpClientWithConnectTimeoutAndInterceptors(retryInterceptor, 1))
-        } catch (e: SocketTimeoutException) {
+        } catch (ignored: SocketTimeoutException) {
 
         }
 
