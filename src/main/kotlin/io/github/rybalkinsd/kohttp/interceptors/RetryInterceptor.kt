@@ -5,7 +5,6 @@ import okhttp3.Response
 import java.lang.Exception
 import java.net.SocketTimeoutException
 
-// todo idempotent checking?
 /**
  * Retry Interceptor
  *
@@ -24,8 +23,7 @@ class RetryInterceptor(
     private val invocationTimeout: Long = 0,
     private val step: Int = 1,
     private val errors: List<Int> = emptyList()
-) :
-    Interceptor {
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         var attemptsCount = 0
@@ -41,12 +39,12 @@ class RetryInterceptor(
                     continue
                 }
                 return response
-            } catch (ignored: Exception) {
-                if (retryBecauseException(ignored, attemptsCount)) {
+            } catch (e: Exception) {
+                if (retryBecauseException(e, attemptsCount)) {
                     attemptsCount++
                     continue
                 }
-                throw ignored
+                throw e
             }
         }
     }
