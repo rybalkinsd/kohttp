@@ -48,7 +48,7 @@ class RetryInterceptorTest {
     fun `retry 5 times if timeout exception`() {
         val numOfRetry = 5
         createExpectationForGetWithResponseCode(numOfRetry + 1, 200, 10)
-        val retryInterceptor = spyk(RetryInterceptor().withFailureThreshold(numOfRetry))
+        val retryInterceptor = spyk(RetryInterceptor(failureThreshold = numOfRetry))
         try {
             getCall(getHttpClientWithConnectTimeoutAndInterceptors(retryInterceptor, 1))
         } catch (ignored: SocketTimeoutException) {
@@ -62,7 +62,7 @@ class RetryInterceptorTest {
     fun `retry if gateway timeout`() {
         val numOfRetry = 2
         createExpectationForGetWithResponseCode(numOfRetry, 504)
-        val retryInterceptor = spyk(RetryInterceptor().withFailureThreshold(numOfRetry))
+        val retryInterceptor = spyk(RetryInterceptor(failureThreshold = numOfRetry))
         getCall(getHttpClientWithConnectTimeoutAndInterceptors(retryInterceptor))
 
         verifyGetRequest(numOfRetry + 1)
@@ -72,7 +72,7 @@ class RetryInterceptorTest {
     fun `retry if service unavailable`() {
         val numOfRetry = 2
         createExpectationForGetWithResponseCode(numOfRetry, 503)
-        val retryInterceptor = spyk(RetryInterceptor().withFailureThreshold(numOfRetry))
+        val retryInterceptor = spyk(RetryInterceptor(failureThreshold = numOfRetry))
         getCall(getHttpClientWithConnectTimeoutAndInterceptors(retryInterceptor))
 
         verifyGetRequest(numOfRetry + 1)
@@ -91,7 +91,7 @@ class RetryInterceptorTest {
 
     @Test
     fun `delay increase with step`() {
-        val retryInterceptor = RetryInterceptor().withStep(2)
+        val retryInterceptor = RetryInterceptor(ratio = 2)
         var invocationTimeout: Long = 1000
         assert(retryInterceptor.performDelay(invocationTimeout) == invocationTimeout * 2)
         assert(retryInterceptor.performDelay(invocationTimeout * 2) == invocationTimeout * 4)
@@ -125,7 +125,7 @@ class RetryInterceptorTest {
     fun `custom errors processing`() {
         val numOfRetry = 2
         createExpectationForGetWithResponseCode(numOfRetry, 408)
-        val retryInterceptor = spyk(RetryInterceptor().withCustomErrorStatuses(408))
+        val retryInterceptor = spyk(RetryInterceptor(_errorStatuses = listOf(408)))
         val client = getHttpClientWithConnectTimeoutAndInterceptors(retryInterceptor)
         getCall(client)
 
