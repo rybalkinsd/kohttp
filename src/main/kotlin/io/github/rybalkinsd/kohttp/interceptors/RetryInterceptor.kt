@@ -2,7 +2,6 @@ package io.github.rybalkinsd.kohttp.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.lang.Exception
 import java.net.SocketTimeoutException
 
 /**
@@ -13,17 +12,17 @@ import java.net.SocketTimeoutException
  * @param failureThreshold number of attempts to get response (default value is 3)
  * @param invocationTimeout timeout (millisecond) before retry
  * @param step step for exponential increase of invocation timeout
- * @param errors error codes that you need to handle
+ * @param errorStatuses error codes that you need to handle
  *
  * @since 0.9.0
  * @author UDarya
  * */
-class RetryInterceptor(
-    private val failureThreshold: Int = 3,
-    private val invocationTimeout: Long = 0,
-    private val step: Int = 1,
-    private val errors: List<Int> = emptyList()
-) : Interceptor {
+class RetryInterceptor : Interceptor {
+    private var failureThreshold: Int = 3
+    private var invocationTimeout: Long = 0
+    private var step: Int = 1
+    private var errorStatuses: List<Int> = listOf(503, 504)
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         var attemptsCount = 0
@@ -65,14 +64,28 @@ class RetryInterceptor(
     private fun retryBecauseErrorCode(response: Response, attemptsCount: Int): Boolean {
         if (attemptsCount >= failureThreshold || response == null) return false
         return when (response.code()) {
-            in defaultResponseCodeList -> true
-            in errors -> true
+            in errorStatuses -> true
             else -> false
         }
     }
 
-    private companion object {
-        val defaultResponseCodeList = listOf(503, 504)
+    fun withCustomErrorStatuses(vararg customErrors: Int): RetryInterceptor {
+        errorStatuses += customErrors.asList()
+        return this
     }
 
+    fun withFailureThreshold(_failureThreshold: Int): RetryInterceptor {
+        failureThreshold = _failureThreshold
+        return this
+    }
+
+    fun withInvocationTimeout(_invocationTimeout: Long): RetryInterceptor {
+        invocationTimeout = _invocationTimeout
+        return this
+    }
+
+    fun withStep(_step: Int): RetryInterceptor {
+        step = _step
+        return this
+    }
 }
