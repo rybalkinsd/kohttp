@@ -25,12 +25,12 @@ class UploadDslKtTest {
     @Test
     fun `download file then upload`() {
         val downloadResponse = httpGet {
-            host = "ipv4.download.thinkbroadband.com"
-            path = "/5MB.zip"
+            host = "speedtest.ftp.otenet.gr"
+            path = "/files/test1Mb.db"
         }
 
         assertEquals(200, downloadResponse.code())
-        assertEquals(5242880, downloadResponse.body()?.contentLength())
+        assertEquals(1 * 1024 * 1024, downloadResponse.body()?.contentLength())
 
         val uploadResponse = upload {
             url("http://postman-echo.com/post")
@@ -39,7 +39,7 @@ class UploadDslKtTest {
         }
 
         assertEquals(200, uploadResponse.code())
-        assertEquals(5243053, uploadResponse.asJson()["headers"]["content-length"].asInt())
+        assertEquals(1048749, uploadResponse.asJson()["headers"]["content-length"].asInt())
     }
 
     @Test

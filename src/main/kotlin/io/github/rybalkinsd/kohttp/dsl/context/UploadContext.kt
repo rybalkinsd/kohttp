@@ -12,24 +12,6 @@ import java.net.URL
  */
 class UploadContext(private val context: HttpPostContext = HttpPostContext()) : IHttpContext by context {
     /**
-     * Sets query parameters for File Upload.
-     * @param init Init body to define parameters
-     * @return Unit.
-     */
-    fun param(init: ParamContext.() -> Unit) {
-        context.param(init)
-    }
-
-    /**
-     * Sets Headers for File Upload.
-     * @param init Init body to define headers
-     * @return Unit.
-     */
-    fun header(init: HeaderContext.() -> Unit) {
-        context.header(init)
-    }
-
-    /**
      * Sets URL for File Upload.
      * @param url: `java.net.URL` destination for upload
      * @return Unit.

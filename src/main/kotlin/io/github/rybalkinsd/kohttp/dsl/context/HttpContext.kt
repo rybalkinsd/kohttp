@@ -25,11 +25,11 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
     var port: Int? = null
     var path: String? = null
 
-    fun param(init: ParamContext.() -> Unit) {
+    override fun param(init: ParamContext.() -> Unit) {
         paramContext.init()
     }
 
-    fun header(init: HeaderContext.() -> Unit) {
+    override fun header(init: HeaderContext.() -> Unit) {
         headerContext.init()
     }
 
@@ -95,6 +95,8 @@ enum class Method {
 
 
 internal interface IHttpContext {
+    fun param(init: ParamContext.() -> Unit)
+    fun header(init: HeaderContext.() -> Unit)
     fun makeRequest(): Request
 }
 
