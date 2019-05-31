@@ -11,24 +11,68 @@ import java.net.URL
  * @author sergey
  */
 class UploadContext(private val context: HttpPostContext = HttpPostContext()) : IHttpContext by context {
+    /**
+     * Sets query parameters for File Upload.
+     * @param init Init body to define parameters
+     * @return Unit.
+     */
+    fun param(init: ParamContext.() -> Unit) {
+        context.param(init)
+    }
+
+    /**
+     * Sets Headers for File Upload.
+     * @param init Init body to define headers
+     * @return Unit.
+     */
+    fun header(init: HeaderContext.() -> Unit) {
+        context.header(init)
+    }
+
+    /**
+     * Sets URL for File Upload.
+     * @param url: `java.net.URL` destination for upload
+     * @return Unit.
+     */
     fun url(url: URL) {
         context.url(url)
     }
 
+    /**
+     * Sets URL for File Upload.
+     * @param url: `String` destination for upload
+     * @return Unit.
+     */
     fun url(url: String) {
         context.url(url)
     }
 
+    /**
+     * Sets File to Upload.
+     * @param content: `java.io.File` file to upload
+     * @return Unit.
+     */
     fun file(content: File) {
         context.multipartBody {
             +form("file", content)
         }
     }
 
+    /**
+     * Sets File to Upload.
+     * @param content: `java.net.URI` for file to upload
+     * @return Unit.
+     */
     fun file(content: URI) {
         file(File(content))
     }
 
+    /**
+     * Sets File to Upload.
+     * @param filename: `String`
+     * @param content: `ByteArray` file contents
+     * @return Unit.
+     */
     fun bytes(filename: String, content: ByteArray) {
         context.multipartBody {
             +form("file", filename, content)

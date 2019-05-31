@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
+import io.github.rybalkinsd.kohttp.dsl.context.ParamContext
 import java.net.URL
 
 /**
@@ -26,5 +27,5 @@ fun HttpContext.url(url: URL) {
  * @author sergey
  */
 fun HttpContext.url(url: String) {
-    url(java.net.URL(url))
+    url(URL(url))
 }

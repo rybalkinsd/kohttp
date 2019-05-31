@@ -26,7 +26,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
     var path: String? = null
 
     fun param(init: ParamContext.() -> Unit) {
-         paramContext.init()
+        paramContext.init()
     }
 
     fun header(init: HeaderContext.() -> Unit) {
@@ -69,7 +69,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
 
 }
 
-open class HttpPostContext(method: Method = POST): HttpContext(method) {
+open class HttpPostContext(method: Method = POST) : HttpContext(method) {
     private var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
     fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
