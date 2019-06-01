@@ -15,18 +15,12 @@ version = "0.10.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    maven {
-        url = uri("http://repo.spring.io/libs-release/")
-    }
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.2.1")
-    // https://mvnrepository.com/artifact/khttp/khttp
-    implementation("khttp:khttp:1.0.0")
-
 
     val jacksonVersion = "2.9.9"
     implementation(jackson("core"), "jackson-databind", jacksonVersion)
