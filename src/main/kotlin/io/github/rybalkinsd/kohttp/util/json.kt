@@ -41,7 +41,7 @@ class Json {
     }
 
     override fun toString(): String =
-            elements.joinToString(separator = ",", prefix = "{", postfix = "}") { (k, v) ->
-                """"$k":$v"""
-            }
+        elements.joinToString(separator = ",", prefix = "{", postfix = "}") { (k, v) ->
+            """"$k":$v"""
+        }
 }

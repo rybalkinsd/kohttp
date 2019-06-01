@@ -9,6 +9,7 @@ import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
 import io.github.rybalkinsd.kohttp.dsl.httpGet
 import io.github.rybalkinsd.kohttp.ext.url
 import io.github.rybalkinsd.kohttp.getSuccessfulResponsesAmount
+import io.github.rybalkinsd.kohttp.pool.CoroutineExecutorService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -39,6 +40,7 @@ import kotlin.system.measureTimeMillis
 class KohttpAsyncHttpGetPerformanceTest {
     private val requestsAmount = 10000
     private val targetUrl = "https://postman-echo.com/get"
+    private val parallelizm = 256
 
 
     /**
@@ -62,7 +64,7 @@ class KohttpAsyncHttpGetPerformanceTest {
      * Running 100 simple requests tu measure old realisation
      */
     @Test
-    fun `100 simple async requests with old Call-Factory-suspendCall extension`() {
+    fun `10000 simple async requests with old Call-Factory-suspendCall extension`() {
         measureTimeMillis {
             val responses = List(requestsAmount) {
                 oldAsyncHttpGet(client = pseudoDefault) {
@@ -80,7 +82,7 @@ class KohttpAsyncHttpGetPerformanceTest {
      * async with Default dispatcher
      */
     @Test
-    fun `100 simple async requests with kotlin coroutines Dispatcher-Default`() {
+    fun `10000 simple async requests with kotlin coroutines Dispatcher-Default`() {
         measureTimeMillis {
             val responses = List(requestsAmount) {
                 GlobalScope.async(context = Dispatchers.Default) {
@@ -100,10 +102,33 @@ class KohttpAsyncHttpGetPerformanceTest {
      * async with IO dispatcher
      */
     @Test
-    fun `100 simple async requests with kotlin coroutines Dispatcher-IO`() {
+    fun `10000 simple async requests with kotlin coroutines Dispatcher-IO`() {
         measureTimeMillis {
             val responses = List(requestsAmount) {
                 GlobalScope.async(context = Dispatchers.IO) {
+                    httpGet {
+                        url(targetUrl)
+                    }
+                }
+            }
+
+            println(getSuccessfulResponsesAmount(responses))
+        }.also { print(it) }
+    }
+
+
+    /**
+     * Running 100 simple requests tu measure realisation with kotlin
+     * async with IO dispatcher
+     */
+    @Test
+    fun `10000 simple async requests with custom coroutines Dispatcher`() {
+        val pool = ForkJoinPool(parallelizm)
+        val context = CoroutineExecutorService(pool)
+
+        measureTimeMillis {
+            val responses = List(requestsAmount) {
+                GlobalScope.async(context = context) {
                     httpGet {
                         url(targetUrl)
                     }
@@ -148,7 +173,7 @@ class KohttpAsyncHttpGetPerformanceTest {
             writeTimeout = it.writeTimeout
             followRedirects = it.followRedirects
             followSslRedirects = it.followSslRedirects
-            dispatcher = Dispatcher(ForkJoinPool(256)).also {
+            dispatcher = Dispatcher(ForkJoinPool(parallelizm)).also {
                 it.maxRequestsPerHost = 256
                 it.maxRequests = 256
             }

@@ -8,8 +8,8 @@ import java.util.concurrent.ForkJoinPool
 import kotlin.coroutines.CoroutineContext
 
 /**
- * @Author: evgeny.vorobyev
- * @Since: 0.10.0
+ * @since 0.10.0
+ * @author evgeny
  */
 @Experimental
 class CoroutineExecutorService(

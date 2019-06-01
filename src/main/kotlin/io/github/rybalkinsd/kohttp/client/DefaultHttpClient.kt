@@ -44,10 +44,10 @@ val defaultHttpClient: OkHttpClient = config.client.let {
 }
 
 private fun DispatcherConfig.create() =
-        Dispatcher().apply {
-            this@apply.maxRequests = this@create.maxRequests
-            this@apply.maxRequestsPerHost = this@create.maxRequestsPerHost
-        }
+    Dispatcher().apply {
+        this.maxRequests = this@create.maxRequests
+        this.maxRequestsPerHost = this@create.maxRequestsPerHost
+    }
 
 private fun ConnectionPoolConfig.create() =
-        ConnectionPool(maxIdleConnections, keepAliveDuration, TimeUnit.MILLISECONDS)
+    ConnectionPool(maxIdleConnections, keepAliveDuration, TimeUnit.MILLISECONDS)
