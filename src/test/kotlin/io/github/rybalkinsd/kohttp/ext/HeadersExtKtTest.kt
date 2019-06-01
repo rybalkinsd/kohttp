@@ -16,16 +16,16 @@ class HeadersExtKtTest {
     @Test
     fun `filter and sum`() {
         val sum = headers.asSequence().filter { it.name.contains('o') }
-                .sumBy { it.value.toInt() }
+            .sumBy { it.value.toInt() }
         assertEquals(3, sum)
     }
 
     companion object {
         val headers = Headers.Builder()
-                .add("zero", "0")
-                .add("one", "1")
-                .add("two", "2")
-                .add("three", "3")
-                .build()
+            .add("zero", "0")
+            .add("one", "1")
+            .add("two", "2")
+            .add("three", "3")
+            .build()
     }
 }

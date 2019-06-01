@@ -43,9 +43,9 @@ import okhttp3.Response
  * @author sergey
  */
 fun httpGetAsync(
-        client: Call.Factory = defaultHttpClient,
-        init: HttpGetContext.() -> Unit
+    client: Call.Factory = defaultHttpClient,
+    init: HttpGetContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(HttpGetContext().apply(init).makeRequest())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(HttpGetContext().apply(init).makeRequest())
+    }
