@@ -18,20 +18,20 @@ fun assertResponses(expected: Map<String, String>, actual: JsonNode) {
 }
 
 fun getSuccessfulResponsesAmount(
-        results: List<Deferred<Response>>
+    results: List<Deferred<Response>>
 ): Int = runBlocking {
     results.map { getCode(it) }
-            .filter { it == 200 }
-            .size
+        .filter { it == 200 }
+        .size
 }
 
 suspend fun getCode(
-        result: Deferred<Response>
+    result: Deferred<Response>
 ): Int =
-        try {
-            result.await().use {
-                it.code()
-            }
-        } catch (_: Throwable) {
-            -1
+    try {
+        result.await().use {
+            it.code()
         }
+    } catch (_: Throwable) {
+        -1
+    }

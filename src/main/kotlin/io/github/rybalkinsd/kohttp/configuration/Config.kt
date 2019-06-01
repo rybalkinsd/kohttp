@@ -27,6 +27,12 @@ internal data class ClientConfig(
         val dispatcher: DispatcherConfig = DispatcherConfig()
 )
 
+/**
+ * okhttp {@link Dispatcher} configuration
+ *
+ * @since 0.10.0
+ * @author evgeny
+ */
 internal data class DispatcherConfig(
         /**
          * Set the maximum number of requests to execute concurrently.
