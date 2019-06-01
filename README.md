@@ -216,11 +216,16 @@ val response = httpDelete { }
 ### Upload files
 
 #### Upload DSL
-You can upload file by `URI` or `File` 
+You can upload file by `URI` or `File` . Upload DSL can include `headers` and `params`.
 ```kotlin
 val fileUri = this.javaClass.getResource("/cat.gif").toURI()
 
 val response = upload {
+    headers {
+        ...
+        cookies {...}
+    }
+    params {...}
     url("http://postman-echo.com/post")
     file(fileUri)
 }
