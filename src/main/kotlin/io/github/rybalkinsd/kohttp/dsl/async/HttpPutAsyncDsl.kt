@@ -43,9 +43,9 @@ import okhttp3.Response
  * @author evgeny
  */
 fun httpPutAsync(
-        client: Call.Factory = defaultHttpClient,
-        init: HttpPutContext.() -> Unit
+    client: Call.Factory = defaultHttpClient,
+    init: HttpPutContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(HttpPutContext().apply(init).makeRequest())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(HttpPutContext().apply(init).makeRequest())
+    }

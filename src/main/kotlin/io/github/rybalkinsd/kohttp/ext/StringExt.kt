@@ -33,9 +33,9 @@ import okhttp3.Response
  * @author sergey
  */
 fun String.httpGet(
-        client: Call.Factory = defaultHttpClient
+    client: Call.Factory = defaultHttpClient
 ): Response =
-        client.call(Request.Builder().url(this).build())
+    client.call(Request.Builder().url(this).build())
 
 /**
  * Async version of http GET request with the provided `String` url.
@@ -64,9 +64,9 @@ fun String.httpGet(
  * @author sergey
  */
 fun String.httpGetAsync(
-        client: Call.Factory = defaultHttpClient
+    client: Call.Factory = defaultHttpClient
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.call(Request.Builder().url(this@httpGetAsync).build())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.call(Request.Builder().url(this@httpGetAsync).build())
+    }
 

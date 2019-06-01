@@ -42,9 +42,9 @@ import okhttp3.Response
  * @author evgeny
  */
 fun httpHeadAsync(
-        client: Call.Factory = defaultHttpClient,
-        init: HttpHeadContext.() -> Unit
+    client: Call.Factory = defaultHttpClient,
+    init: HttpHeadContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(HttpHeadContext().apply(init).makeRequest())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(HttpHeadContext().apply(init).makeRequest())
+    }

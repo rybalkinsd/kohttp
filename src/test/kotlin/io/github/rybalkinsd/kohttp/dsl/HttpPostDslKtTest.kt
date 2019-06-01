@@ -15,17 +15,17 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with form # postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
         val expectedForm = mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
 
         httpPost {
@@ -62,8 +62,8 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with form encoded # postman echo`() {
         val expectedForm = mapOf(
-                "encoded" to " ",
-                "notEncoded" to "%20"
+            "encoded" to " ",
+            "notEncoded" to "%20"
         )
 
         httpPost {
@@ -101,17 +101,17 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with json # postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
         val expectedJson = mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
         val response = httpPost {
             host = "postman-echo.com"
@@ -158,8 +158,8 @@ class HttpPostDslKtTest {
         }
 
         val expectedJson = mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
 
         response.use {
@@ -181,8 +181,8 @@ class HttpPostDslKtTest {
         }
 
         val expectedJson = mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
 
         response.use {
@@ -233,12 +233,12 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with empty body# postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
         httpPost {

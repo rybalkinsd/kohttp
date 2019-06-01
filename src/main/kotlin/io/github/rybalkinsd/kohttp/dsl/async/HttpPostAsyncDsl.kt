@@ -45,9 +45,9 @@ import okhttp3.Response
  * @author evgeny
  */
 fun httpPostAsync(
-        client: Call.Factory = defaultHttpClient,
-        init: HttpPostContext.() -> Unit
+    client: Call.Factory = defaultHttpClient,
+    init: HttpPostContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(HttpPostContext().apply(init).makeRequest())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(HttpPostContext().apply(init).makeRequest())
+    }
