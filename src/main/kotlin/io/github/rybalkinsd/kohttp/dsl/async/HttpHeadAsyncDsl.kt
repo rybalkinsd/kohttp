@@ -19,14 +19,9 @@ import okhttp3.Response
  *
  *  <pre>
  *  val response: Deferred<Response> = httpHeadAsync {
- *      host = "yourhost"
- *      scheme = "https"
- *      port = 8080
- *      path = "path/to/resource"
- *      param {
- *          "your param" to "value"
- *      }
+ *      url("https://yourhost:port/path/to/resource")
  *      header { ... }
+ *      ...
  *  }
  *  response.await().use { ... }
  *  </pre>

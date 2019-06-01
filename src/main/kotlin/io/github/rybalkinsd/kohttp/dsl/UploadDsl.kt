@@ -6,7 +6,7 @@ import okhttp3.Call
 import okhttp3.Response
 
 /**
- * Method provides an synchronous DSL call of HTTP POST to UPLOAD file
+ * Method provides a synchronous DSL call of HTTP POST to UPLOAD file
  *
  * @return a `Response` instance.
  *

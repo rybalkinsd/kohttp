@@ -20,15 +20,9 @@ import okhttp3.Response
  *
  *  <pre>
  *  val response: Deferred<Response> = httpPostAsync {
- *      host = "yourhost"
- *      scheme = "https"
- *      port = 8080
- *      path = "path/to/resource"
- *      param {
- *          "your param" to "value"
- *      }
+ *      url("https://yourhost:port/path/to/resource")
  *      header { ... }
- *      body { ... }
+ *      ...
  *  }
  *  response.await().use {
  *      your code here
