@@ -43,9 +43,9 @@ import okhttp3.Response
  * @author evgeny
  */
 fun httpDeleteAsync(
-        client: Call.Factory = defaultHttpClient,
-        init: HttpDeleteContext.() -> Unit
+    client: Call.Factory = defaultHttpClient,
+    init: HttpDeleteContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(HttpDeleteContext().apply(init).makeRequest())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(HttpDeleteContext().apply(init).makeRequest())
+    }

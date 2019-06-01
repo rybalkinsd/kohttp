@@ -31,20 +31,20 @@ import okhttp3.Response
  * @author sergey
  */
 fun Response.eager() = EagerResponse(
-        request = request(),
-        protocol = protocol(),
-        code = code(),
-        message = message(),
-        handshake = handshake(),
-        headers = (0 until headers().size()).map {
-            Header(headers().name(it), headers().value(it))
-        },
-        body = body()?.string(),
-        networkResponse = networkResponse(),
-        cacheResponse = cacheResponse(),
-        priorResponse = priorResponse(),
-        sentRequestAtMillis = sentRequestAtMillis(),
-        receivedResponseAtMillis = receivedResponseAtMillis()
+    request = request(),
+    protocol = protocol(),
+    code = code(),
+    message = message(),
+    handshake = handshake(),
+    headers = (0 until headers().size()).map {
+        Header(headers().name(it), headers().value(it))
+    },
+    body = body()?.string(),
+    networkResponse = networkResponse(),
+    cacheResponse = cacheResponse(),
+    priorResponse = priorResponse(),
+    sentRequestAtMillis = sentRequestAtMillis(),
+    receivedResponseAtMillis = receivedResponseAtMillis()
 )
 
 /**
@@ -57,18 +57,18 @@ fun Response.eager() = EagerResponse(
  * @author sergey
  */
 data class EagerResponse(
-        val request: Request,
-        val protocol: Protocol,
-        val code: Int,
-        val message: String,
-        val handshake: Handshake?,
-        val headers: List<Header>,
-        val body: String?,
-        val networkResponse: Response?,
-        val cacheResponse: Response?,
-        val priorResponse: Response?,
-        val sentRequestAtMillis: Long,
-        val receivedResponseAtMillis: Long
+    val request: Request,
+    val protocol: Protocol,
+    val code: Int,
+    val message: String,
+    val handshake: Handshake?,
+    val headers: List<Header>,
+    val body: String?,
+    val networkResponse: Response?,
+    val cacheResponse: Response?,
+    val priorResponse: Response?,
+    val sentRequestAtMillis: Long,
+    val receivedResponseAtMillis: Long
 )
 
 /**

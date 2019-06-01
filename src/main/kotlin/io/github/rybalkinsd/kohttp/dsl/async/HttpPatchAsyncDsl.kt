@@ -43,9 +43,9 @@ import okhttp3.Response
  * @author evgeny
  */
 fun httpPatchAsync(
-        client: Call.Factory = defaultHttpClient,
-        init: HttpPatchContext.() -> Unit
+    client: Call.Factory = defaultHttpClient,
+    init: HttpPatchContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(HttpPatchContext().apply(init).makeRequest())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(HttpPatchContext().apply(init).makeRequest())
+    }

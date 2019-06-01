@@ -36,15 +36,15 @@ import okhttp3.Response
  * </pre>
  *
  * @see Response
- * @see HttpDeleteContext
+ * @see UploadContext
  *
  * @since 0.10.0
  * @author evgeny
  */
 fun uploadAsync(
-        client: Call.Factory = defaultHttpClient,
-        init: UploadContext.() -> Unit
+    client: Call.Factory = defaultHttpClient,
+    init: UploadContext.() -> Unit
 ): Deferred<Response> =
-        GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(UploadContext().apply(init).makeRequest())
-        }
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(UploadContext().apply(init).makeRequest())
+    }

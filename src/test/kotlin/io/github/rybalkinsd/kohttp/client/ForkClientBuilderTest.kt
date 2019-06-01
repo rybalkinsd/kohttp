@@ -16,16 +16,16 @@ class ForkClientBuilderTest {
         val defaultDns = Dns { emptyList() }
 
         val client = defaultHttpClient.newBuilder()
-                .cache(null)
-                .dns(defaultDns)
-                .followSslRedirects(false)
-                .followRedirects(false)
-                .retryOnConnectionFailure(false)
-                .connectTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
-                .readTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
-                .writeTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
-                .pingInterval(defaultTimeout, TimeUnit.MILLISECONDS)
-                .build()
+            .cache(null)
+            .dns(defaultDns)
+            .followSslRedirects(false)
+            .followRedirects(false)
+            .retryOnConnectionFailure(false)
+            .connectTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
+            .readTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
+            .writeTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
+            .pingInterval(defaultTimeout, TimeUnit.MILLISECONDS)
+            .build()
 
         val dslClient = defaultHttpClient.fork {
             interceptors = emptyList()
