@@ -5,7 +5,8 @@ import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.httpGet
 import io.mockk.spyk
 import io.mockk.verify
-import okhttp3.OkHttpClient
+import okhttp3.*
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.mockserver.client.MockServerClient
@@ -130,6 +131,20 @@ class RetryInterceptorTest {
         getCall(client)
 
         verifyGetRequest(numOfRetry + 1)
+    }
+
+    @Test
+    fun `not need retry if status code is 200`() {
+        val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
+        val response = Response.Builder().code(200).protocol(Protocol.HTTP_1_1).message("").request(request).build()
+        Assert.assertFalse(RetryInterceptor().isRetry(response, 1))
+    }
+
+    @Test
+    fun `need retry if status code in error codes list`() {
+        val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
+        val response = Response.Builder().code(503).protocol(Protocol.HTTP_1_1).message("").request(request).build()
+        Assert.assertTrue(RetryInterceptor().isRetry(response, 1))
     }
 
     private fun getCall(client: OkHttpClient) {
