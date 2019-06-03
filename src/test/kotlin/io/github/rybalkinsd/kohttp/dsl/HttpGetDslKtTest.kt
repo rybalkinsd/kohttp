@@ -145,25 +145,4 @@ class HttpGetDslKtTest {
             assertEquals(200, it.code())
         }
     }
-
-    @Test
-    fun `omitting query params in url`() {
-        val response = httpGet {
-            url("http://postman-echo.com/get?a=missing&b=missing")
-
-            param {
-                "c" to "exists"
-            }
-        }
-
-        val expectedParams = mapOf(
-            "c" to "exists"
-        )
-
-        response.use {
-            val parsedResponse = it.body()?.string().asJson()
-            assertResponses(expectedParams, parsedResponse["args"])
-        }
-    }
-
 }
