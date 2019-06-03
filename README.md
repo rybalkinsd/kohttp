@@ -221,13 +221,13 @@ You can upload file by `URI` or `File` . Upload DSL can include `headers` and `p
 val fileUri = this.javaClass.getResource("/cat.gif").toURI()
 
 val response = upload {
-    headers {
-        ...
-        cookies {...}
-    }
-    params {...}
     url("http://postman-echo.com/post")
     file(fileUri)
+    headers {
+            ...
+            cookies {...}
+        }
+    params {...}
 }
 ```
 
