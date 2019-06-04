@@ -1,7 +1,6 @@
 package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
-import io.github.rybalkinsd.kohttp.dsl.context.ParamContext
 import java.net.URL
 
 /**
