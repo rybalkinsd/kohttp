@@ -38,16 +38,11 @@ class RetryInterceptor(
                     delay = performAndReturnDelay(delay)
                 }
                 val response = chain.proceed(request)
-                if (isRetry(response, attemptsCount)) {
-                    attemptsCount++
-                    continue
-                }
-                return response
+                if (!isRetry(response, attemptsCount)) return response
             } catch (e: SocketTimeoutException) {
-                if (attemptsCount++ < failureThreshold) {
-                    continue
-                } else throw e
+                if (attemptsCount >= failureThreshold) throw e
             }
+            attemptsCount++
         }
     }
 
