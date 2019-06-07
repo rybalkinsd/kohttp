@@ -21,12 +21,8 @@ class RetryInterceptor(
     private val failureThreshold: Int = 3,
     private val invocationTimeout: Long = 0,
     private val ratio: Int = 1,
-    errorStatuses: List<Int> = emptyList()
+    private var errorStatuses: List<Int> = listOf(503, 504)
 ) : Interceptor {
-    private var _errorStatuses: List<Int> = listOf(503, 504)
-    init {
-        _errorStatuses = _errorStatuses + errorStatuses
-    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -57,5 +53,5 @@ class RetryInterceptor(
     private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
 
     internal fun isRetry(response: Response, attemptsCount: Int): Boolean =
-            attemptsCount < failureThreshold && response.code() in _errorStatuses
+            attemptsCount < failureThreshold && response.code() in errorStatuses
 }
