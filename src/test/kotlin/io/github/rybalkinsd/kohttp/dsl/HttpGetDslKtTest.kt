@@ -161,7 +161,7 @@ class HttpGetDslKtTest {
         )
 
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
+            val parsedResponse = it.asJson()
             assertResponses(expectedParams, parsedResponse["args"])
         }
     }
