@@ -1,5 +1,7 @@
 package io.github.rybalkinsd.kohttp.ext
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.Handshake
 import okhttp3.Protocol
 import okhttp3.Request
@@ -76,3 +78,40 @@ data class EagerResponse(
  * @author sergey
  */
 data class Header(val name: String, val value: String)
+
+internal val stringMapper: ObjectMapper by lazy { ObjectMapper() }
+
+
+/**
+ * Returns Response Body as JSON.If Response is `null` it returns a empty JSON
+ *
+ * @return JsonNode.
+ * @since 0.9.0
+ * @author gokul
+ */
+
+fun Response.asJson(): JsonNode = with(body()?.string()) {
+    if (isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)
+}
+
+
+/**
+ * Returns Response Body as String.
+ *
+ * @return Response body as a `String?`.
+ * @since 0.9.0
+ * @author gokul
+ */
+
+fun Response.asString() = body()?.string()
+
+/**
+ *  Returns Response Body as a Stream.
+ *
+ * @return Response body as a `InputStream?`.
+ * @since 0.9.0
+ * @author gokul
+ */
+
+fun Response.asStream() = body()?.byteStream()
+

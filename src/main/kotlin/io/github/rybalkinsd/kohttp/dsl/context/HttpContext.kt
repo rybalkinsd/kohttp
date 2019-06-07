@@ -25,11 +25,11 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
     var port: Int? = null
     var path: String? = null
 
-    fun param(init: ParamContext.() -> Unit) {
-         paramContext.init()
+    override fun param(init: ParamContext.() -> Unit) {
+        paramContext.init()
     }
 
-    fun header(init: HeaderContext.() -> Unit) {
+    override fun header(init: HeaderContext.() -> Unit) {
         headerContext.init()
     }
 
@@ -40,6 +40,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         when (method) {
             POST, PUT, PATCH, DELETE -> method(method.name, makeBody())
             HEAD -> head()
+            GET -> get()
         }
 
         return build()
@@ -68,7 +69,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
 
 }
 
-open class HttpPostContext(method: Method = POST): HttpContext(method) {
+open class HttpPostContext(method: Method = POST) : HttpContext(method) {
     private var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
     fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
@@ -94,6 +95,8 @@ enum class Method {
 
 
 internal interface IHttpContext {
+    fun param(init: ParamContext.() -> Unit)
+    fun header(init: HeaderContext.() -> Unit)
     fun makeRequest(): Request
 }
 

@@ -26,5 +26,5 @@ fun HttpContext.url(url: URL) {
  * @author sergey
  */
 fun HttpContext.url(url: String) {
-    url(java.net.URL(url))
+    url(URL(url))
 }
