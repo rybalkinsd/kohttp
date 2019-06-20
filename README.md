@@ -248,16 +248,16 @@ val response = fileUri.upload( string or url )
 
 #### async GET
 
-##### `String.asyncHttpGet()` extension function
+##### `String.httpGetAsync()` extension function
 This function starts a new coroutine with *Unconfined* dispatcher. 
 
 ```kotlin
-val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+val response: Deferred<Response> = "https://google.com/search?q=iphone".httpGetAsync()
 ```
 
-##### `asyncHttpGet` call
+##### `httpGetAsync` call
 ```kotlin
-val response: Deferred<Response> = asyncHttpGet {
+val response: Deferred<Response> = httpGetAsync {
     host = "google.com"
     path = "/search"
     header { ... }

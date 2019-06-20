@@ -32,9 +32,7 @@ import okhttp3.Response
  * @since 0.1.0
  * @author sergey
  */
-fun String.httpGet(
-    client: Call.Factory = defaultHttpClient
-): Response =
+fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
     client.call(Request.Builder().url(this).build())
 
 /**
@@ -63,10 +61,19 @@ fun String.httpGet(
  * @since 0.1.0
  * @author sergey
  */
-fun String.httpGetAsync(
-    client: Call.Factory = defaultHttpClient
-): Deferred<Response> =
+fun String.httpGetAsync(client: Call.Factory = defaultHttpClient): Deferred<Response> =
     GlobalScope.async(context = Dispatchers.Unconfined) {
         client.call(Request.Builder().url(this@httpGetAsync).build())
     }
+
+@Suppress("DeferredIsResult")
+@Deprecated(
+    message = "Use httpGetAsync instead. This function was renamed according to Kotlin Style Guide." +
+        "This function will be removed in version 0.12.0",
+    replaceWith = ReplaceWith(
+        "httpGetAsync(client)",
+        "io.github.rybalkinsd.kohttp.dsl.async.httpGetAsync")
+)
+fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
+    httpGetAsync(client)
 
