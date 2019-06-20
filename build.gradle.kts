@@ -8,6 +8,8 @@ plugins {
     `maven-publish`
     signing
 
+    id("io.gitlab.arturbosch.detekt") version "1.0.0-RC14"
+
 }
 
 group = "io.github.rybalkinsd"
@@ -15,6 +17,7 @@ version = "0.8.0"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
