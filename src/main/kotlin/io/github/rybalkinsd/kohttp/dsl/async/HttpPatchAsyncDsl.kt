@@ -16,7 +16,7 @@ import okhttp3.Response
  *
  * @return a deferred `Response` instance.
  *
- * Usage example using the default `defaultHttpClient`:
+ * Usage example with default `defaultHttpClient`:
  *
  *  <pre>
  *  val response: Deferred<Response> = httpPatchAsync {

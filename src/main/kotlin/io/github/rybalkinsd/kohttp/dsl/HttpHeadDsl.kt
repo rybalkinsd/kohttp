@@ -10,7 +10,7 @@ import okhttp3.Response
  *
  * @return a `Response` instance.
  *
- * Usage example using the default `defaultHttpClient`:
+ * Usage example with default `defaultHttpClient`:
  *
  *  <pre>
  *  val response: Response = httpHead {
