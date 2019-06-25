@@ -15,6 +15,19 @@ fun HttpContext.url(url: URL) {
 
     if (url.port != -1) { port = url.port }
     path = url.path
+
+    if (url.query?.isNotBlank() == true) {
+        param {
+            url.query.split("&")
+                .onEach {
+                    val queryComponents = it.split("=", limit = 2)
+                    if (queryComponents.size == 1) {
+                        throw IllegalArgumentException("unexpected query: $it")
+                    }
+                    queryComponents[0] to queryComponents[1]
+                }
+        }
+    }
 }
 
 /**
