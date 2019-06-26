@@ -1,8 +1,9 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.assertResponses
-import io.github.rybalkinsd.kohttp.ext.asJson
+import io.github.rybalkinsd.kohttp.assertContainsAtLeast
+import io.github.rybalkinsd.kohttp.assertContainsExactly
 import io.github.rybalkinsd.kohttp.ext.url
+import io.github.rybalkinsd.kohttp.ext.asJson
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -42,7 +43,7 @@ class HttpGetDslKtTest {
                 "text" to listOf("iphone", "not iphone")
                 "lr" to 213
             }
-        }.also { println(it) }
+        }
 
         response.use {
             assertEquals(false, it.request().url().query()?.contains("%5B"))
@@ -93,8 +94,8 @@ class HttpGetDslKtTest {
         }
         response.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
             assertEquals(200, it.code())
         }
     }
@@ -140,16 +141,20 @@ class HttpGetDslKtTest {
         }
         response.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
             assertEquals(200, it.code())
         }
     }
 
+
+    /**
+     * @since 0.10.0
+     */
     @Test
-    fun `omitting query params in url`() {
+    fun `no omitting of query params in url`() {
         val response = httpGet {
-            url("http://postman-echo.com/get?a=missing&b=missing")
+            url("http://postman-echo.com/get?a=exists&b=exists")
 
             param {
                 "c" to "exists"
@@ -157,12 +162,38 @@ class HttpGetDslKtTest {
         }
 
         val expectedParams = mapOf(
+            "a" to "exists",
+            "b" to "exists",
             "c" to "exists"
         )
 
         response.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedParams, parsedResponse["args"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+        }
+    }
+
+    /**
+     * @since 0.10.0
+     */
+    @Test
+    fun `multiple param declaration with same key`() {
+        val response = httpGet {
+            url("http://postman-echo.com/get?a=1&a=")
+
+            param {
+                "a" to "3"
+            }
+        }
+
+        val expectedParams = mapOf(
+            "a" to listOf("1", "", "3")
+        )
+
+
+        response.use {
+            val parsedResponse = it.asJson()
+            assertContainsExactly(expectedParams, parsedResponse["args"])
         }
     }
 

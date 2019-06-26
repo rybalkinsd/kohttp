@@ -2,11 +2,12 @@ package io.github.rybalkinsd.kohttp.dsl.context
 
 @HttpDslMarker
 class ParamContext {
-    private val map: MutableMap<String, Any> = mutableMapOf()
+    private val params: MutableList<Pair<String, Any>> = mutableListOf()
 
     infix fun String.to(v: Any) {
-        map[this] = v
+        params += Pair(this, v)
     }
 
-    internal fun forEach(action: (k: String, v: Any) -> Unit) = map.forEach(action)
+    internal fun forEach(action: (k: String, v: Any) -> Unit) =
+        params.forEach { (k, v) -> action(k, v) }
 }

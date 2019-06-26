@@ -17,6 +17,18 @@ fun HttpContext.url(url: URL) {
     if (url.port != -1) {
         port = url.port
     }
+
+    url.query?.let { query ->
+        param {
+            query.split("&")
+                .map { it.split("=") }
+                .groupBy({ it[0] }, { it.getOrElse(1) { "" } })
+                .forEach { (k, v) ->
+                    k to (if (v.size == 1) v.first() else v)
+                }
+        }
+    }
+
     path = url.path
 }
 
