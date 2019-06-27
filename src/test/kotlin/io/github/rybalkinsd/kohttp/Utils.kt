@@ -1,10 +1,12 @@
 package io.github.rybalkinsd.kohttp
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
+ * todo: Probably it would be better to provide extension function to test Json
  * @author sergey
  */
 fun assertContainsExactly(expected: Map<String, Any?>, actual: JsonNode) {
@@ -12,7 +14,10 @@ fun assertContainsExactly(expected: Map<String, Any?>, actual: JsonNode) {
 
     actual.fieldNames().forEach {
         assertTrue(expected.containsKey(it), message = "Expected does not contain $it")
-        assertEquals(expected[it].toString(), actual[it].asText())
+        val ex = expected[it]
+        if (ex !is List<*>) {
+            assertEquals(ex.toString(), actual[it].asText())
+        }
     }
 }
 
@@ -20,7 +25,20 @@ fun assertContainsExactly(expected: Map<String, Any?>, actual: JsonNode) {
  * @author gokul
  */
 fun assertContainsAtLeast(expected: Map<String, Any?>, actual: JsonNode) {
-    expected.forEach { (t, u) ->
-        assertEquals(u.toString(), actual[t]?.asText())
+    expected.forEach { (k, v) ->
+        when (v) {
+            is List<*> -> {
+                val arrayNode = actual[k] as? ArrayNode ?: throw Exception("$k type is not Array, as expected")
+
+                assertEquals(v.size, arrayNode.size())
+
+                arrayNode.forEachIndexed { i, element ->
+                    assertEquals(v[i].toString(), element.asText())
+                }
+
+            }
+            else -> assertEquals(v.toString(), actual[k]?.asText())
+        }
+
     }
 }

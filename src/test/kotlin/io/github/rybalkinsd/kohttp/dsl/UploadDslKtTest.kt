@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.assertContainsExactly
+import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -79,7 +79,7 @@ class UploadDslKtTest {
 
         assertEquals(expectedArgs["query"], parsedResponse["args"]["query"].asText())
         assertEquals(expectedArgs["listOfParams"], parsedResponse["args"]["listOfParams"].toString())
-        assertContainsExactly(expectedHeaders, parsedResponse["headers"])
+        assertContainsAtLeast(expectedHeaders, parsedResponse["headers"])
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }
