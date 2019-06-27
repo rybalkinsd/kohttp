@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.ext
 
-import io.github.rybalkinsd.kohttp.util.asJson
+import io.github.rybalkinsd.kohttp.ext.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.net.URL
@@ -19,7 +19,7 @@ class UriAsyncExtTest {
 
         runBlocking {
             response.await().use {
-                val parsedResponse = it.body()?.string().asJson()
+                val parsedResponse = it.asJson()
 
                 assertEquals(200, it.code())
                 assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
@@ -35,7 +35,7 @@ class UriAsyncExtTest {
 
         runBlocking {
             response.await().use {
-                val parsedResponse = it.body()?.string().asJson()
+                val parsedResponse = it.asJson()
 
                 assertEquals(200, it.code())
                 assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
