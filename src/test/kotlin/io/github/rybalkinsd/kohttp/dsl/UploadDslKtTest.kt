@@ -1,6 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.assertResponses
+import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -11,7 +11,6 @@ class UploadDslKtTest {
     @Test
     fun `small file upload`() {
         val r = upload {
-
             url("http://postman-echo.com/post")
             val fileUri = this.javaClass.getResource("/cat.gif").toURI()
             file(fileUri)
@@ -39,7 +38,7 @@ class UploadDslKtTest {
         }
 
         assertEquals(200, uploadResponse.code())
-        assertEquals(1048749, uploadResponse.asJson()["headers"]["content-length"].asInt())
+        assertEquals(1 * 1024 * 1024 + 173, uploadResponse.asJson()["headers"]["content-length"].asInt())
     }
 
     @Test
@@ -80,7 +79,7 @@ class UploadDslKtTest {
 
         assertEquals(expectedArgs["query"], parsedResponse["args"]["query"].asText())
         assertEquals(expectedArgs["listOfParams"], parsedResponse["args"]["listOfParams"].toString())
-        assertResponses(expectedHeaders, parsedResponse["headers"])
+        assertContainsAtLeast(expectedHeaders, parsedResponse["headers"])
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }

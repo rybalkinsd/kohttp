@@ -8,6 +8,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class HttpContextExtKtTest {
 
@@ -101,4 +102,57 @@ class HttpContextExtKtTest {
                 init()
                 makeUrl().build()
             }
+    }
+
+
+//    path/?a=b"
+//  "path?a=b"
+//  "path/?a=b&c=&d=123"
+//  "path?a=b#tag"
+//  "path?a=xxx&a=&a=yyy
+    @Test
+    fun `url with single param`() {
+        val context = HttpGetContext().apply {
+            url("http://www.example.org/path?a=b")
+        }
+
+        val params = context.params
+        assertEquals(1, params.size)
+        assertTrue(params.containsKey("a"))
+        assertEquals("b", params["a"])
+    }
+
+    @Test
+    fun `url with multiple params`() {
+        val context = HttpGetContext().apply {
+            url("http://www.example.org/path?a=b&c=&d=123#label")
+        }
+
+        val params = context.params
+        assertEquals(3, params.size)
+        assertEquals("b", params["a"])
+        assertEquals("", params["c"])
+        assertEquals("123", params["d"])
+    }
+
+    @Test
+    fun `url with multiple occurrences of parameter`() {
+        val context = HttpGetContext().apply {
+            url("http://www.example.org/path?a=&a=123&a=xxx#label")
+        }
+
+        val params = context.params
+        assertEquals(1, params.size)
+        assertEquals(listOf("", "123", "xxx"), params["a"])
+    }
+
+    private val HttpContext.params: Map<String, Any>
+        get() {
+            val collector = mutableMapOf<String, Any>()
+            param {
+                forEach { k, v -> collector[k] = v }
+            }
+
+            return collector
+        }
 }

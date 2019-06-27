@@ -8,4 +8,4 @@ import okhttp3.OkHttpClient
  * @author sergey
  */
 fun OkHttpClient.fork(block: ForkClientBuilder.() -> Unit): OkHttpClient =
-        ClientBuilderImpl(this).apply(block).build()
+    ClientBuilderImpl(this).apply(block).build()

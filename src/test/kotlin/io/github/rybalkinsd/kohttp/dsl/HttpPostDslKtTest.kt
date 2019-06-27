@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.assertResponses
+import io.github.rybalkinsd.kohttp.assertContainsAtLeast
+import io.github.rybalkinsd.kohttp.assertContainsExactly
 import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import java.io.File
@@ -15,17 +16,17 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with form # postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
         val expectedForm = mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
 
         httpPost {
@@ -52,9 +53,9 @@ class HttpPostDslKtTest {
             }
         }.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
-            assertResponses(expectedForm, parsedResponse["form"])
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+            assertContainsExactly(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
         }
     }
@@ -78,8 +79,7 @@ class HttpPostDslKtTest {
             }
         }.use {
             val parsedResponse = it.asJson()
-            println(parsedResponse)
-            assertResponses(expectedForm, parsedResponse["form"])
+            assertContainsExactly(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
         }
     }
@@ -101,17 +101,17 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with json # postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
-        val expectedJson= mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+        val expectedJson = mapOf(
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
         val response = httpPost {
             host = "postman-echo.com"
@@ -139,9 +139,9 @@ class HttpPostDslKtTest {
 
         response.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
-            assertResponses(expectedJson, parsedResponse["json"])
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+            assertContainsExactly(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
     }
@@ -157,14 +157,14 @@ class HttpPostDslKtTest {
             }
         }
 
-        val expectedJson= mapOf(
+        val expectedJson = mapOf(
             "login" to "user",
             "email" to "john.doe@gmail.com"
         )
 
         response.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedJson, parsedResponse["json"])
+            assertContainsExactly(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
     }
@@ -180,14 +180,14 @@ class HttpPostDslKtTest {
             }
         }
 
-        val expectedJson= mapOf(
+        val expectedJson = mapOf(
             "login" to "user",
             "email" to "john.doe@gmail.com"
         )
 
         response.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedJson, parsedResponse["json"])
+            assertContainsExactly(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
     }
@@ -233,12 +233,12 @@ class HttpPostDslKtTest {
     @Test
     fun `post request with empty body# postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
         httpPost {
@@ -259,8 +259,8 @@ class HttpPostDslKtTest {
         }.use {
             val parsedResponse = it.asJson()
             val headers = parsedResponse["headers"]
-            assertResponses(expectedHeader, headers)
-            assertResponses(expectedParams, parsedResponse["args"])
+            assertContainsAtLeast(expectedHeader, headers)
+            assertContainsExactly(expectedParams, parsedResponse["args"])
             assertEquals(0, headers["content-length"].asInt())
             assertEquals(200, it.code())
         }
