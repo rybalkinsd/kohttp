@@ -63,7 +63,7 @@ fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
  */
 fun String.httpGetAsync(client: Call.Factory = defaultHttpClient): Deferred<Response> =
     GlobalScope.async(context = Dispatchers.Unconfined) {
-        client.call(Request.Builder().url(this@httpGetAsync).build())
+        client.suspendCall(Request.Builder().url(this@httpGetAsync).build())
     }
 
 @Suppress("DeferredIsResult")
