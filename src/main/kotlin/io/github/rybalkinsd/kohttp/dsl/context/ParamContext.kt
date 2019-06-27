@@ -5,9 +5,9 @@ class ParamContext {
     private val params: MutableList<Pair<String, Any>> = mutableListOf()
 
     infix fun String.to(v: Any) {
-        params += Pair(this, v)
+        list += Pair(this, v)
     }
 
     internal fun forEach(action: (k: String, v: Any) -> Unit) =
-        params.forEach { (k, v) -> action(k, v) }
+        list.forEach { (k, v) -> action(k, v) }
 }
