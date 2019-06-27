@@ -14,32 +14,18 @@ fun HttpContext.url(url: URL) {
 
     host = url.host ?: throw IllegalArgumentException("unexpected host: $host")
 
-    if (url.port != -1) {
+    if (url.port != -1)
         port = url.port
-    }
-
-    url.query?.let { query ->
-        param {
-            query.split("&")
-                .map { it.split("=") }
-                .groupBy({ it[0] }, { it.getOrElse(1) { "" } })
-                .forEach { (k, v) ->
-                    k to (if (v.size == 1) v.first() else v)
-                }
-        }
-    }
 
     path = url.path
 
     if (url.query?.isNotBlank() == true) {
         param {
             url.query.split("&")
-                .onEach {
-                    val queryComponents = it.split("=", limit = 2)
-                    if (queryComponents.size == 1) {
-                        throw IllegalArgumentException("unexpected query: $it")
-                    }
-                    queryComponents[0] to queryComponents[1]
+                .map { it.split("=", limit = 2) }
+                .groupBy({ it[0] }, { it.getOrElse(1) { "" } })
+                .forEach { (k, v) ->
+                    k to (if (v.size == 1) v.first() else v)
                 }
         }
     }
