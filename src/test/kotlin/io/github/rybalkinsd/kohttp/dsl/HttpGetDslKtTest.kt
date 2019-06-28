@@ -2,8 +2,8 @@ package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
-import io.github.rybalkinsd.kohttp.ext.url
 import io.github.rybalkinsd.kohttp.ext.asJson
+import io.github.rybalkinsd.kohttp.ext.url
 import io.github.rybalkinsd.kohttp.util.json
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -188,6 +188,32 @@ class HttpGetDslKtTest {
 
         val expectedParams = mapOf(
             "a" to listOf("1", "", "3")
+        )
+
+
+        response.use {
+            val parsedResponse = it.asJson()
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+        }
+    }
+
+    /**
+     * @since 0.10.0
+     */
+    @Test
+    fun `multiple param declaration in param block`() {
+        val response = httpGet {
+            url("http://postman-echo.com/get?a=1&a=&a")
+
+            param {
+                "a" to null
+                "a" to "3"
+                "a" to listOf(1, 2, null)
+            }
+        }
+
+        val expectedParams = mapOf(
+            "a" to listOf("1", "", null, null, "3", 1, 2, null)
         )
 
 

@@ -23,7 +23,7 @@ fun HttpContext.url(url: URL) {
         param {
             url.query.split("&")
                 .map { it.split("=", limit = 2) }
-                .groupBy({ it[0] }, { it.getOrElse(1) { "" } })
+                .groupBy({ it[0] }, { it.getOrNull(1) })
                 .forEach { (k, v) ->
                     k to (if (v.size == 1) v.first() else v)
                 }

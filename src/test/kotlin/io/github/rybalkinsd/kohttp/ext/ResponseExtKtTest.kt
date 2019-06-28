@@ -56,12 +56,24 @@ class ResponseExtKtTest {
 
     @Test
     fun `gets response as string # ext`() {
-
         val response = getUrl.httpGet().asString()
-        val expected = """{"args":{},"headers":{"x-forwarded-proto":"https","host":"postman-echo.com","accept-encoding":"gzip","user-agent":"okhttp/3.14.2","x-forwarded-port":"443"},"url":"https://postman-echo.com/get"}"""
+        val expected = """{
+            |"args":{},
+            |"headers":{
+            |   "x-forwarded-proto":"https",
+            |   "host":"postman-echo.com",
+            |   "accept-encoding":"gzip",
+            |   "user-agent":"okhttp/3.12.0",
+            |   "x-forwarded-port":"443"
+            |   },
+            |"url":"https://postman-echo.com/get"
+            |}"""
+            .trimMargin("|")
+            .replace(Regex("\\s"), "")
         assertEquals(expected, response)
     }
 
+    // todo escape '/'  write ext function
     @Test
     fun `gets response as json # ext`() {
         val response = getUrl.httpGet().asJson().toString()
@@ -71,12 +83,13 @@ class ResponseExtKtTest {
                 "x-forwarded-proto" to "https"
                 "host" to "postman-echo.com"
                 "accept-encoding" to "gzip"
-                "user-agent" to "okhttp/3.14.2"
+                "user-agent" to ""
                 "x-forwarded-port" to "443"
             }
             "url" to getUrl
-        }
-        assertEquals(response, expected)
+        }.toRegex()
+
+        assertTrue { response.matches(expected) }
     }
 
     @Test
@@ -110,7 +123,5 @@ class ResponseExtKtTest {
         |  "url": "https://postman-echo.com/stream/2"
         |}""".trimMargin("|")
         assertEquals(actual, expected)
-
-
     }
 }

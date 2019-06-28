@@ -2,7 +2,6 @@ package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
 import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
-import okhttp3.HttpUrl
 import org.junit.Test
 import java.net.MalformedURLException
 import java.net.URL
@@ -61,8 +60,10 @@ class HttpContextExtKtTest {
 
     @Test
     fun `url with empty query`() {
-        val url = httpUrlFor { url("https://www.example.org/?") }
-        assertEquals(null, url.query())
+        val context = HttpGetContext().apply {
+            url("https://www.example.org/?")
+        }
+        assertEquals(0, context.params.size)
     }
 
     @Test
@@ -97,7 +98,7 @@ class HttpContextExtKtTest {
 
         val params = context.params
         assertEquals(1, params.size)
-        assertEquals(listOf("", "", "123", "xxx"), params["a"])
+        assertEquals(listOf(null, "", "123", "xxx"), params["a"])
     }
 
     @Test
@@ -116,8 +117,10 @@ class HttpContextExtKtTest {
 
     @Test
     fun `duplicate query keys`() {
-        val url = httpUrlFor { url("https://www.example.org/path?id[]=1&id[]=2") }
-        assertEquals("id[]=1&id[]=2", url.query())
+        val context = HttpGetContext().apply { url("https://www.example.org/path?id[]=1&id[]=2") }
+        val params = context.params
+        assertEquals(1, params.size)
+        assertEquals(listOf("1", "2"), params["id[]"])
     }
 
 
@@ -126,20 +129,23 @@ class HttpContextExtKtTest {
         val context = HttpGetContext().apply { url("https://www.example.org/path?foo&bar=baz") }
         with(context.params) {
             assertEquals(2, size)
-            assertEquals("", get("foo"))
+            assertEquals(null, get("foo"))
             assertEquals("baz", get("bar"))
         }
     }
 
-    private fun httpUrlFor(init: HttpContext.() -> Unit): HttpUrl =
-        HttpGetContext().run {
-            init()
-            makeUrl().build()
+    @Test
+    fun `query param with value containing = symbol`() {
+        val context = HttpGetContext().apply { url("https://www.example.org/path?bool=2*2==4") }
+        with(context.params) {
+            assertEquals(1, size)
+            assertEquals("2*2==4", get("bool"))
         }
+    }
 
-    private val HttpContext.params: Map<String, Any>
+    private val HttpContext.params: Map<String, Any?>
         get() {
-            val collector = mutableMapOf<String, Any>()
+            val collector = mutableMapOf<String, Any?>()
             param {
                 forEach { k, v -> collector[k] = v }
             }
