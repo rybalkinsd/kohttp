@@ -7,7 +7,6 @@ class ParamContext {
     infix fun String.to(v: Any?) {
         params.computeIfAbsent(this) { mutableListOf() }.apply {
             when (v) {
-                null -> add(null)
                 is List<*> -> addAll(v)
                 else -> add(v)
             }
