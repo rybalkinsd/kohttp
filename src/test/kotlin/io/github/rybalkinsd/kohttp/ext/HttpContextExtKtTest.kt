@@ -2,6 +2,7 @@ package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
 import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.net.MalformedURLException
 import java.net.URL
@@ -141,6 +142,16 @@ class HttpContextExtKtTest {
             assertEquals(1, size)
             assertEquals("2*2==4", get("bool"))
         }
+    }
+
+    @Test
+    fun `query with single null param`() {
+        val context = HttpGetContext().apply {
+            url("https://www.example.org/path?a")
+        }
+
+        assertThat(context.params.size).isEqualTo(1)
+        assertThat(context.params["a"]).isNull()
     }
 
     private val HttpContext.params: Map<String, Any?>
