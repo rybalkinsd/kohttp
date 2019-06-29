@@ -21,7 +21,7 @@ class RetryInterceptor(
     private val failureThreshold: Int = 3,
     private val invocationTimeout: Long = 0,
     private val ratio: Int = 1,
-    private var errorStatuses: List<Int> = listOf(503, 504)
+    private val errorStatuses: List<Int> = listOf(503, 504)
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
