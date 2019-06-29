@@ -2,6 +2,7 @@ package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.dsl.httpGet
 import io.github.rybalkinsd.kohttp.util.json
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -56,35 +57,50 @@ class ResponseExtKtTest {
 
     @Test
     fun `gets response as string # ext`() {
+        val response = getUrl.httpGet().asString()!!
+        val expectedRegex = """{
+            |"args":{},
+            |"headers":{
+            |   "x-forwarded-proto":"https",
+            |   "host":"postman-echo.com",
+            |   "accept-encoding":"gzip",
+            |   "user-agent":"okhttp/[0-9]*.[0-9]*.[0-9]*",
+            |   "x-forwarded-port":"443"
+            |   },
+            |"url":"https://postman-echo.com/get"
+            |}"""
+                .trimMargin("|")
+                .replace(Regex("\\s"),"")
+                .escape()
 
-        val response = getUrl.httpGet().asString()
-        val expected = """{"args":{},"headers":{"x-forwarded-proto":"https","host":"postman-echo.com","accept-encoding":"gzip","user-agent":"okhttp/3.14.2","x-forwarded-port":"443"},"url":"https://postman-echo.com/get"}"""
-        assertEquals(expected, response)
+
+        assertThat(response).matches(expectedRegex)
     }
 
     @Test
     fun `gets response as json # ext`() {
         val response = getUrl.httpGet().asJson().toString()
-        val expected = json {
+        val expectedRegex = json {
             "args" to json { }
             "headers" to json {
                 "x-forwarded-proto" to "https"
                 "host" to "postman-echo.com"
                 "accept-encoding" to "gzip"
-                "user-agent" to "okhttp/3.14.2"
+                "user-agent" to "okhttp/[0-9]*.[0-9]*.[0-9]*"
                 "x-forwarded-port" to "443"
             }
             "url" to getUrl
-        }
-        assertEquals(response, expected)
+        }.escape()
+
+        assertThat(response).matches(expectedRegex)
     }
 
     @Test
     fun `streams response # ext`() {
         val response = "https://postman-echo.com/stream/2".httpGet().asStream()
-        val arr = response?.readBytes()
-        val actual = arr?.let { String(it) }
-        val expected = """{
+                ?.readBytes()?.let { String(it) }
+
+        val expectedRegex = """{
         |  "args": {
         |    "n": "2"
         |  },
@@ -92,7 +108,7 @@ class ResponseExtKtTest {
         |    "x-forwarded-proto": "https",
         |    "host": "postman-echo.com",
         |    "accept-encoding": "gzip",
-        |    "user-agent": "okhttp/3.14.2",
+        |    "user-agent": "okhttp/[0-9]*.[0-9]*.[0-9]*",
         |    "x-forwarded-port": "443"
         |  },
         |  "url": "https://postman-echo.com/stream/2"
@@ -104,13 +120,18 @@ class ResponseExtKtTest {
         |    "x-forwarded-proto": "https",
         |    "host": "postman-echo.com",
         |    "accept-encoding": "gzip",
-        |    "user-agent": "okhttp/3.14.2",
+        |    "user-agent": "okhttp/[0-9]*.[0-9]*.[0-9*]",
         |    "x-forwarded-port": "443"
         |  },
         |  "url": "https://postman-echo.com/stream/2"
-        |}""".trimMargin("|")
-        assertEquals(actual, expected)
+        |}"""
+                .trimMargin("|")
+                .escape()
 
-
+        assertThat(response).matches(expectedRegex)
     }
 }
+
+private fun String.escape(): String = replace("/", "\\/")
+        .replace("{", "\\{")
+        .replace("}", "\\}")

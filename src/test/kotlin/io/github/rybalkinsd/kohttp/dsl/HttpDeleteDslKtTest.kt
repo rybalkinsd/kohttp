@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.assertResponses
+import io.github.rybalkinsd.kohttp.assertContainsAtLeast
+import io.github.rybalkinsd.kohttp.assertContainsExactly
 import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -50,9 +51,9 @@ class HttpDeleteDslKtTest {
             }
         }.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
-            assertResponses(expectedForm, parsedResponse["form"])
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+            assertContainsExactly(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
         }
     }
@@ -99,9 +100,9 @@ class HttpDeleteDslKtTest {
 
         response.use {
             val parsedResponse = it.asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
-            assertResponses(expectedJson, parsedResponse["json"])
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+            assertContainsExactly(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
     }

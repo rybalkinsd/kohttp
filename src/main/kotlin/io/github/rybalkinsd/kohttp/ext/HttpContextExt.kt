@@ -14,10 +14,18 @@ fun HttpContext.url(url: URL) {
 
     host = url.host ?: throw IllegalArgumentException("unexpected host: $host")
 
-    if (url.port != -1) {
+    if (url.port != -1)
         port = url.port
-    }
+
     path = url.path
+
+    if (url.query?.isNotBlank() == true) {
+        param {
+            url.query.split("&")
+                    .map { it.split("=", limit = 2) }
+                    .forEach { it[0] to it.getOrNull(1) }
+        }
+    }
 }
 
 /**
