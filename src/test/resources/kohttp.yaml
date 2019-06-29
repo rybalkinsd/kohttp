@@ -7,3 +7,6 @@ client:
   connectionPool:
     maxIdleConnections: 42
     keepAliveDuration: 10000
+  dispatcher:
+    maxRequests: 256
+    maxRequestsPerHost: 256

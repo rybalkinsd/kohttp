@@ -12,12 +12,12 @@ Kotlin DSL http client
 
 gradle kotlin DSL:
 ```kotlin
-compile(group = "io.github.rybalkinsd", name = "kohttp", version = "0.8.0")
+implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.10.0")
 ```
 
 gradle groovy DSL:
 ```groovy
-compile 'io.github.rybalkinsd:kohttp:0.8.0'
+implementation 'io.github.rybalkinsd:kohttp:0.10.0'
 ```
 
 maven:
@@ -25,7 +25,7 @@ maven:
 <dependency>
   <groupId>io.github.rybalkinsd</groupId>
   <artifactId>kohttp</artifactId>
-  <version>0.8.0</version>
+  <version>0.10.0</version>
 </dependency>
 ```
 
@@ -216,13 +216,18 @@ val response = httpDelete { }
 ### Upload files
 
 #### Upload DSL
-You can upload file by `URI` or `File` 
+You can upload file by `URI` or `File` . Upload DSL can include `headers` and `params`.
 ```kotlin
 val fileUri = this.javaClass.getResource("/cat.gif").toURI()
 
 val response = upload {
     url("http://postman-echo.com/post")
     file(fileUri)
+    headers {
+            ...
+            cookies {...}
+        }
+    params {...}
 }
 ```
 
@@ -243,21 +248,53 @@ val response = fileUri.upload( string or url )
 
 #### async GET
 
-##### `String.asyncHttpGet()` extension function
-This function starts a new coroutine with *Unconfined* dispatcher. 
+##### `String.httpGetAsync()` extension function
+This function starts a new coroutine with *Unconfined* dispatcher.
 
 ```kotlin
-val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+val response: Deferred<Response> = "https://google.com/search?q=iphone".httpGetAsync()
 ```
 
-##### `asyncHttpGet` call
+##### `httpGetAsync` call
+
+You can use same syntax as in [GET](#get)
 ```kotlin
-val response: Deferred<Response> = asyncHttpGet {
-    host = "google.com"
-    path = "/search"
-    header { ... }
-    param { ... }
-}
+val response: Deferred<Response> = httpGetAsync { }
+```
+
+#### async POST
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpPostAsync { }
+```
+
+#### async HEAD
+
+You can use same syntax as in [GET](#get)
+```kotlin
+val response: Deferred<Response> = httpHeadAsync { }
+```
+
+#### async PUT
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpPutAsync { }
+```
+
+#### async PATCH
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpPatchAsync { }
+```
+
+#### async DELETE
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpDeleteAsync { }
 ```
 
 ### Response usage
@@ -271,6 +308,19 @@ reponse.use {
     ...
 }
 ```
+
+Response body can be retrieved as a `JSON`, `String` or `InputStream` using provided extension functions on `Response`.
+
+```kotlin
+val response = httpGet { ... }
+
+val dataAsJson: JsonNode = response.asJson()
+
+val dataAsString: String? = response.asString()
+
+val dataAsStream: InputStream? = response.asStream()
+
+``` 
 
 ### Interceptors
 Kohttp provides a DSL to add interceptors. Custom Interceptors can be defined by implementing the `okhttp3.Interceptors`. Interceptors are added by forking the `defaultHttpClient`. 
@@ -303,6 +353,28 @@ val forkedClient = defaultHttpClient.fork {
     ```
     
     Sample Output: `[2019-01-28T04:17:42.885Z] GET 200 - 1743ms https://postman-echo.com/get`
+    
+*   Retry Interceptor:
+    Provides a configurable method to retry on specific errors.
+    
+    Parameters:
+    
+    1. `failureThreshold: Int`:  Number of attempts to get response with. Defaults to `3`.
+    2. `invocationTimeout: Long`: timeout (millisecond) before retry. Defaults to `0`
+    3. `ratio: Int`: ratio for exponential increase of invocation timeout. Defaults to `1`
+    4. `errorStatuses: List<Int>`: HTTP status codes to be retried on. Defaults to listOf(503, 504)  
+    
+    Usage: 
+        
+        ```kotlin
+        val client = defaultHttpClient.fork {
+                        interceptors {
+                            ...
+                            +RetryInterceptor()
+                            ...
+                        }
+                    }
+        ```
     
 *   Signing Interceptor:
     Enables signing of query parameters. Allowing creation of presigned URLs. 

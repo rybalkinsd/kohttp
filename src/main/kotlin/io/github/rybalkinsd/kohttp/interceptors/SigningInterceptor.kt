@@ -21,18 +21,18 @@ import okhttp3.Response
 class SigningInterceptor(private val parameterName: String, private val signer: HttpUrl.() -> String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response =
 
-            with(chain.request()) {
-                val signedKey = signer(url())
+        with(chain.request()) {
+            val signedKey = signer(url())
 
-                val requestUrl = with(url().newBuilder()) {
-                    addQueryParameter(parameterName, signedKey)
-                    build()
-                }
-
-                with(newBuilder()) {
-                    url(requestUrl)
-                    chain.proceed(build())
-                }
+            val requestUrl = with(url().newBuilder()) {
+                addQueryParameter(parameterName, signedKey)
+                build()
             }
+
+            with(newBuilder()) {
+                url(requestUrl)
+                chain.proceed(build())
+            }
+        }
 }
 

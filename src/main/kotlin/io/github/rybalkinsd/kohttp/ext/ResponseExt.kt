@@ -1,5 +1,7 @@
 package io.github.rybalkinsd.kohttp.ext
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.Handshake
 import okhttp3.Protocol
 import okhttp3.Request
@@ -31,20 +33,20 @@ import okhttp3.Response
  * @author sergey
  */
 fun Response.eager() = EagerResponse(
-        request = request(),
-        protocol = protocol(),
-        code = code(),
-        message = message(),
-        handshake = handshake(),
-        headers = (0 until headers().size()).map {
-            Header(headers().name(it), headers().value(it))
-        },
-        body = body()?.string(),
-        networkResponse = networkResponse(),
-        cacheResponse = cacheResponse(),
-        priorResponse = priorResponse(),
-        sentRequestAtMillis = sentRequestAtMillis(),
-        receivedResponseAtMillis = receivedResponseAtMillis()
+    request = request(),
+    protocol = protocol(),
+    code = code(),
+    message = message(),
+    handshake = handshake(),
+    headers = (0 until headers().size()).map {
+        Header(headers().name(it), headers().value(it))
+    },
+    body = body()?.string(),
+    networkResponse = networkResponse(),
+    cacheResponse = cacheResponse(),
+    priorResponse = priorResponse(),
+    sentRequestAtMillis = sentRequestAtMillis(),
+    receivedResponseAtMillis = receivedResponseAtMillis()
 )
 
 /**
@@ -57,18 +59,18 @@ fun Response.eager() = EagerResponse(
  * @author sergey
  */
 data class EagerResponse(
-        val request: Request,
-        val protocol: Protocol,
-        val code: Int,
-        val message: String,
-        val handshake: Handshake?,
-        val headers: List<Header>,
-        val body: String?,
-        val networkResponse: Response?,
-        val cacheResponse: Response?,
-        val priorResponse: Response?,
-        val sentRequestAtMillis: Long,
-        val receivedResponseAtMillis: Long
+    val request: Request,
+    val protocol: Protocol,
+    val code: Int,
+    val message: String,
+    val handshake: Handshake?,
+    val headers: List<Header>,
+    val body: String?,
+    val networkResponse: Response?,
+    val cacheResponse: Response?,
+    val priorResponse: Response?,
+    val sentRequestAtMillis: Long,
+    val receivedResponseAtMillis: Long
 )
 
 /**
@@ -76,3 +78,40 @@ data class EagerResponse(
  * @author sergey
  */
 data class Header(val name: String, val value: String)
+
+internal val stringMapper: ObjectMapper by lazy { ObjectMapper() }
+
+
+/**
+ * Returns Response Body as JSON.If Response is `null` it returns a empty JSON
+ *
+ * @return JsonNode.
+ * @since 0.9.0
+ * @author gokul
+ */
+
+fun Response.asJson(): JsonNode = with(body()?.string()) {
+    if (isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)
+}
+
+
+/**
+ * Returns Response Body as String.
+ *
+ * @return Response body as a `String?`.
+ * @since 0.9.0
+ * @author gokul
+ */
+
+fun Response.asString() = body()?.string()
+
+/**
+ *  Returns Response Body as a Stream.
+ *
+ * @return Response body as a `InputStream?`.
+ * @since 0.9.0
+ * @author gokul
+ */
+
+fun Response.asStream() = body()?.byteStream()
+

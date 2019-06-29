@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.ext
 
+import kotlinx.coroutines.Deferred
 import okhttp3.Response
 import java.io.File
 import java.net.URL
@@ -22,3 +23,21 @@ fun File.upload(destination: String): Response = io.github.rybalkinsd.kohttp.dsl
     file(this@upload)
 }
 
+
+/**
+ * @since 0.10.0
+ * @author evgeny
+ */
+fun File.uploadAsync(destination: URL): Deferred<Response> = io.github.rybalkinsd.kohttp.dsl.async.uploadAsync {
+    url(destination)
+    file(this@uploadAsync)
+}
+
+/**
+ * @since 0.10.0
+ * @author evgeny
+ */
+fun File.uploadAsync(destination: String): Deferred<Response> = io.github.rybalkinsd.kohttp.dsl.async.uploadAsync {
+    url(destination)
+    file(this@uploadAsync)
+}

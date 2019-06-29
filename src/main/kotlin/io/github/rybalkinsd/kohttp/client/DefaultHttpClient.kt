@@ -1,8 +1,10 @@
 package io.github.rybalkinsd.kohttp.client
 
 import io.github.rybalkinsd.kohttp.configuration.ConnectionPoolConfig
+import io.github.rybalkinsd.kohttp.configuration.DispatcherConfig
 import io.github.rybalkinsd.kohttp.configuration.config
 import okhttp3.ConnectionPool
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
@@ -37,7 +39,15 @@ val defaultHttpClient: OkHttpClient = config.client.let {
         writeTimeout = it.writeTimeout
         followRedirects = it.followRedirects
         followSslRedirects = it.followSslRedirects
+        dispatcher = it.dispatcher.create()
     }
 }
 
-private fun ConnectionPoolConfig.create() = ConnectionPool(maxIdleConnections, keepAliveDuration, TimeUnit.MILLISECONDS)
+private fun DispatcherConfig.create() =
+    Dispatcher().apply {
+        this.maxRequests = this@create.maxRequests
+        this.maxRequestsPerHost = this@create.maxRequestsPerHost
+    }
+
+private fun ConnectionPoolConfig.create() =
+    ConnectionPool(maxIdleConnections, keepAliveDuration, TimeUnit.MILLISECONDS)

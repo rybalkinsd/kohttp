@@ -2,7 +2,7 @@ package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers.Unconfined
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import okhttp3.Call
@@ -49,7 +49,7 @@ fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
  * value that may be consumed only once and then closed. All other properties are immutable.
  *
  * Usage example:
- * val response = "http://host:port/path/?a=b".asyncHttpGet()
+ * val response = "http://host:port/path/?a=b".httpGetAsync()
  * ...
  * response.await().use {
  *    your code here
@@ -61,8 +61,19 @@ fun String.httpGet(client: Call.Factory = defaultHttpClient): Response =
  * @since 0.1.0
  * @author sergey
  */
-fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
-    GlobalScope.async(context = Unconfined) {
-        client.suspendCall(Request.Builder().url(this@asyncHttpGet).build())
+fun String.httpGetAsync(client: Call.Factory = defaultHttpClient): Deferred<Response> =
+    GlobalScope.async(context = Dispatchers.Unconfined) {
+        client.suspendCall(Request.Builder().url(this@httpGetAsync).build())
     }
+
+@Suppress("DeferredIsResult")
+@Deprecated(
+    message = "Use httpGetAsync instead. This function was renamed according to Kotlin Style Guide." +
+        "This function will be removed in version 0.12.0",
+    replaceWith = ReplaceWith(
+        "httpGetAsync(client)",
+        "io.github.rybalkinsd.kohttp.dsl.async.httpGetAsync")
+)
+fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
+    httpGetAsync(client)
 

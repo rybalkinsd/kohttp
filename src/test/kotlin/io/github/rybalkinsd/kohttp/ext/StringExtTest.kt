@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 /**
  * @author sergey
  */
-class StringExtKtTest {
+class StringExtTest {
 
     @Test
     fun `single sync invoke of httpGet`() {

@@ -1,7 +1,8 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.assertResponses
-import io.github.rybalkinsd.kohttp.util.asJson
+import io.github.rybalkinsd.kohttp.assertContainsAtLeast
+import io.github.rybalkinsd.kohttp.assertContainsExactly
+import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -13,17 +14,17 @@ class HttpDeleteDslKtTest {
     @Test
     fun `delete request with form # postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
         val expectedForm = mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
 
         httpDelete {
@@ -49,10 +50,10 @@ class HttpDeleteDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.body()?.string().asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
-            assertResponses(expectedForm, parsedResponse["form"])
+            val parsedResponse = it.asJson()
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+            assertContainsExactly(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
         }
     }
@@ -60,17 +61,17 @@ class HttpDeleteDslKtTest {
     @Test
     fun `delete request with json # postman echo`() {
         val expectedHeader = mapOf(
-                "one" to "42",
-                "cookie" to "aaa=bbb; ccc=42"
+            "one" to "42",
+            "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-                "arg" to "iphone"
+            "arg" to "iphone"
         )
 
-        val expectedJson= mapOf(
-                "login" to "user",
-                "email" to "john.doe@gmail.com"
+        val expectedJson = mapOf(
+            "login" to "user",
+            "email" to "john.doe@gmail.com"
         )
 
         val response = httpDelete {
@@ -98,10 +99,10 @@ class HttpDeleteDslKtTest {
         }
 
         response.use {
-            val parsedResponse = it.body()?.string().asJson()
-            assertResponses(expectedHeader, parsedResponse["headers"])
-            assertResponses(expectedParams, parsedResponse["args"])
-            assertResponses(expectedJson, parsedResponse["json"])
+            val parsedResponse = it.asJson()
+            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+            assertContainsExactly(expectedParams, parsedResponse["args"])
+            assertContainsExactly(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
     }
