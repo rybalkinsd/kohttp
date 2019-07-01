@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "io.github.rybalkinsd"
-version = "0.10.0-SNAPSHOT"
+version = "0.10.0"
 
 repositories {
     mavenCentral()
