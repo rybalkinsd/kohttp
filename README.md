@@ -12,12 +12,12 @@ Kotlin DSL http client
 
 gradle kotlin DSL:
 ```kotlin
-implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.9.0")
+implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.10.0")
 ```
 
 gradle groovy DSL:
 ```groovy
-implementation 'io.github.rybalkinsd:kohttp:0.9.0'
+implementation 'io.github.rybalkinsd:kohttp:0.10.0'
 ```
 
 maven:
@@ -25,7 +25,7 @@ maven:
 <dependency>
   <groupId>io.github.rybalkinsd</groupId>
   <artifactId>kohttp</artifactId>
-  <version>0.9.0</version>
+  <version>0.10.0</version>
 </dependency>
 ```
 
@@ -248,21 +248,53 @@ val response = fileUri.upload( string or url )
 
 #### async GET
 
-##### `String.asyncHttpGet()` extension function
-This function starts a new coroutine with *Unconfined* dispatcher. 
+##### `String.httpGetAsync()` extension function
+This function starts a new coroutine with *Unconfined* dispatcher.
 
 ```kotlin
-val response: Deferred<Response> = "https://google.com/search?q=iphone".asyncHttpGet()
+val response: Deferred<Response> = "https://google.com/search?q=iphone".httpGetAsync()
 ```
 
-##### `asyncHttpGet` call
+##### `httpGetAsync` call
+
+You can use same syntax as in [GET](#get)
 ```kotlin
-val response: Deferred<Response> = asyncHttpGet {
-    host = "google.com"
-    path = "/search"
-    header { ... }
-    param { ... }
-}
+val response: Deferred<Response> = httpGetAsync { }
+```
+
+#### async POST
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpPostAsync { }
+```
+
+#### async HEAD
+
+You can use same syntax as in [GET](#get)
+```kotlin
+val response: Deferred<Response> = httpHeadAsync { }
+```
+
+#### async PUT
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpPutAsync { }
+```
+
+#### async PATCH
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpPatchAsync { }
+```
+
+#### async DELETE
+
+You can use same syntax as in [POST](#post)
+```kotlin
+val response: Deferred<Response> = httpDeleteAsync { }
 ```
 
 ### Response usage

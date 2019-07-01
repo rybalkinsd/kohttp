@@ -21,7 +21,7 @@ class HttpHeadDslKtTest {
                 "text" to "iphone"
                 "lr" to 213
             }
-        }.also { println(it) }
+        }
 
         response.use {
             assertEquals(200, it.code())

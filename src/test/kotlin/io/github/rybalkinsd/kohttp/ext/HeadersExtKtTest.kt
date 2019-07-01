@@ -6,6 +6,13 @@ import kotlin.test.assertEquals
 
 class HeadersExtKtTest {
 
+    val headers: Headers = Headers.Builder()
+            .add("zero", "0")
+            .add("one", "1")
+            .add("two", "2")
+            .add("three", "3")
+            .build()
+
     @Test
     fun `iterating with asSequence`() {
         headers.asSequence().forEachIndexed { index, header ->
@@ -20,12 +27,11 @@ class HeadersExtKtTest {
         assertEquals(3, sum)
     }
 
-    companion object {
-        val headers = Headers.Builder()
-            .add("zero", "0")
-            .add("one", "1")
-            .add("two", "2")
-            .add("three", "3")
-            .build()
+    @Test(expected = NoSuchElementException::class)
+    fun `headers does not have 5 elements`() {
+        val iterator = headers.asSequence().iterator()
+        repeat(5) {
+            iterator.next()
+        }
     }
 }

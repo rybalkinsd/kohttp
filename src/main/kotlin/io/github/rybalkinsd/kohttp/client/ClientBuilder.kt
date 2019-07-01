@@ -74,7 +74,7 @@ interface ClientBuilder : ForkClientBuilder {
 
 interface ForkClientBuilder {
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var interceptors:  List<Interceptor>
+    var interceptors: List<Interceptor>
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var networkInterceptors: List<Interceptor>

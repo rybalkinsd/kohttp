@@ -59,6 +59,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         path?.let { encodedPath(it) }
         paramContext.forEach { k, v ->
             when (v) {
+                null -> addQueryParameter(k, null)
                 is List<*> -> v.forEach { addQueryParameter(k, it.toString()) }
                 else -> addQueryParameter(k, v.toString())
             }

@@ -49,7 +49,7 @@ class RetryInterceptorTest {
     fun `retry 5 times if socket timeout exception`() {
         val numOfRetry = 5
         createExpectationForGetWithResponseCode(numOfRetry + 1, 200, 10)
-        val retryInterceptor = spyk(RetryInterceptor(failureThreshold = numOfRetry))
+        val retryInterceptor = spyk(RetryInterceptor(failureThreshold = numOfRetry, invocationTimeout = 100))
         try {
             getCall(getHttpClientWithConnectTimeoutAndInterceptors(retryInterceptor, 1))
         } catch (ignored: SocketTimeoutException) {
@@ -93,7 +93,7 @@ class RetryInterceptorTest {
     @Test
     fun `delay increase with step`() {
         val retryInterceptor = RetryInterceptor(ratio = 2)
-        var invocationTimeout: Long = 1000
+        val invocationTimeout: Long = 1000
         assert(retryInterceptor.performAndReturnDelay(invocationTimeout) == invocationTimeout * 2)
         assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 2) == invocationTimeout * 4)
         assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 4) == invocationTimeout * 8)
