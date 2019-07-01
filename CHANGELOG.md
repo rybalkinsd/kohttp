@@ -37,4 +37,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - pass
  
 ### Big thanks 
- @deviantBadge, @dtropanets, @gokulchandra for your contribution   
+ [@deviantBadge](https://github.com/DeviantBadge), 
+ [@dtropanets](https://github.com/dtropanets), 
+ [@gokulchandra](https://github.com/gokulchandra) for your contribution   
+ 
+ 
+ 
+[Unreleased]: https://github.com/rybalkinsd/kohttp/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/rybalkinsd/kohttp/pull/121
