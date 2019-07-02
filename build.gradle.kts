@@ -3,15 +3,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.3.40"
     jacoco
+//    fixme after https://youtrack.jetbrains.com/issue/KT-31710
+//    id("org.jetbrains.dokka") version "0.9.16"
 
-    id("org.jetbrains.dokka") version "0.9.16"
     `maven-publish`
     signing
 
 }
 
 group = "io.github.rybalkinsd"
-version = "0.10.0"
+version = "0.11.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -21,6 +22,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.2.1")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", "1.2.1")
 
     val jacksonVersion = "2.9.9"
     implementation(jackson("core"), "jackson-databind", jacksonVersion)
@@ -36,11 +38,11 @@ dependencies {
 }
 
 configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 tasks.withType<JacocoReport> {
@@ -56,11 +58,11 @@ val sourcesJar = task<Jar>("sourcesJar") {
     classifier = "sources"
 }
 
-val dokkaJar = task<Jar>("dokkaJar") {
-    group = JavaBasePlugin.DOCUMENTATION_GROUP
-    from(tasks.dokka)
-    classifier = "javadoc"
-}
+//val dokkaJar = task<Jar>("dokkaJar") {
+//    group = JavaBasePlugin.DOCUMENTATION_GROUP
+//    from(tasks.dokka)
+//    classifier = "javadoc"
+//}
 
 publishing {
     publications {
@@ -68,7 +70,7 @@ publishing {
             from(components["java"])
             artifacts {
                 artifact(sourcesJar)
-                artifact(dokkaJar)
+//                artifact(dokkaJar)
             }
 
             pom {
