@@ -1,9 +1,7 @@
 package io.github.rybalkinsd.kohttp.ext
 
-import io.github.rybalkinsd.kohttp.ext.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.io.File
 import java.net.URL
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -11,12 +9,12 @@ import kotlin.test.assertTrue
 /**
  * @author evgeny
  */
-class FileAsyncExtTest {
+class UriAsyncExtTest {
 
     @Test
-    fun `async upload file using File and string destination`() {
-        val file = File(this.javaClass.getResource("/cat.gif").toURI())
-        val response = file.uploadAsync("http://postman-echo.com/post")
+    fun `async upload file using URI and string destination`() {
+        val fileUri = this.javaClass.getResource("/cat.gif").toURI()
+        val response = fileUri.uploadAsync("http://postman-echo.com/post")
 
         runBlocking {
             response.await().use {
@@ -30,9 +28,9 @@ class FileAsyncExtTest {
     }
 
     @Test
-    fun `async upload file using File and URL destination`() {
-        val file = File(this.javaClass.getResource("/cat.gif").toURI())
-        val response = file.uploadAsync(URL("http://postman-echo.com/post"))
+    fun `async upload file using URI and URL destination`() {
+        val fileUri = this.javaClass.getResource("/cat.gif").toURI()
+        val response = fileUri.uploadAsync(URL("http://postman-echo.com/post"))
 
         runBlocking {
             response.await().use {

@@ -72,7 +72,7 @@ fun String.httpGetAsync(client: Call.Factory = defaultHttpClient): Deferred<Resp
         "This function will be removed in version 0.12.0",
     replaceWith = ReplaceWith(
         "httpGetAsync(client)",
-        "io.github.rybalkinsd.kohttp.dsl.async.httpGetAsync")
+        "httpGetAsync")
 )
 fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
     httpGetAsync(client)

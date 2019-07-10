@@ -18,7 +18,7 @@ import okhttp3.Response
         "This function will be removed in version 0.12.0",
     replaceWith = ReplaceWith(
         "httpGetAsync(client, init)",
-        "io.github.rybalkinsd.kohttp.dsl.async.httpGetAsync")
+        "httpGetAsync")
 )
 fun asyncHttpGet(client: Call.Factory = defaultHttpClient, init: HttpGetContext.() -> Unit): Deferred<Response> =
     httpGetAsync(client, init)
