@@ -415,7 +415,7 @@ Kohttp provides a `defaultClientPool` to have a single endpoint for your http re
 
 It is possible to customize `defaultClientPool` by setting `kohttp.yaml` in resource directory of your project.
 
-You can check default values in `io.github.rybalkinsd.kohttp.configuration.Config.kt`
+You can check default values in `Config.kt`
 *All time values are in Milliseconds*
 
 
