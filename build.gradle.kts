@@ -14,6 +14,7 @@ allprojects {
     group = "io.github.rybalkinsd"
     version = "0.11.0-SNAPSHOT"
 
+
     repositories {
         mavenCentral()
     }
@@ -21,14 +22,11 @@ allprojects {
 
 subprojects {
     apply(plugin = "kotlin")
-
+    
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
     }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
-    }
 
 //    val sourcesJar = task<Jar>("sourcesJar") {
 //        from(sourceSets.main.get().allJava)

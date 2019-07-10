@@ -1,7 +1,5 @@
 package io.github.rybalkinsd.kohttp.ext
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.Handshake
 import okhttp3.Protocol
 import okhttp3.Request
@@ -79,7 +77,7 @@ data class EagerResponse(
  */
 data class Header(val name: String, val value: String)
 
-internal val stringMapper: ObjectMapper by lazy { ObjectMapper() }
+
 
 
 /**
@@ -90,9 +88,6 @@ internal val stringMapper: ObjectMapper by lazy { ObjectMapper() }
  * @author gokul
  */
 
-fun Response.asJson(): JsonNode = with(body()?.string()) {
-    if (isNullOrBlank()) stringMapper.readTree("{}") else stringMapper.readTree(this)
-}
 
 
 /**
