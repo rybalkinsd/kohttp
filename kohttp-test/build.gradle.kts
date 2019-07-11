@@ -1,0 +1,8 @@
+dependencies {
+    testImplementation(kotlin("stdlib-jdk8"))
+    testImplementation(project(":kohttp-core"))
+    testImplementation(project(":kohttp-jackson"))
+
+    testImplementation(kotlin("test-junit"))
+    testImplementation("org.assertj:assertj-core:3.12.2")
+}

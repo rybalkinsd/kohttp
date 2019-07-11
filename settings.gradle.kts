@@ -1,4 +1,5 @@
 rootProject.name = "kohttp"
 
-include("kohttp-core")
 include("kohttp-jackson")
+include("kohttp-core")
+include("kohttp-test")
