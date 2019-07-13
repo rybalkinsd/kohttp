@@ -8,13 +8,24 @@ import java.net.URL
  * @author sergey
  */
 fun HttpContext.url(url: URL) {
-    if (url.protocol != "http" && url.protocol != "https") throw IllegalArgumentException("unexpected scheme: $scheme")
     scheme = url.protocol
+    if (scheme != "http" && scheme != "https")
+        throw IllegalArgumentException("unexpected scheme: $scheme")
 
     host = url.host ?: throw IllegalArgumentException("unexpected host: $host")
 
-    if (url.port != -1) { port = url.port }
+    if (url.port != -1)
+        port = url.port
+
     path = url.path
+
+    if (url.query?.isNotBlank() == true) {
+        param {
+            url.query.split("&")
+                    .map { it.split("=", limit = 2) }
+                    .forEach { it[0] to it.getOrNull(1) }
+        }
+    }
 }
 
 /**
@@ -26,5 +37,5 @@ fun HttpContext.url(url: URL) {
  * @author sergey
  */
 fun HttpContext.url(url: String) {
-    url(java.net.URL(url))
+    url(URL(url))
 }

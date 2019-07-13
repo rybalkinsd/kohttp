@@ -21,11 +21,11 @@ class MultipartBodyContext(type: String?) {
         builder.addFormDataPart(first, second, third)
     }
 
-    fun form(name: String, file: File): FormDataPart
-        = FormDataPart(name, file.name, RequestBody.create(null, file))
+    fun form(name: String, file: File): FormDataPart =
+        FormDataPart(name, file.name, RequestBody.create(null, file))
 
-    fun form(name: String, filename: String, content: ByteArray): FormDataPart
-        = FormDataPart(name, filename, RequestBody.create(null, content))
+    fun form(name: String, filename: String, content: ByteArray): FormDataPart =
+        FormDataPart(name, filename, RequestBody.create(null, content))
 
     fun build(): MultipartBody = builder.build()
 }

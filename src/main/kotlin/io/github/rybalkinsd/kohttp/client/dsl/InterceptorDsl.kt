@@ -5,7 +5,7 @@ import okhttp3.Interceptor
 /**
  * Provides a DSL class to define Interceptors for HTTP Client
  *
- * Usage example using the default `InterceptorsDsl`:
+ * Usage example with default `InterceptorsDsl`:
  *
  * <pre>
  *  val forkedClient = defaultHttpClient.fork {

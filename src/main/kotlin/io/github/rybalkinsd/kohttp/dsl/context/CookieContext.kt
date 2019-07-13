@@ -12,5 +12,5 @@ class CookieContext {
         cookies += Pair(this, v)
     }
 
-    internal fun collect(): String = cookies.joinToString(separator = "; ") { (k, v) -> "$k=$v"}
+    internal fun collect(): String = cookies.joinToString(separator = "; ") { (k, v) -> "$k=$v" }
 }
