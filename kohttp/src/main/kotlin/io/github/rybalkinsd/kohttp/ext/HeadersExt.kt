@@ -17,3 +17,5 @@ fun Headers.asSequence(): Sequence<Header> = Sequence {
         }
     }
 }
+
+typealias Header = Pair<String, String>

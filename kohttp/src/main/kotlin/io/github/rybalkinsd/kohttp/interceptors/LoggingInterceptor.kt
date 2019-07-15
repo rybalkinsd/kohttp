@@ -24,7 +24,7 @@ class LoggingInterceptor(private val log: (String) -> Unit = ::println) : Interc
         return chain.proceed(request).also { response ->
             log("${request.method()} ${response.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
 
-            request.headers().asSequence().forEach { log("${it.name}: ${it.value}") }
+            request.headers().asSequence().forEach { (name, value) ->log("$name: $value") }
 
             Buffer().use {
                 request.body()?.writeTo(it)
