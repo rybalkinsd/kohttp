@@ -4,6 +4,7 @@ import okhttp3.Handshake
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
+import java.io.InputStream
 
 
 /**
@@ -77,25 +78,23 @@ data class EagerResponse(
  */
 data class Header(val name: String, val value: String)
 
-
-
 /**
  * Returns Response Body as String.
  *
  * @return Response body as a `String?`.
+ * !! this function will close `ResponseBody`
  * @since 0.9.0
  * @author gokul
  */
-
-fun Response.asString() = body()?.string()
+fun Response.asString(): String? = body()?.use { it.string() }
 
 /**
- *  Returns Response Body as a Stream.
+ * Returns Response Body as a Stream.
+ *
  *
  * @return Response body as a `InputStream?`.
+ * !! response stream must be closed after use !!
  * @since 0.9.0
  * @author gokul
  */
-
-fun Response.asStream() = body()?.byteStream()
-
+fun Response.asStream(): InputStream? = body()?.byteStream()
