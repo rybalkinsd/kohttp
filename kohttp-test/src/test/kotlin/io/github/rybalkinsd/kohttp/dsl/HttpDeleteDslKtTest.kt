@@ -1,8 +1,9 @@
 package io.github.rybalkinsd.kohttp.dsl
 
+import io.github.rybalkinsd.kohttp.dsl.httpDelete
+import io.github.rybalkinsd.kohttp.jackson.ext.asJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
-import io.github.rybalkinsd.kohttp.ext.asJson
 import org.junit.Test
 import kotlin.test.assertEquals
 

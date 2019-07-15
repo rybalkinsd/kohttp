@@ -1,5 +1,6 @@
-package io.github.rybalkinsd.kohttp.ext
+package io.github.rybalkinsd.kohttp.jackson.ext
 
+import io.github.rybalkinsd.kohttp.ext.httpGet
 import io.github.rybalkinsd.kohttp.util.json
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

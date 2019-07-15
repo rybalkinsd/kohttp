@@ -1,6 +1,6 @@
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    api(project(":kohttp-core"))
+    api(project(":kohttp"))
 
     val jacksonVersion = "2.9.9"
     api(jackson("core"), "jackson-databind", jacksonVersion)
@@ -8,7 +8,6 @@ dependencies {
 
     testImplementation(kotlin("test-junit"))
     testImplementation("org.assertj:assertj-core:3.12.2")
-
 }
 
 fun jackson(pack: String) = "com.fasterxml.jackson.$pack"

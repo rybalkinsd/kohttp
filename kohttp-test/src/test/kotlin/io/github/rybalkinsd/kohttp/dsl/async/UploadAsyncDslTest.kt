@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
-import io.github.rybalkinsd.kohttp.ext.asJson
+import io.github.rybalkinsd.kohttp.dsl.async.uploadAsync
+import io.github.rybalkinsd.kohttp.jackson.ext.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test

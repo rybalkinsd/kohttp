@@ -1,5 +1,7 @@
 package io.github.rybalkinsd.kohttp.ext
 
+import io.github.rybalkinsd.kohttp.ext.upload
+import io.github.rybalkinsd.kohttp.jackson.ext.asJson
 import org.junit.Test
 import java.io.File
 import java.net.URL
