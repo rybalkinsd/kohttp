@@ -79,17 +79,6 @@ data class Header(val name: String, val value: String)
 
 
 
-
-/**
- * Returns Response Body as JSON.If Response is `null` it returns a empty JSON
- *
- * @return JsonNode.
- * @since 0.9.0
- * @author gokul
- */
-
-
-
 /**
  * Returns Response Body as String.
  *

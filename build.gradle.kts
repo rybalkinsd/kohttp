@@ -1,19 +1,19 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.40" apply false
-    jacoco
+    kotlin("jvm") version "1.3.40"
 
-    id("org.jetbrains.dokka") version "0.9.16" apply false
+    jacoco
+    id("org.jetbrains.dokka") version "0.9.16"
     `maven-publish`
     signing
-
 }
 
 allprojects {
+    apply(plugin = "jacoco")
+
     group = "io.github.rybalkinsd"
     version = "0.11.0-SNAPSHOT"
-
 
     repositories {
         mavenCentral()
@@ -21,99 +21,117 @@ allprojects {
     }
 }
 
+val notToPublish = listOf("kohttp-test")
+
 subprojects {
     apply(plugin = "kotlin")
-    apply(plugin = "org.jetbrains.dokka")
-    apply(plugin = "maven-publish")
-    apply(plugin = "signing")
-    
+
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
     }
 
+    val sourceSets = the<SourceSetContainer>()
 
-    val sourcesJar = task<Jar>("sourcesJar") {
-        from(this.source)
-        classifier = "sources"
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
+        getByName("test").java.srcDirs("src/main/kotlin")
     }
 
-//    val dokkaJar by tasks
+    if (project.name !in notToPublish) {
+        apply(plugin = "org.jetbrains.dokka")
+        apply(plugin = "maven-publish")
+        apply(plugin = "signing")
 
-//    val dokkaJar = task<Jar>("dokkaJar") {
-//        group = JavaBasePlugin.DOCUMENTATION_GROUP
-//        from(tasks.dokka)
-//        classifier = "javadoc"
-//    }
+        val sourcesJar = task<Jar>("sourcesJar") {
+            from(sourceSets["main"].allSource)
+            classifier = "sources"
+        }
 
-    publishing {
-        publications {
-            create<MavenPublication>("kohttp") {
-                from(components["java"])
-                artifacts {
-                    artifact(sourcesJar)
-//                    artifact(dokkaJar)
-                }
+        val dokkaJar = task<Jar>("dokkaJar") {
+            group = JavaBasePlugin.DOCUMENTATION_GROUP
+            classifier = "javadoc"
+        }
 
-                pom {
-                    name.set("Kotlin http dsl")
-                    description.set("Kotlin http dsl based on okhttp")
-                    url.set("https://github.com/rybalkinsd/kohttp")
-                    organization {
-                        name.set("io.github.rybalkinsd")
-                        url.set("https://github.com/rybalkinsd")
+        publishing {
+            publications {
+                create<MavenPublication>("kohttp") {
+                    from(components["java"])
+                    artifacts {
+                        artifact(sourcesJar)
+                        artifact(dokkaJar)
                     }
-                    licenses {
-                        license {
-                            name.set("Apache License 2.0")
-                            url.set("https://github.com/rybalkinsd/kohttp/blob/master/LICENSE")
-                        }
-                    }
-                    scm {
+
+                    pom {
+                        name.set("Kotlin http dsl")
+                        description.set("Kotlin http dsl based on okhttp")
                         url.set("https://github.com/rybalkinsd/kohttp")
-                        connection.set("scm:git:git://github.com/rybalkinsd/kohttp.git")
-                        developerConnection.set("scm:git:ssh://git@github.com:rybalkinsd/kohttp.git")
-                    }
-                    developers {
-                        developer {
-                            name.set("Sergey")
+                        organization {
+                            name.set("io.github.rybalkinsd")
+                            url.set("https://github.com/rybalkinsd")
+                        }
+                        licenses {
+                            license {
+                                name.set("Apache License 2.0")
+                                url.set("https://github.com/rybalkinsd/kohttp/blob/master/LICENSE")
+                            }
+                        }
+                        scm {
+                            url.set("https://github.com/rybalkinsd/kohttp")
+                            connection.set("scm:git:git://github.com/rybalkinsd/kohttp.git")
+                            developerConnection.set("scm:git:ssh://git@github.com:rybalkinsd/kohttp.git")
+                        }
+                        developers {
+                            developer {
+                                name.set("Sergey")
+                            }
                         }
                     }
                 }
-            }
 
-            repositories {
-                maven {
-                    credentials {
-                        val nexusUsername: String? by project
-                        val nexusPassword: String? by project
-                        username = nexusUsername
-                        password = nexusPassword
+                repositories {
+                    maven {
+                        credentials {
+                            val nexusUsername: String? by project
+                            val nexusPassword: String? by project
+                            username = nexusUsername
+                            password = nexusPassword
+                        }
+
+                        val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                        val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+                        url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
                     }
-
-                    val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-                    val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-                    url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
                 }
             }
         }
-    }
 
-    signing {
-        sign(publishing.publications["kohttp"])
+        signing {
+            sign(publishing.publications["kohttp"])
+        }
     }
 
 }
 
 
+tasks.withType<JacocoReport> {
+    val containers = subprojects.map { it.the<SourceSetContainer>()["main"] }
 
+    val output = containers.flatMap { it.output }
+    val sources = containers.flatMap { it.allSource.srcDirs }
 
+    val exec = subprojects.flatMap { it.tasks }
+        .filter { it is Test }
+        .flatMap { files(it) }
+        .filter { it.exists() && it.name.endsWith(".exec") }
 
-//tasks.withType<JacocoReport> {
-//    reports {
-//        xml.isEnabled = true
-//        xml.destination = File("$buildDir/reports/jacoco/report.xml")
-//        html.isEnabled = false
-//    }
-//}
+    additionalSourceDirs.setFrom(sources)
+    sourceDirectories.setFrom(sources)
+    classDirectories.setFrom(output)
+    executionData.setFrom(exec)
 
-
+    reports {
+        xml.isEnabled = true
+        xml.destination = File("$buildDir/reports/jacoco/report.xml")
+        html.isEnabled = false
+    }
+}

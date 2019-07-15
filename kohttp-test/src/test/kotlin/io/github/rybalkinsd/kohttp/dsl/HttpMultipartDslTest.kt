@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.ext.asJson
+import io.github.rybalkinsd.kohttp.dsl.httpPost
+import io.github.rybalkinsd.kohttp.jackson.ext.asJson
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals

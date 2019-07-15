@@ -1,5 +1,7 @@
 package io.github.rybalkinsd.kohttp.ext
 
+import io.github.rybalkinsd.kohttp.ext.uploadAsync
+import io.github.rybalkinsd.kohttp.jackson.ext.asJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.net.URL

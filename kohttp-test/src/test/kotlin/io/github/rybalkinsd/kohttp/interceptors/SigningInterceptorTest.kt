@@ -3,7 +3,8 @@ package io.github.rybalkinsd.kohttp.interceptors
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.httpGet
-import io.github.rybalkinsd.kohttp.ext.asJson
+import io.github.rybalkinsd.kohttp.interceptors.SigningInterceptor
+import io.github.rybalkinsd.kohttp.jackson.ext.asJson
 import org.junit.Test
 import java.security.MessageDigest
 import java.util.*

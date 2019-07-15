@@ -1,6 +1,6 @@
 dependencies {
     testImplementation(kotlin("stdlib-jdk8"))
-    testImplementation(project(":kohttp-core"))
+    testImplementation(project(":kohttp"))
     testImplementation(project(":kohttp-jackson"))
 
     testImplementation(kotlin("test-junit"))
