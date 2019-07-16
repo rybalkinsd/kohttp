@@ -35,3 +35,9 @@ class HeadersExtKtTest {
         }
     }
 }
+
+val Header.name
+    get() = this.first
+
+val Header.value
+    get() = this.second
