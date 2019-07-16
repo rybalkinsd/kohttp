@@ -82,7 +82,9 @@ data class Header(val name: String, val value: String)
  * Returns Response Body as String.
  *
  * @return Response body as a `String?`.
- * !! this function will close `ResponseBody`
+ * <p>
+ * Note: This function will close `ResponseBody`
+ * </p>
  * @since 0.9.0
  * @author gokul
  */
