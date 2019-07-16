@@ -443,28 +443,4 @@ val customClient = client {
 ```
 
 ## Experimental
-
-### Eager response
-Instead of `.use { ... it.body?.string() ... }` it is now possible to read response body as string.
-And also to map `Headers` to `listOf<Header>` to operate them easily.
-
-```kotlin
-val response: EagerResponse = "https://google.com/search?q=iphone".httpGet().eager()
-
-// iterating over headers
-response.headers.forEach { ... }
-
-// manipulating body
-response.body?.let { ... }
-
-```
-
-```kotlin
-val response: EagerResponse = httpGet { }.eager()
-
-// iterating over headers
-response.headers.forEach { ... }
-
-// manipulating body
-response.body?.let { ... }
-```
+### none
