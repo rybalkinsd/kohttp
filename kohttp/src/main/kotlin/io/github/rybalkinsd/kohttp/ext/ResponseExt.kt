@@ -95,7 +95,9 @@ fun Response.asString(): String? = body()?.use { it.string() }
  *
  *
  * @return Response body as a `InputStream?`.
- * !! response stream must be closed after use !!
+ * <p>
+ * Note: Response stream must be closed after use
+ * </p>
  * @since 0.9.0
  * @author gokul
  */
