@@ -178,6 +178,12 @@ httpPost {
 }
 ```
 
+##### Content type priority
+Content type is set according to the following priority levels (higher is prioritized)
+
+1. Form or Json in body :  ```kotlin ... body() { json { ... } } ...```
+2. Custom body type : ```kotlin ... body(myContentType) { ... } ...```
+ 
 ##### POST with multipart body
 ```kotlin
 val response = httpPost {
