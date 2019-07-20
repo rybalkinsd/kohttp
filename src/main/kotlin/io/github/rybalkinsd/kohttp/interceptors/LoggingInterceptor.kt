@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.interceptors
 
 import io.github.rybalkinsd.kohttp.ext.asSequence
+import io.github.rybalkinsd.kohttp.ext.buildCurlCommand
 import okhttp3.Interceptor
 import okhttp3.Response
 import okio.Buffer
@@ -26,12 +27,14 @@ class LoggingInterceptor(
         val request = chain.request()
         val startTime = System.currentTimeMillis()
         return chain.proceed(request).also { response ->
-            log("${request.method()} ${response.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
             if (outputCurlCommand) {
-                //TODO: build curl command
-                val command = "TODO: curl command"
+                val command = request.buildCurlCommand()
+                log("╭--- cURL command -------------------------------")
                 log(command)
+                log("╰--- (copy and paste the above line to a terminal)")
             }
+
+            log("${request.method()} ${response.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
 
             request.headers().asSequence().forEach { log("${it.name}: ${it.value}") }
 
