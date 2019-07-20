@@ -9,7 +9,7 @@ import java.nio.charset.Charset
  *
  * @author doyaaaaaken
  */
-fun Request.buildCurlCommand(): String {
+internal fun Request.buildCurlCommand(): String {
     var compressed = false
     //TODO: test
     return StringBuilder().apply {
