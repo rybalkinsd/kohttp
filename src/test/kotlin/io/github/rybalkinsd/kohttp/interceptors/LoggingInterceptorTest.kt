@@ -55,4 +55,16 @@ class LoggingInterceptorTest {
         assertEquals(200, response.code())
     }
 
+    @Test
+    fun `curl command logging happens without exceptions `() {
+        val client = defaultHttpClient.fork {
+            interceptors {
+                +LoggingInterceptor(true)
+            }
+        }
+
+        val response = "https://postman-echo.com/get".httpGet(client)
+
+        assertEquals(200, response.code())
+    }
 }

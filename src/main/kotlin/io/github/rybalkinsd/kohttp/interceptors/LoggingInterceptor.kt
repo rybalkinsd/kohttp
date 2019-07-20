@@ -11,18 +11,27 @@ import okio.Buffer
  * Logs HTTP requests.
  *
  * @param log function to consume log message
+ * @param outputCurlCommand if true, output curl command of the request
  *
  * Sample Output: [2019-01-28T04:17:42.885Z] GET 200 - 1743ms https://postman-echo.com/get
  *
  * @since 0.8.0
  * @author gokul
  */
-class LoggingInterceptor(private val log: (String) -> Unit = ::println) : Interceptor {
+class LoggingInterceptor(
+        private val outputCurlCommand: Boolean = false,
+        private val log: (String) -> Unit = ::println
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val startTime = System.currentTimeMillis()
         return chain.proceed(request).also { response ->
             log("${request.method()} ${response.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
+            if (outputCurlCommand) {
+                //TODO: build curl command
+                val command = "TODO: curl command"
+                log(command)
+            }
 
             request.headers().asSequence().forEach { log("${it.name}: ${it.value}") }
 
