@@ -345,14 +345,15 @@ val forkedClient = defaultHttpClient.fork {
     A Request Logging Interceptor. 
     
     Parameters:
-    1.  `log: (String) -> Unit = ::println`:  function as a parameter to consume the log message. It defaults to `println`. Logs Request body when present.
+    1.  `outputCurlCommand: Boolean = false`:  if it's true, output curl command on log message.
+    2.  `log: (String) -> Unit = ::println`:  function as a parameter to consume the log message. It defaults to `println`. Logs Request body when present.
     
     Usage: 
     
     ```kotlin
     val client = defaultHttpClient.fork {
                     interceptors {
-                        +LoggingInterceptor()
+                        +LoggingInterceptor(false)
                     }
                 }
     ```
