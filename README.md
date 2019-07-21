@@ -183,6 +183,7 @@ Content type is set according to the following priority levels (higher is priori
 
 1. Form or Json in body :  ```kotlin ... body() { json { ... } } ...```
 2. Custom body type : ```kotlin ... body(myContentType) { ... } ...```
+3. Header : ```kotlin ... header { "Content-type" to myContentType } ...```
  
 ##### POST with multipart body
 ```kotlin
