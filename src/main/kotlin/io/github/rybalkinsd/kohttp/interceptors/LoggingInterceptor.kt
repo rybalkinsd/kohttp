@@ -25,15 +25,15 @@ class LoggingInterceptor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
+        if (outputCurlCommand) {
+            val command = request.buildCurlCommand()
+            log("╭--- cURL command -------------------------------")
+            log(command)
+            log("╰--- (copy and paste the above line to a terminal)")
+        }
         val startTime = System.currentTimeMillis()
-        return chain.proceed(request).also { response ->
-            if (outputCurlCommand) {
-                val command = request.buildCurlCommand()
-                log("╭--- cURL command -------------------------------")
-                log(command)
-                log("╰--- (copy and paste the above line to a terminal)")
-            }
 
+        return chain.proceed(request).also { response ->
             log("${request.method()} ${response.code()} - ${System.currentTimeMillis() - startTime}ms ${request.url()}")
 
             request.headers().asSequence().forEach { log("${it.name}: ${it.value}") }
