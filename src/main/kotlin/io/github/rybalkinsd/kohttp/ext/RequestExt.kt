@@ -10,7 +10,6 @@ import java.nio.charset.Charset
  * @author doyaaaaaken
  */
 internal fun Request.buildCurlCommand(): String {
-    //TODO: test
     return StringBuilder().apply {
         append("curl -X ${method()}")
 
