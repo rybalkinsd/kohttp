@@ -10,7 +10,6 @@ import java.nio.charset.Charset
  * @author doyaaaaaken
  */
 internal fun Request.buildCurlCommand(): String {
-    var compressed = false
     //TODO: test
     return StringBuilder().apply {
         append("curl -X ${method()}")
@@ -23,9 +22,6 @@ internal fun Request.buildCurlCommand(): String {
             if (value[0] == '"' && value[value.length - 1] == '"') {
                 value = "\\\"" + value.substring(1, value.length - 1) + "\\\""
             }
-            if ("Accept-Encoding".equals(name, ignoreCase = true) && "gzip".equals(value, ignoreCase = true)) {
-                compressed = true
-            }
             append(" -H \"$name: $value\"")
         }
 
@@ -37,9 +33,6 @@ internal fun Request.buildCurlCommand(): String {
             append(" --data $'" + buffer.readString(charset).replace("\n", "\\n") + "'")
         }
 
-        if (compressed) {
-            append(" --compressed")
-        }
         append(" \"${url()}\"")
     }.toString()
 }
