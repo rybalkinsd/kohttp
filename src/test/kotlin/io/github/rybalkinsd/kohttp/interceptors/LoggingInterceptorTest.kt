@@ -59,7 +59,7 @@ class LoggingInterceptorTest {
     fun `curl command logging happens without exceptions `() {
         val client = defaultHttpClient.fork {
             interceptors {
-                +LoggingInterceptor(true)
+                +LoggingInterceptor(LoggingFormat.CURL)
             }
         }
 

@@ -352,7 +352,7 @@ val forkedClient = defaultHttpClient.fork {
     A Request Logging Interceptor. 
     
     Parameters:
-    1.  `outputCurlCommand: Boolean = false`:  if it's true, output curl command on log message.
+    1.  `format: LoggingFormat = LoggingFormat.HTTP`:  log format type. (HTTP: http request format / CURL: curl command format)
     2.  `log: (String) -> Unit = ::println`:  function as a parameter to consume the log message. It defaults to `println`. Logs Request body when present.
     
     Usage: 
