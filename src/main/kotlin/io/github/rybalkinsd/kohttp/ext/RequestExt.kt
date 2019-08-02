@@ -15,10 +15,12 @@ internal fun Request.buildCurlCommand(): String {
 
         //headers
         headers().asSequence().forEach { header ->
-            val value = if (header.value.firstOrNull() == '"' && header.value.lastOrNull() == '"') {
-                """\"${header.value.substring(1, header.value.length - 1)}\""""
-            } else {
-                header.value
+            val value = header.value.let { v ->
+                if (v.startsWith('"') && v.endsWith('"')) {
+                    """\"${v.substring(1, v.length - 1)}\""""
+                } else {
+                    v
+                }
             }
             append(" -H \"${header.name}: $value\"")
         }
