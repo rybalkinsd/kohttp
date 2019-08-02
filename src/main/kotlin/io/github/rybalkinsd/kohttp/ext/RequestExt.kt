@@ -14,14 +14,13 @@ internal fun Request.buildCurlCommand(): String {
         append("curl -X ${method()}")
 
         //headers
-        val headers = headers()
-        for (i in 0 until headers.size()) {
-            val name = headers.name(i)
-            var value = headers.value(i)
-            if (value[0] == '"' && value[value.length - 1] == '"') {
-                value = """\"${value.substring(1, value.length - 1)}\""""
+        headers().asSequence().forEach { header ->
+            val value = if (header.value.firstOrNull() == '"' && header.value.lastOrNull() == '"') {
+                """\"${header.value.substring(1, header.value.length - 1)}\""""
+            } else {
+                header.value
             }
-            append(" -H \"$name: $value\"")
+            append(" -H \"${header.name}: $value\"")
         }
 
         //body
