@@ -42,16 +42,18 @@ class LoggingInterceptor(
     private fun logAsHttp(request: Request) {
         //TODO: output http request format log.
         // see https://github.com/rybalkinsd/kohttp/pull/141#issuecomment-516428314
+        log("╭--- http request output ---")
         request.headers().asSequence().forEach { log("${it.name}: ${it.value}") }
         Buffer().use {
             request.body()?.writeTo(it)
             log(it.readByteString().utf8())
         }
+        log("╰---------------------------")
     }
 
     private fun logAsCurl(request: Request) {
         val command = request.buildCurlCommand()
-        log("╭--- cURL command -------------------------------")
+        log("╭--- cURL command ---")
         log(command)
         log("╰--- (copy and paste the above line to a terminal)")
     }
