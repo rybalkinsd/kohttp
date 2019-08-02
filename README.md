@@ -360,7 +360,7 @@ val forkedClient = defaultHttpClient.fork {
     ```kotlin
     val client = defaultHttpClient.fork {
                     interceptors {
-                        +LoggingInterceptor(false)
+                        +LoggingInterceptor()
                     }
                 }
     ```
