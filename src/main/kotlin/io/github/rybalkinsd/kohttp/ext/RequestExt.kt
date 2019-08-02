@@ -17,7 +17,7 @@ internal fun Request.buildCurlCommand(): String {
         headers().asSequence().forEach { header ->
             val value = header.value.let { v ->
                 if (v.startsWith('"') && v.endsWith('"')) {
-                    """\"${v.substring(1, v.length - 1)}\""""
+                    """${v.substring(1, v.length - 1)}"""
                 } else {
                     v
                 }

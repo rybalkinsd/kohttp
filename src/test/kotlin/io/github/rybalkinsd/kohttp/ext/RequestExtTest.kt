@@ -23,7 +23,7 @@ class RequestExtTest {
         val request = Request.Builder()
                 .url("https://postman-echo.com/get")
                 .header("Cookie", "foo=6; bar=28")
-                .header("Content-Type", "application/json")
+                .header("Content-Type", "\"application/json\"")
                 .build()
         val actual = request.buildCurlCommand()
 
