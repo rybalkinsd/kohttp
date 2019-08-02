@@ -19,7 +19,7 @@ internal fun Request.buildCurlCommand(): String {
             val name = headers.name(i)
             var value = headers.value(i)
             if (value[0] == '"' && value[value.length - 1] == '"') {
-                value = "\\\"" + value.substring(1, value.length - 1) + "\\\""
+                value = """\"${value.substring(1, value.length - 1)}\""""
             }
             append(" -H \"$name: $value\"")
         }
