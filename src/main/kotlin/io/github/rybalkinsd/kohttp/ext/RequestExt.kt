@@ -21,7 +21,7 @@ internal fun Request.buildCurlCommand(): String {
 }
 
 private fun buildCurlHeaderOption(headers: Headers): String {
-    return headers.asSequence().map { header ->
+    return headers.asSequence().map { (name, value) ->
         val value = header.value.let { v ->
             if (v.startsWith('"') && v.endsWith('"')) {
                 v.substring(1, v.length - 1)
