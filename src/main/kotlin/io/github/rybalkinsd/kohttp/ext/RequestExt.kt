@@ -28,14 +28,12 @@ private fun buildCurlHeaderOption(headers: Headers): String {
 }
 
 private fun buildCurlBodyOption(body: RequestBody?): String {
-    return if (body == null) {
-        ""
-    } else {
-        val buffer = Buffer().apply { body.writeTo(this) }
-        val utf8 = Charset.forName("UTF-8")
-        val charset = body.contentType()?.charset(utf8) ?: utf8
-        " --data $'" + buffer.readString(charset).replace("\n", "\\n") + "'"
-    }
+    if (body == null) return ""
+
+    val buffer = Buffer().apply { body.writeTo(this) }
+    val utf8 = Charset.forName("UTF-8")
+    val charset = body.contentType()?.charset(utf8) ?: utf8
+    return " --data $'" + buffer.readString(charset).replace("\n", "\\n") + "'"
 }
 
 private fun String.trimDoubleQuote(): String {
