@@ -22,14 +22,14 @@ internal fun Request.buildCurlCommand(): String {
 
 private fun buildCurlHeaderOption(headers: Headers): String {
     return headers.asSequence().map { (name, value) ->
-        val value = header.value.let { v ->
+        val sanitizedValue = value.let { v ->
             if (v.startsWith('"') && v.endsWith('"')) {
                 v.substring(1, v.length - 1)
             } else {
                 v
             }
         }
-        " -H \"${header.name}: $value\""
+        " -H \"$name: $sanitizedValue\""
     }.joinToString("")
 }
 
