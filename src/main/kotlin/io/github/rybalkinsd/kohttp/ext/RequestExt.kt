@@ -22,14 +22,8 @@ internal fun Request.buildCurlCommand(): String {
 
 private fun buildCurlHeaderOption(headers: Headers): String {
     return headers.asSequence().map { (name, value) ->
-        val sanitizedValue = value.let { v ->
-            if (v.startsWith('"') && v.endsWith('"')) {
-                v.substring(1, v.length - 1)
-            } else {
-                v
-            }
-        }
-        " -H \"$name: $sanitizedValue\""
+        val trimmedValue = value.trimDoubleQuote()
+        " -H \"$name: $trimmedValue\""
     }.joinToString("")
 }
 
@@ -41,5 +35,13 @@ private fun buildCurlBodyOption(body: RequestBody?): String {
         val utf8 = Charset.forName("UTF-8")
         val charset = body.contentType()?.charset(utf8) ?: utf8
         " --data $'" + buffer.readString(charset).replace("\n", "\\n") + "'"
+    }
+}
+
+private fun String.trimDoubleQuote(): String {
+    return if (startsWith('"') && endsWith('"')) {
+        substring(1, length - 1)
+    } else {
+        this
     }
 }
