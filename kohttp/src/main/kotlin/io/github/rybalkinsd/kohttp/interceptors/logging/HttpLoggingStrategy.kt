@@ -15,7 +15,10 @@ class HttpLoggingStrategy : LoggingStrategy {
         //TODO: output http request format logging.
         // see https://github.com/rybalkinsd/kohttp/pull/141#issuecomment-516428314
         logging("--- http request output ---")
-        request.headers().asSequence().forEach { logging("${it.name}: ${it.value}") }
+        request.headers().asSequence().forEach { (name, value) ->
+            logging("$name: $value")
+        }
+
         Buffer().use {
             request.body()?.writeTo(it)
             logging(it.readByteString().utf8())
