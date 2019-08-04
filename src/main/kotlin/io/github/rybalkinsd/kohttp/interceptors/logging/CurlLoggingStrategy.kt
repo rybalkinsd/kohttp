@@ -5,7 +5,6 @@ import okhttp3.Headers
 import okhttp3.Request
 import okhttp3.RequestBody
 import okio.Buffer
-import java.nio.charset.Charset
 
 /**
  * Logging strategy as curl command format
@@ -39,11 +38,8 @@ class CurlLoggingStrategy : LoggingStrategy {
 
     private fun buildCurlBodyOption(body: RequestBody?): String {
         if (body == null) return ""
-
         val buffer = Buffer().apply { body.writeTo(this) }
-        val utf8 = Charset.forName("UTF-8")
-        val charset = body.contentType()?.charset(utf8) ?: utf8
-        return " --data $'" + buffer.readString(charset).replace("\n", "\\n") + "'"
+        return " --data $'${buffer.readUtf8().replace("\n", "\\n")}'"
     }
 
     private fun String.trimDoubleQuote(): String {
