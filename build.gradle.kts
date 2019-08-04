@@ -17,7 +17,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-        mavenLocal()
     }
 }
 
@@ -44,17 +43,17 @@ subprojects {
 
         val sourcesJar = task<Jar>("sourcesJar") {
             from(sourceSets["main"].allSource)
-            classifier = "sources"
+            archiveClassifier.set("sources")
         }
 
         val dokkaJar = task<Jar>("dokkaJar") {
             group = JavaBasePlugin.DOCUMENTATION_GROUP
-            classifier = "javadoc"
+            archiveClassifier.set("javadoc")
         }
 
         publishing {
             publications {
-                create<MavenPublication>("kohttp") {
+                create<MavenPublication>(project.name) {
                     from(components["java"])
                     artifacts {
                         artifact(sourcesJar)
@@ -62,9 +61,10 @@ subprojects {
                     }
 
                     pom {
-                        name.set("Kotlin http dsl")
-                        description.set("Kotlin http dsl based on okhttp")
+                        name.set("Kotlin DSL http client")
+                        description.set("Kotlin DSL http client")
                         url.set("https://github.com/rybalkinsd/kohttp")
+
                         organization {
                             name.set("io.github.rybalkinsd")
                             url.set("https://github.com/rybalkinsd")
@@ -106,7 +106,7 @@ subprojects {
         }
 
         signing {
-            sign(publishing.publications["kohttp"])
+            sign(publishing.publications[project.name])
         }
     }
 
@@ -120,7 +120,7 @@ tasks.withType<JacocoReport> {
     val sources = containers.flatMap { it.allSource.srcDirs }
 
     val exec = subprojects.flatMap { it.tasks }
-        .filter { it is Test }
+        .filterIsInstance<Test>()
         .flatMap { files(it) }
         .filter { it.exists() && it.name.endsWith(".exec") }
 
