@@ -8,11 +8,9 @@ import okhttp3.Request
  *
  * @author doyaaaaaken
  */
-class CurlLoggingStrategy(
-        private val logging: (String) -> Unit
-) : LoggingStrategy {
+class CurlLoggingStrategy : LoggingStrategy {
 
-    override fun log(request: Request) {
+    override fun log(request: Request, logging: (String) -> Unit) {
         val command = request.buildCurlCommand()
         logging("╭--- cURL command ---")
         logging(command)

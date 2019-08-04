@@ -352,7 +352,7 @@ val forkedClient = defaultHttpClient.fork {
     A Request Logging Interceptor. 
     
     Parameters:
-    1.  `format: LoggingFormat = LoggingFormat.HTTP`:  log format type. (HTTP: http request format / CURL: curl command format)
+    1.  `strategy: LoggingStrategy = HttpLoggingStrategy()`:  logging options (format type ... etc). (HttpLoggingStrategy: http request format / CurlLoggingStrategy: curl command format)
     2.  `log: (String) -> Unit = ::println`:  function as a parameter to consume the log message. It defaults to `println`. Logs Request body when present.
     
     Usage: 

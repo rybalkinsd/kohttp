@@ -9,5 +9,5 @@ import okhttp3.Request
  */
 interface LoggingStrategy {
 
-    fun log(request: Request)
+    fun log(request: Request, logging: (String) -> Unit)
 }

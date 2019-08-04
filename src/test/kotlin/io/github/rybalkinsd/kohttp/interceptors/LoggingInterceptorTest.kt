@@ -4,6 +4,7 @@ import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.upload
 import io.github.rybalkinsd.kohttp.ext.httpGet
+import io.github.rybalkinsd.kohttp.interceptors.logging.CurlLoggingStrategy
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -59,7 +60,7 @@ class LoggingInterceptorTest {
     fun `curl command logging happens without exceptions `() {
         val client = defaultHttpClient.fork {
             interceptors {
-                +LoggingInterceptor(LoggingFormat.CURL)
+                +LoggingInterceptor(CurlLoggingStrategy())
             }
         }
 
