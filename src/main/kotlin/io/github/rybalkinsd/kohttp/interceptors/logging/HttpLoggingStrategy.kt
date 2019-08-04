@@ -14,12 +14,12 @@ class HttpLoggingStrategy : LoggingStrategy {
     override fun log(request: Request, logging: (String) -> Unit) {
         //TODO: output http request format logging.
         // see https://github.com/rybalkinsd/kohttp/pull/141#issuecomment-516428314
-        logging("╭--- http request output ---")
+        logging("--- http request output ---")
         request.headers().asSequence().forEach { logging("${it.name}: ${it.value}") }
         Buffer().use {
             request.body()?.writeTo(it)
             logging(it.readByteString().utf8())
         }
-        logging("╰---------------------------")
+        logging("---------------------------")
     }
 }

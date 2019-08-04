@@ -15,38 +15,36 @@ class CurlLoggingStrategy : LoggingStrategy {
 
     override fun log(request: Request, logging: (String) -> Unit) {
         val command = buildCurlCommand(request)
-        logging("╭--- cURL command ---")
+        logging("--- cURL command ---")
         logging(command)
-        logging("╰--- (copy and paste the above line to a terminal)")
+        logging("--------------------")
     }
 
-    fun buildCurlCommand(request: Request): String {
-        return buildString {
-            append("curl -X ${request.method()}")
-            append(buildCurlHeaderOption(request.headers()))
-            append(buildCurlBodyOption(request.body()))
-            append(" \"${request.url()}\"")
-        }
+    internal fun buildCurlCommand(request: Request) = buildString {
+        append("curl -X ${request.method()}")
+        append(buildCurlHeaderOption(request.headers()))
+        append(buildCurlBodyOption(request.body()))
+        append(""" "${request.url()}"""")
     }
 
     private fun buildCurlHeaderOption(headers: Headers): String {
         return headers.asSequence().map { (name, value) ->
             val trimmedValue = value.trimDoubleQuote()
-            " -H \"$name: $trimmedValue\""
+            """ -H "$name: $trimmedValue""""
         }.joinToString("")
     }
 
     private fun buildCurlBodyOption(body: RequestBody?): String {
         if (body == null) return ""
-        val buffer = Buffer().apply { body.writeTo(this) }
-        return " --data $'${buffer.readUtf8().replace("\n", "\\n")}'"
+        val data = Buffer().use {
+            body.writeTo(it)
+            it.readUtf8().replace("\n", "\\n")
+        }
+        return " --data $'$data'"
     }
 
-    private fun String.trimDoubleQuote(): String {
-        return if (startsWith('"') && endsWith('"')) {
+    private fun String.trimDoubleQuote() =
+        if (startsWith('"') && endsWith('"'))
             substring(1, length - 1)
-        } else {
-            this
-        }
-    }
+        else this
 }
