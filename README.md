@@ -352,7 +352,7 @@ val forkedClient = defaultHttpClient.fork {
     A Request Logging Interceptor. 
     
     Parameters:
-    1.  `strategy: LoggingStrategy = HttpLoggingStrategy()`:  logging options (format type ... etc). (HttpLoggingStrategy: http request format / CurlLoggingStrategy: curl command format)
+    1.  `strategy: LoggingStrategy = HttpLoggingStrategy()`:  Formatting strategy: CURL / HTTP
     2.  `log: (String) -> Unit = ::println`:  function as a parameter to consume the log message. It defaults to `println`. Logs Request body when present.
     
     Usage: 
@@ -379,15 +379,13 @@ val forkedClient = defaultHttpClient.fork {
     
     Usage: 
         
-        ```kotlin
-        val client = defaultHttpClient.fork {
-                        interceptors {
-                            ...
-                            +RetryInterceptor()
-                            ...
-                        }
+    ```kotlin
+    val client = defaultHttpClient.fork {
+                    interceptors {
+                        +RetryInterceptor()
                     }
-        ```
+                }
+    ```
     
 *   Signing Interceptor:
     Enables signing of query parameters. Allowing creation of presigned URLs. 
