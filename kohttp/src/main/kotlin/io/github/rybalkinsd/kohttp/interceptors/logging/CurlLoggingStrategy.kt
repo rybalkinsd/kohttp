@@ -39,6 +39,7 @@ class CurlLoggingStrategy : LoggingStrategy {
         val data = Buffer().use {
             body.writeTo(it)
             it.readUtf8().replace("\n", "\\n")
+                .replace("\r", "\\r")
         }
         return " --data $'$data'"
     }
