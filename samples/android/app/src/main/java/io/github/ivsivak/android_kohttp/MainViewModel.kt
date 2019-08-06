@@ -28,18 +28,23 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val response = httpGet {
-                    url("https://api.github.com/users/ivsivak/repos")
+                    url("https://api.github.com/users/rybalkinsd/repos")
                 }
                 if (response.isSuccessful) {
                     val repos = jsonAdapter.fromJson(response.body()?.string() ?: "")
                     liveData.postValue(
                         ViewResponse(
-                            data = repos.toString(),
+                            status = "Response status ${response.message()}",
                             list = repos ?: emptyList()
                         )
                     )
                 } else {
-                    liveData.postValue(ViewResponse(data = "Error", list = emptyList()))
+                    liveData.postValue(
+                        ViewResponse(
+                            status = "Response status ${response.message()}",
+                            list = emptyList()
+                        )
+                    )
                 }
             }
         }
