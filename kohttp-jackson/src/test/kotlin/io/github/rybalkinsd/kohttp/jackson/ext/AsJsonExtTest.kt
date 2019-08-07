@@ -8,7 +8,7 @@ import org.junit.Test
 /**
  * @author sergey
  */
-class ResponseExtKtTest {
+class AsJsonExtTest {
 
     private val getUrl = "https://postman-echo.com/get"
 
