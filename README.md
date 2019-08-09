@@ -191,8 +191,14 @@ val response = httpPost {
     url("http://postman-echo.com/post")
 
     multipartBody {
-        +form("cat", File(this.javaClass.getResource("/cat.gif").toURI()))
-        +form("dog", File("/mydog.img"))
+        +part("meta") {
+            json {
+                "token" to "$token"
+            }
+        }
+        +part("image") {
+            file(imageFile)
+        }
     }
 }
 ```
