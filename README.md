@@ -417,24 +417,6 @@ val forkedClient = defaultHttpClient.fork {
 ### `defaultClientPool` customization
 Kohttp provides a `defaultClientPool` to have a single endpoint for your http request.
 
-It is possible to customize `defaultClientPool` by setting `kohttp.yaml` in resource directory of your project.
-
-You can check default values in `Config.kt`
-*All time values are in Milliseconds*
-
-
-```yaml
-client:
-  connectTimeout: 5000
-  readTimeout: 10000
-  writeTimeout: 10000
-  followRedirects: true
-  followSslRedirects: true
-  connectionPool:
-    maxIdleConnections: 42
-    keepAliveDuration: 10000
-```
-
 
 ### Fork `HttpClient` for specific tasks
 Forked client uses **exactly the same** connection pool and dispatcher. However, it will custom parameters like custom `timeout`s, additional `interceptor`s or others.

@@ -13,8 +13,7 @@ import java.util.concurrent.TimeUnit
  * A default http client.
  * Default client is recommended to use for your requests.
  *
- * Default client is either configured with `/kohttp.yaml` if present
- * or by defaults
+ * Default client is either configured with
  *  connectTimeout: 10 seconds
  *  readTimeout: 10 seconds
  *  writeTimeout: 10 seconds
@@ -24,6 +23,8 @@ import java.util.concurrent.TimeUnit
  *  maxIdleConnections:  5
  *  keepAliveDuration: 5 minutes
  *
+ *  maxRequests: 256
+ *  maxRequestsPerHost: 256
  *
  * For specific needs it's possible to fork `defaultHttpClient`
  * @see `io.github.rybalkinsd.kohttp.client.OkHttpClientExtKt.fork`
