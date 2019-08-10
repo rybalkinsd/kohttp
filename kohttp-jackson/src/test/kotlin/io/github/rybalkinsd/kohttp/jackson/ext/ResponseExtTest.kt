@@ -2,8 +2,13 @@ package io.github.rybalkinsd.kohttp.jackson.ext
 
 import io.github.rybalkinsd.kohttp.ext.httpGet
 import io.github.rybalkinsd.kohttp.util.json
+import io.mockk.every
+import io.mockk.mockk
+import okhttp3.Response
+import okhttp3.ResponseBody
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import kotlin.test.assertTrue
 
 /**
  * @author sergey
@@ -29,7 +34,25 @@ class ResponseExtKtTest {
 
         assertThat(response).matches(expectedRegex)
     }
+
+
+    @Test
+    fun `return NullNode when response body is null `() {
+        val response = mockk<Response>()
+        every { response.body() } returns null
+        val json = response.asJson()
+        assertTrue { json.isNull }
+    }
+
+    @Test
+    fun `return NullNode when response body is empty`() {
+        val response = mockk<Response>()
+        every { response.body() } returns ResponseBody.create(null, "")
+        val json = response.asJson()
+        assertTrue { json.isNull }
+    }
 }
+
 
 private fun String.escape(): String = replace("/", "\\/")
         .replace("{", "\\{")
