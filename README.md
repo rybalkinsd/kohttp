@@ -191,8 +191,14 @@ val response = httpPost {
     url("http://postman-echo.com/post")
 
     multipartBody {
-        +form("cat", File(this.javaClass.getResource("/cat.gif").toURI()))
-        +form("dog", File("/mydog.img"))
+        +part("meta") {
+            json {
+                "token" to "$token"
+            }
+        }
+        +part("image") {
+            file(imageFile)
+        }
     }
 }
 ```
@@ -411,24 +417,6 @@ val forkedClient = defaultHttpClient.fork {
 ### `defaultClientPool` customization
 Kohttp provides a `defaultClientPool` to have a single endpoint for your http request.
 
-It is possible to customize `defaultClientPool` by setting `kohttp.yaml` in resource directory of your project.
-
-You can check default values in `io.github.rybalkinsd.kohttp.configuration.Config.kt`
-*All time values are in Milliseconds*
-
-
-```yaml
-client:
-  connectTimeout: 5000
-  readTimeout: 10000
-  writeTimeout: 10000
-  followRedirects: true
-  followSslRedirects: true
-  connectionPool:
-    maxIdleConnections: 42
-    keepAliveDuration: 10000
-```
-
 
 ### Fork `HttpClient` for specific tasks
 Forked client uses **exactly the same** connection pool and dispatcher. However, it will custom parameters like custom `timeout`s, additional `interceptor`s or others.
@@ -454,28 +442,4 @@ val customClient = client {
 ```
 
 ## Experimental
-
-### Eager response
-Instead of `.use { ... it.body?.string() ... }` it is now possible to read response body as string.
-And also to map `Headers` to `listOf<Header>` to operate them easily.
-
-```kotlin
-val response: EagerResponse = "https://google.com/search?q=iphone".httpGet().eager()
-
-// iterating over headers
-response.headers.forEach { ... }
-
-// manipulating body
-response.body?.let { ... }
-
-```
-
-```kotlin
-val response: EagerResponse = httpGet { }.eager()
-
-// iterating over headers
-response.headers.forEach { ... }
-
-// manipulating body
-response.body?.let { ... }
-```
+### none
