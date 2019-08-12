@@ -1,4 +1,4 @@
-package io.github.ivsivak.android_kohttp
+package io.github.rybalkinsd.kohttp.android_kohttp
 
 import com.squareup.moshi.JsonClass
 

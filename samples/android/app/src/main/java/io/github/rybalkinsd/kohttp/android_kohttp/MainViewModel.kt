@@ -1,4 +1,4 @@
-package io.github.ivsivak.android_kohttp
+package io.github.rybalkinsd.kohttp.android_kohttp
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,24 +27,25 @@ class MainViewModel : ViewModel() {
     private fun request(liveData: MutableLiveData<ViewResponse>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val response = httpGet {
+                httpGet {
                     url("https://api.github.com/users/rybalkinsd/repos")
-                }
-                if (response.isSuccessful) {
-                    val repos = jsonAdapter.fromJson(response.body()?.string() ?: "")
-                    liveData.postValue(
-                        ViewResponse(
-                            status = "Response status ${response.message()}",
-                            list = repos ?: emptyList()
+                }.use { response ->
+                    if (response.isSuccessful) {
+                        val repos = jsonAdapter.fromJson(response.body()?.string() ?: "")
+                        liveData.postValue(
+                            ViewResponse(
+                                status = "Response status ${response.message()}",
+                                repositories = repos ?: emptyList()
+                            )
                         )
-                    )
-                } else {
-                    liveData.postValue(
-                        ViewResponse(
-                            status = "Response status ${response.message()}",
-                            list = emptyList()
+                    } else {
+                        liveData.postValue(
+                            ViewResponse(
+                                status = "Response status ${response.message()}",
+                                repositories = emptyList()
+                            )
                         )
-                    )
+                    }
                 }
             }
         }

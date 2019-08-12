@@ -1,14 +1,15 @@
-package io.github.ivsivak.android_kohttp
+package io.github.rybalkinsd.kohttp.android_kohttp
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import io.github.ivsivak.android_kohttp.R
 import kotlinx.android.synthetic.main.item_repository.view.*
 
 class RepositoryAdapter : RecyclerView.Adapter<RepositoryAdapter.ViewHolder>() {
 
-    private val list = mutableListOf<Repository>()
+    private val repositories = mutableListOf<Repository>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -16,15 +17,15 @@ class RepositoryAdapter : RecyclerView.Adapter<RepositoryAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = repositories.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(repositories[position])
     }
 
-    fun update(newList: List<Repository>) {
-        list.clear()
-        list.addAll(newList)
+    fun update(repositories: List<Repository>) {
+        this.repositories.clear()
+        this.repositories.addAll(repositories)
         notifyDataSetChanged()
     }
 

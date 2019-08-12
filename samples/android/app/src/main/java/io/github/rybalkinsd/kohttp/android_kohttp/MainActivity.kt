@@ -1,17 +1,18 @@
-package io.github.ivsivak.android_kohttp
+package io.github.rybalkinsd.kohttp.android_kohttp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.github.ivsivak.android_kohttp.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
 
-    lateinit var adapter: RepositoryAdapter
+    private lateinit var adapter: RepositoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         mainViewModel.responseLiveData.observe(this, Observer {
             mainTextView.text = it.status
-            adapter.update(it.list)
+            adapter.update(it.repositories)
         })
     }
 }
