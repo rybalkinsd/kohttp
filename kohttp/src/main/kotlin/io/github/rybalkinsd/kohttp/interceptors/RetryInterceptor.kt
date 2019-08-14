@@ -3,6 +3,7 @@ package io.github.rybalkinsd.kohttp.interceptors
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.SocketTimeoutException
+import kotlin.math.max
 
 /**
  * Retry Interceptor
@@ -18,10 +19,10 @@ import java.net.SocketTimeoutException
  * @author UDarya
  * */
 class RetryInterceptor(
-    private val failureThreshold: Int = 3,
-    private val invocationTimeout: Long = 0,
-    private val ratio: Int = 1,
-    private val errorStatuses: List<Int> = listOf(503, 504)
+        private val failureThreshold: Int = 3,
+        private val invocationTimeout: Long = 0,
+        private val ratio: Int = 1,
+        private val errorStatuses: List<Int> = listOf(429, 503, 504)
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -34,7 +35,13 @@ class RetryInterceptor(
                     delay = performAndReturnDelay(delay)
                 }
                 val response = chain.proceed(request)
-                if (!isRetry(response, attemptsCount)) return response
+
+                val retryAfter = calculateRetryAfter(response, attemptsCount, delay, chain.readTimeoutMillis())
+                if (retryAfter != null) {
+                    delay = retryAfter
+                } else {
+                    return response
+                }
             } catch (e: SocketTimeoutException) {
                 if (attemptsCount >= failureThreshold) throw e
             }
@@ -52,6 +59,14 @@ class RetryInterceptor(
 
     private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
 
-    internal fun isRetry(response: Response, attemptsCount: Int): Boolean =
-            attemptsCount < failureThreshold && response.code() in errorStatuses
+    internal fun calculateRetryAfter(response: Response, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
+        val retryAfter = response.header("Retry-After")?.toLongOrNull()
+        if (retryAfter != null && retryAfter > maxDelayTime) return null
+
+        return if (attemptsCount < failureThreshold && response.code() in errorStatuses) {
+            max(retryAfter ?: 0, delay)
+        } else {
+            null
+        }
+    }
 }
