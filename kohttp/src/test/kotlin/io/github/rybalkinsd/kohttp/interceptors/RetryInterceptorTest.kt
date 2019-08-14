@@ -137,14 +137,14 @@ class RetryInterceptorTest {
     fun `not need retry if status code is 200`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(200).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertNull(RetryInterceptor().calculateRetryAfter(response, 1, 2, 30))
+        Assert.assertNull(RetryInterceptor().calculateNextRetry(response, 1, 2, 30))
     }
 
     @Test
     fun `need retry if status code in error codes list`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(503).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertNotNull(RetryInterceptor().calculateRetryAfter(response, 1, 2, 30))
+        Assert.assertNotNull(RetryInterceptor().calculateNextRetry(response, 1, 2, 30))
     }
 
     private fun getCall(client: OkHttpClient) {

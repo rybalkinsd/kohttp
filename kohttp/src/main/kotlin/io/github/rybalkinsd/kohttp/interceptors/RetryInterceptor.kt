@@ -36,9 +36,9 @@ class RetryInterceptor(
                 }
                 val response = chain.proceed(request)
 
-                val retryAfter = calculateRetryAfter(response, attemptsCount, delay, chain.readTimeoutMillis())
-                if (retryAfter != null) {
-                    delay = retryAfter
+                val nextTime = calculateNextRetry(response, attemptsCount, delay, chain.readTimeoutMillis())
+                if (nextTime != null) {
+                    delay = nextTime
                 } else {
                     return response
                 }
@@ -59,7 +59,7 @@ class RetryInterceptor(
 
     private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
 
-    internal fun calculateRetryAfter(response: Response, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
+    internal fun calculateNextRetry(response: Response, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
         val retryAfter = response.header("Retry-After")?.toLongOrNull()
         if (retryAfter != null && retryAfter > maxDelayTime) return null
 
