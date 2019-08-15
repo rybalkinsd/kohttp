@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.jackson.ext
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.NullNode
@@ -8,7 +9,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.Response
 
 
-val stringMapper: ObjectMapper by lazy { jacksonObjectMapper() }
+class DeserializationException(cause: String) : Exception(cause)
+
+val default: ObjectMapper by lazy { jacksonObjectMapper() }
 
 
 /**
@@ -16,6 +19,8 @@ val stringMapper: ObjectMapper by lazy { jacksonObjectMapper() }
  * Returns [NullNode] if body has no content to bind
  *
  * @return [JsonNode]
+ *
+ * @throws [DeserializationException] if `RequestBody` is null
  * @throws [JsonParseException] if underlying input contains invalid content
  *    of type {@link JsonParser} supports (JSON for default case)
  * @throws [IOException] If a low-level I/O problem (missing input, network error) occurs
@@ -23,27 +28,31 @@ val stringMapper: ObjectMapper by lazy { jacksonObjectMapper() }
  * @since 0.9.0
  * @author gokul
  */
-fun Response.asJson(): JsonNode = with(body()?.string()) {
-    stringMapper.readTree(this)
-}
+fun Response.toJson(mapper: ObjectMapper = default): JsonNode {
+    val content = body()?.string()
 
+    return when {
+        content.isNullOrBlank() -> throw DeserializationException(cause = "Request body is '$content'")
+        else -> mapper.readTree(content)
+    }
+}
 
 /**
  * Returns Response Body as [JsonNode?].
- * Returns null on any exception (I/O, parsing, ...)
+ * Returns null on invalid content
  *
- * @return [JsonNode?]
+ * @return [JsonNode] and on invalid Json content
  *
- * @since TODO()
+ * @throws [IOException] If a low-level I/O problem (missing input, network error) occurs
+ *
+ * @since 0.11.0
  * @author sergey
  */
-fun Response.asJsonOrNull(): JsonNode? = try {
-    with(body()?.string()) {
-        val parsed = stringMapper.readTree(this)
-        if (parsed.isNull) null
-        else parsed
-    }
-} catch (ignored: Exception) {
+fun Response.toJsonOrNull(): JsonNode? = try {
+    toJson()
+} catch (ignored: DeserializationException) {
+    null
+} catch (ignored: JsonParseException) {
     null
 }
 
@@ -61,7 +70,7 @@ fun Response.asJsonOrNull(): JsonNode? = try {
  * @since TODO()
  * @author sergey
  */
-inline fun <reified T : Any> Response.asType(): T? = with(body()?.string()) {
+inline fun <reified T : Any> Response.toType(): T? = with(body()?.string()) {
     if (isNullOrBlank()) null
-    else stringMapper.readValue<T>(this!!)
+    else default.readValue<T>(this!!)
 }

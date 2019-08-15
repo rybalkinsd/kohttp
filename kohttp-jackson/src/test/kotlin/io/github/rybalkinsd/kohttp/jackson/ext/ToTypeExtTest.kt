@@ -32,18 +32,28 @@ class AsTypeExtTest {
         """.trimIndent())
 
         mockGet().use {
-            val simple: SimpleClass? = it.asType()
+            val simple: SimpleClass? = it.toType()
             assertNotNull(simple)
             assertThat(simple.a).isEqualTo(42)
         }
     }
 
     @Test
-    fun `missing body`() {
+    fun `null body`() {
         respondWith(null)
 
         mockGet().use {
-            val simple: SimpleClass? = it.asType()
+            val simple: SimpleClass? = it.toType()
+            assertNull(simple)
+        }
+    }
+
+    @Test
+    fun `empty body`() {
+        respondWith("")
+
+        mockGet().use {
+            val simple: SimpleClass? = it.toType()
             assertNull(simple)
         }
     }
@@ -58,7 +68,7 @@ class AsTypeExtTest {
         """.trimIndent())
 
         mockGet().use {
-            val complex = it.asType<ComplexConstructorClass>()
+            val complex = it.toType<ComplexConstructorClass>()
             assertNotNull(complex)
             assertThat(complex.host).isEqualTo(localhost)
             assertThat(complex.port).isEqualTo(mockServerPort)
@@ -73,7 +83,7 @@ class AsTypeExtTest {
         """.trimIndent())
 
         mockGet().use {
-            val simple: SimpleDataClass? = it.asType()
+            val simple: SimpleDataClass? = it.toType()
             assertNotNull(simple)
             assertThat(simple.a).isEqualTo(42)
         }
@@ -92,7 +102,7 @@ class AsTypeExtTest {
         """.trimIndent())
 
         mockGet().use {
-            val nested: NestedDataClass? = it.asType()
+            val nested: NestedDataClass? = it.toType()
             assertNotNull(nested)
             with (nested) {
                 assertThat(x).isEqualTo(42)

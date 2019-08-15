@@ -1,8 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.dsl.httpGet
-import io.github.rybalkinsd.kohttp.dsl.upload
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -18,7 +16,7 @@ class UploadDslKtTest {
             file(fileUri)
         }
 
-        val parsedResponse = r.asJson()
+        val parsedResponse = r.toJson()
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }
@@ -40,7 +38,7 @@ class UploadDslKtTest {
         }
 
         assertEquals(200, uploadResponse.code())
-        assertEquals(1 * 1024 * 1024 + 173, uploadResponse.asJson()["headers"]["content-length"].asInt())
+        assertEquals(1 * 1024 * 1024 + 173, uploadResponse.toJson()["headers"]["content-length"].asInt())
     }
 
     @Test
@@ -77,7 +75,7 @@ class UploadDslKtTest {
             file(fileUri)
         }
 
-        val parsedResponse = r.asJson()
+        val parsedResponse = r.toJson()
 
         assertEquals(expectedArgs["query"], parsedResponse["args"]["query"].asText())
         assertEquals(expectedArgs["listOfParams"], parsedResponse["args"]["listOfParams"].toString())

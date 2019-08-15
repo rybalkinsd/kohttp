@@ -1,7 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.dsl.httpPost
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
 import org.junit.Test
@@ -53,7 +52,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedForm, parsedResponse["form"])
@@ -79,7 +78,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsExactly(expectedForm, parsedResponse["form"])
             assertEquals(200, it.code())
         }
@@ -139,7 +138,7 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedJson, parsedResponse["json"])
@@ -164,7 +163,7 @@ class HttpPostDslKtTest {
         )
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsExactly(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
@@ -187,7 +186,7 @@ class HttpPostDslKtTest {
         )
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsExactly(expectedJson, parsedResponse["json"])
             assertEquals(200, it.code())
         }
@@ -207,7 +206,7 @@ class HttpPostDslKtTest {
 
         response.use {
             with(it) {
-                assertTrue { asJson()["headers"]["content-length"].asLong() > 100_000 }
+                assertTrue { toJson()["headers"]["content-length"].asLong() > 100_000 }
                 assertEquals(200, it.code())
             }
         }
@@ -225,7 +224,7 @@ class HttpPostDslKtTest {
         }
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertEquals(15, parsedResponse["headers"]["content-length"].asInt())
             assertEquals(200, it.code())
         }
@@ -258,7 +257,7 @@ class HttpPostDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             val headers = parsedResponse["headers"]
             assertContainsAtLeast(expectedHeader, headers)
             assertContainsExactly(expectedParams, parsedResponse["args"])
