@@ -13,6 +13,17 @@
 
 Kotlin DSL http client 
 
+## Publications
+[Kotlin weekly](https://mailchi.mp/kotlinweekly/kotlin-weekly-124) mentioned us
+
+[Android weekly (CN)](https://androidweekly.io/android-dev-weekly-issue-208/) mentioned us
+
+[Write your Android network as Kotlin DSL](https://medium.com/datadriveninvestor/write-your-android-networking-as-a-kotlin-dsl-330febae503f) - medium post
+
+[Upload files to Google Drive with Kotlin](https://medium.com/@sergei.rybalkin/upload-file-to-google-drive-with-kotlin-931cec5252c1) - medium post
+
+[Production Kotlin DSL (RU + subtitles) ](https://youtu.be/4m9bS0M0Nww) - Kotlin/Everywhere talk, YouTube 
+
 ## Download
 
 gradle kotlin DSL:
