@@ -10,6 +10,7 @@ import okhttp3.ResponseBody
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Test
+import kotlin.test.assertNotNull
 
 /**
  * @author sergey
@@ -46,6 +47,13 @@ class ToJsonExtTest {
         }
     }
 
+    @Test
+    fun `null body toJsonOrNull`() {
+        val response = mockk<Response>()
+        every { response.body() } returns null
+
+        assertThat(response.toJsonOrNull()).isNull()
+    }
 
     @Test
     fun `empty body toJson`() {
@@ -57,6 +65,16 @@ class ToJsonExtTest {
         assertThatExceptionOfType(DeserializationException::class.java).isThrownBy {
             response.toJson()
         }
+    }
+
+    @Test
+    fun `empty body toJsonOrNull`() {
+        val response = mockk<Response>()
+        val body = mockk<ResponseBody>()
+        every { response.body()} returns body
+        every { body.string() } returns ""
+
+        assertThat(response.toJsonOrNull()).isNull()
     }
 
     @Test
@@ -72,6 +90,16 @@ class ToJsonExtTest {
     }
 
     @Test
+    fun `broken body toJsonOrNull`() {
+        val response = mockk<Response>()
+        val body = mockk<ResponseBody>()
+        every { response.body()} returns body
+        every { body.string() } returns "{ 'a': 42"
+
+        assertThat(response.toJsonOrNull()).isNull()
+    }
+
+    @Test
     fun `valid body toJson`() {
         val response = mockk<Response>()
         val body = mockk<ResponseBody>()
@@ -81,6 +109,21 @@ class ToJsonExtTest {
         with(response.toJson()) {
             @Suppress("UsePropertyAccessSyntax")
             assertThat(this.isNull).isFalse()
+            assertThat(this["a"].intValue()).isEqualTo(42)
+
+        }
+    }
+
+    @Test
+    fun `valid body toJsonOrNull`() {
+        val response = mockk<Response>()
+        val body = mockk<ResponseBody>()
+        every { response.body()} returns body
+        every { body.string() } returns """{ "a": 42 }"""
+
+        with(response.toJsonOrNull()) {
+            @Suppress("UsePropertyAccessSyntax")
+            assertNotNull(this)
             assertThat(this["a"].intValue()).isEqualTo(42)
 
         }
