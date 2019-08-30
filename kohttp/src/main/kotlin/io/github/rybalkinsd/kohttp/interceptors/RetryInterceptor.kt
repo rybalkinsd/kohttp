@@ -60,7 +60,7 @@ class RetryInterceptor(
     private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
 
     internal fun calculateNextRetry(response: Response, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
-        val retryAfter = response.header("Retry-After")?.toLongOrNull()
+        val retryAfter = response.header("Retry-After")?.toLongOrNull()?.let { it * 1000 }
         if (retryAfter != null && retryAfter > maxDelayTime) return null
 
         return if (attemptsCount < failureThreshold && response.code() in errorStatuses) {
