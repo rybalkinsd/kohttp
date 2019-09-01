@@ -27,21 +27,14 @@ class RetryInterceptor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
+        val maxDelayTime = chain.readTimeoutMillis()
         var attemptsCount = 0
         var delay = invocationTimeout
         while (true) {
             try {
-                if (shouldDelay(attemptsCount)) {
-                    delay = performAndReturnDelay(delay)
-                }
+                if (shouldDelay(attemptsCount)) performDelay(delay)
                 val response = chain.proceed(request)
-
-                val nextTime = calculateNextRetry(response, attemptsCount, delay, chain.readTimeoutMillis())
-                if (nextTime != null) {
-                    delay = nextTime
-                } else {
-                    return response
-                }
+                delay = calculateNextRetry(response, attemptsCount, delay, maxDelayTime) ?: return response
             } catch (e: SocketTimeoutException) {
                 if (attemptsCount >= failureThreshold) throw e
             }
@@ -49,22 +42,21 @@ class RetryInterceptor(
         }
     }
 
-    internal fun performAndReturnDelay(delay: Long): Long {
+    private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
+
+    private fun performDelay(delay: Long) {
         try {
             Thread.sleep(delay)
         } catch (ignored: InterruptedException) {
         }
-        return delay * ratio
     }
-
-    private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
 
     internal fun calculateNextRetry(response: Response, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
         val retryAfter = response.header("Retry-After")?.toLongOrNull()?.let { it * 1000 }
         if (retryAfter != null && retryAfter > maxDelayTime) return null
 
         return if (attemptsCount < failureThreshold && response.code() in errorStatuses) {
-            max(retryAfter ?: 0, delay)
+            max(retryAfter ?: 0, delay * ratio)
         } else {
             null
         }
