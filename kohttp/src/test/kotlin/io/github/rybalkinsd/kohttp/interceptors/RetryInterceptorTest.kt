@@ -21,6 +21,8 @@ import java.security.MessageDigest
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 
 class RetryInterceptorTest {
@@ -147,6 +149,27 @@ class RetryInterceptorTest {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(503).protocol(Protocol.HTTP_1_1).message("").request(request).build()
         Assert.assertNotNull(RetryInterceptor().calculateNextRetry(response.headers(), response.code(), 1, 2, 30))
+    }
+
+    @Test
+    fun `parse RetryAfter header whose unit is second`() {
+        val interceptor = RetryInterceptor()
+        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "2")))
+        assertEquals(2 * 1000, retryAfter)
+    }
+
+    @Test
+    fun `parse RetryAfter header whose unit is date`() {
+        val interceptor = RetryInterceptor()
+        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "Wed, 21 Oct 2115 07:28:00 GMT")))
+        assertNotNull(retryAfter)
+    }
+
+    @Test
+    fun `return null if cannot parse RetryAfter header`() {
+        val interceptor = RetryInterceptor()
+        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "Wed,, 21 Oct 2115 07:28:00 GMT")))
+        assertNull(retryAfter)
     }
 
     private fun getCall(client: OkHttpClient) {

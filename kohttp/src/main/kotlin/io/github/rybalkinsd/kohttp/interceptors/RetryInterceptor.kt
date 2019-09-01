@@ -4,6 +4,9 @@ import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.SocketTimeoutException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.time.Instant
 import kotlin.math.max
 
 /**
@@ -25,6 +28,9 @@ class RetryInterceptor(
     private val ratio: Int = 1,
     private val errorStatuses: List<Int> = listOf(429, 503, 504)
 ) : Interceptor {
+
+    //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date#Syntax
+    private val httpDateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -54,12 +60,23 @@ class RetryInterceptor(
     }
 
     internal fun calculateNextRetry(responseHeaders: Headers, responseCode: Int, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
-        val retryAfter = responseHeaders["Retry-After"]?.toLongOrNull()?.let { it * 1000 }
+        val retryAfter = parseRetryAfter(responseHeaders)
         if (retryAfter != null && retryAfter > maxDelayTime) return null
 
         return if (attemptsCount < failureThreshold && responseCode in errorStatuses) {
             max(retryAfter ?: 0, delay * ratio)
         } else {
+            null
+        }
+    }
+
+    internal fun parseRetryAfter(headers: Headers): Long? {
+        val retryAfter = headers["Retry-After"] ?: return null
+        return retryAfter.toLongOrNull()?.let { it * 1000 } ?: try {
+            val date = httpDateFormat.parse(retryAfter).toInstant().epochSecond
+            val now = Instant.now().epochSecond
+            (date - now).takeIf { it > 0 }
+        } catch (ex: ParseException) {
             null
         }
     }
