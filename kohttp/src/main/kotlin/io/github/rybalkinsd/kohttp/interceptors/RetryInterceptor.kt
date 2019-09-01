@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.interceptors
 
+import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.SocketTimeoutException
@@ -34,7 +35,8 @@ class RetryInterceptor(
             try {
                 if (shouldDelay(attemptsCount)) performDelay(delay)
                 val response = chain.proceed(request)
-                delay = calculateNextRetry(response, attemptsCount, delay, maxDelayTime) ?: return response
+                delay = calculateNextRetry(response.headers(), response.code(), attemptsCount, delay, maxDelayTime)
+                        ?: return response
             } catch (e: SocketTimeoutException) {
                 if (attemptsCount >= failureThreshold) throw e
             }
@@ -51,11 +53,11 @@ class RetryInterceptor(
         }
     }
 
-    internal fun calculateNextRetry(response: Response, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
-        val retryAfter = response.header("Retry-After")?.toLongOrNull()?.let { it * 1000 }
+    internal fun calculateNextRetry(responseHeaders: Headers, responseCode: Int, attemptsCount: Int, delay: Long, maxDelayTime: Int): Long? {
+        val retryAfter = responseHeaders["Retry-After"]?.toLongOrNull()?.let { it * 1000 }
         if (retryAfter != null && retryAfter > maxDelayTime) return null
 
-        return if (attemptsCount < failureThreshold && response.code() in errorStatuses) {
+        return if (attemptsCount < failureThreshold && responseCode in errorStatuses) {
             max(retryAfter ?: 0, delay * ratio)
         } else {
             null

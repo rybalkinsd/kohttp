@@ -20,6 +20,7 @@ import java.net.SocketTimeoutException
 import java.security.MessageDigest
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.test.assertEquals
 
 
 class RetryInterceptorTest {
@@ -90,15 +91,15 @@ class RetryInterceptorTest {
         verifyGetRequest(1)
     }
 
-    //TODO: rewrite test
-//    @Test
-//    fun `delay increase with step`() {
-//        val retryInterceptor = RetryInterceptor(ratio = 2)
-//        val invocationTimeout: Long = 1000
-//        assert(retryInterceptor.performAndReturnDelay(invocationTimeout) == invocationTimeout * 2)
-//        assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 2) == invocationTimeout * 4)
-//        assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 4) == invocationTimeout * 8)
-//    }
+    @Test
+    fun `delay increase by ratio`() {
+        val ratio = 2
+        val retryInterceptor = RetryInterceptor(ratio = ratio)
+        val invocationTimeout: Long = 1000
+        val responseHeaders = Headers.of()
+        val responseCode = 429
+        assertEquals(invocationTimeout * ratio, retryInterceptor.calculateNextRetry(responseHeaders, responseCode, 0, invocationTimeout, 10000))
+    }
 
     @Test
     fun `retry just next interceptors`() {
@@ -138,14 +139,14 @@ class RetryInterceptorTest {
     fun `not need retry if status code is 200`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(200).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertNull(RetryInterceptor().calculateNextRetry(response, 1, 2, 30))
+        Assert.assertNull(RetryInterceptor().calculateNextRetry(response.headers(), response.code(), 1, 2, 30))
     }
 
     @Test
     fun `need retry if status code in error codes list`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(503).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertNotNull(RetryInterceptor().calculateNextRetry(response, 1, 2, 30))
+        Assert.assertNotNull(RetryInterceptor().calculateNextRetry(response.headers(), response.code(), 1, 2, 30))
     }
 
     private fun getCall(client: OkHttpClient) {
