@@ -1,7 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
-import io.github.rybalkinsd.kohttp.dsl.async.uploadAsync
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -21,7 +20,7 @@ class UploadAsyncDslTest {
 
         runBlocking {
             response.await().use {
-                val parsedResponse = it.asJson()
+                val parsedResponse = it.toJson()
 
                 assertEquals(200, it.code())
                 assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
