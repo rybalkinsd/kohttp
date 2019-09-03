@@ -1,8 +1,11 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
+import io.github.rybalkinsd.kohttp.client.defaultHttpClient
+import io.github.rybalkinsd.kohttp.client.fork
+import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -29,7 +32,13 @@ class HttpPostDslKtTest {
             "email" to "john.doe@gmail.com"
         )
 
-        httpPost {
+        val client = defaultHttpClient.fork {
+            interceptors {
+                +HttpLoggingInterceptor()
+            }
+        }
+
+        httpPost(client) {
             host = "postman-echo.com"
             path = "/post"
 

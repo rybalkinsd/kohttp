@@ -1,26 +1,39 @@
 package io.github.rybalkinsd.kohttp.interceptors.logging
 
 import io.github.rybalkinsd.kohttp.ext.asSequence
-import okhttp3.Headers
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 import okio.Buffer
 
 /**
- * Logging strategy as curl command format
+ * Request Logging Interceptor
  *
- * @author doyaaaaaken
+ * Logs cURL commands for outgoing requests.
+ *
+ * @param log log consumer
+ *
+ * -->
+ * curl -X POST -H "one: 42" -H "cookie: aaa=bbb; ccc=42" \
+ *      --data $'login=user&email=john.doe%40gmail.com' \
+ *  "http://postman-echo.com/post?arg=iphone"
+ * ---
+ *
+ * @since 0.11.0
+ * @author doyaaaaaken, gokul, sergey
  */
-class CurlLoggingStrategy : LoggingStrategy {
-
-    override fun log(request: Request, logging: (String) -> Unit) {
+class CurlLoggingInterceptor(
+        private val log: (String) -> Unit = ::println
+) : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
+        log("-->")
         val command = buildCurlCommand(request)
-        logging("--- cURL command ---")
-        logging(command)
-        logging("--------------------")
+        log(command)
+        log("---")
+
+        return chain.proceed(request)
     }
 
-    internal fun buildCurlCommand(request: Request) = buildString {
+    protected fun buildCurlCommand(request: Request) = buildString {
         append("curl -X ${request.method()}")
         append(buildCurlHeaderOption(request.headers()))
         append(buildCurlBodyOption(request.body()))
@@ -39,13 +52,14 @@ class CurlLoggingStrategy : LoggingStrategy {
         val data = Buffer().use {
             body.writeTo(it)
             it.readUtf8().replace("\n", "\\n")
-                .replace("\r", "\\r")
+                    .replace("\r", "\\r")
         }
         return " --data $'$data'"
     }
 
-    private fun String.trimDoubleQuote() =
+}
+
+private fun String.trimDoubleQuote() =
         if (startsWith('"') && endsWith('"'))
             substring(1, length - 1)
         else this
-}
