@@ -1,7 +1,6 @@
 package io.github.rybalkinsd.kohttp.ext
 
-import io.github.rybalkinsd.kohttp.ext.uploadAsync
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.io.File
@@ -21,7 +20,7 @@ class FileAsyncExtTest {
 
         runBlocking {
             response.await().use {
-                val parsedResponse = it.asJson()
+                val parsedResponse = it.toJson()
 
                 assertEquals(200, it.code())
                 assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
@@ -37,7 +36,7 @@ class FileAsyncExtTest {
 
         runBlocking {
             response.await().use {
-                val parsedResponse = it.asJson()
+                val parsedResponse = it.toJson()
 
                 assertEquals(200, it.code())
                 assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
