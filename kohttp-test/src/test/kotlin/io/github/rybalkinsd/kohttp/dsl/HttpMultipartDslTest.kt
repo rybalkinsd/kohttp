@@ -15,7 +15,9 @@ class HttpMultipartDslTest {
             path = "/post"
 
             multipartBody {
-                +form("cat", File(this.javaClass.getResource("/cat.gif").toURI()))
+                +part("cat") {
+                    file(File(this.javaClass.getResource("/cat.gif").toURI()))
+                }
             }
         }
 
@@ -31,7 +33,9 @@ class HttpMultipartDslTest {
             path = "/post"
 
             multipartBody("multipart/alternative") {
-                +form("cat", File(this.javaClass.getResource("/cat.gif").toURI()))
+                +part("cat", "cat.gif") {
+                    file(File(this.javaClass.getResource("/cat.gif").toURI()))
+                }
             }
         }
 

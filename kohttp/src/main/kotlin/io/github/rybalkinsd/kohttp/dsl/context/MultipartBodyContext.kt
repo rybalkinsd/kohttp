@@ -3,7 +3,6 @@ package io.github.rybalkinsd.kohttp.dsl.context
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.File
 
 /**
  *
@@ -17,17 +16,13 @@ class MultipartBodyContext(type: String?) {
         mediaType?.let { builder.setType(mediaType) }
     }
 
-    operator fun FormDataPart.unaryPlus() {
-        builder.addFormDataPart(first, second, third)
+    operator fun MultipartBody.Part.unaryPlus() {
+        builder.addPart(this)
     }
 
-    fun form(name: String, file: File): FormDataPart =
-        FormDataPart(name, file.name, RequestBody.create(null, file))
+    fun part(name: String, filename: String? = null, init: BodyContext.() -> RequestBody): MultipartBody.Part =
+        MultipartBody.Part.createFormData(name, filename, BodyContext(null).init())
 
-    fun form(name: String, filename: String, content: ByteArray): FormDataPart =
-        FormDataPart(name, filename, RequestBody.create(null, content))
 
     fun build(): MultipartBody = builder.build()
 }
-
-typealias FormDataPart = Triple<String, String?, RequestBody>
