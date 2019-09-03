@@ -2,7 +2,7 @@ package io.github.rybalkinsd.kohttp.jackson.dsl.context
 
 import io.github.rybalkinsd.kohttp.dsl.httpPost
 import io.github.rybalkinsd.kohttp.ext.url
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -17,7 +17,7 @@ class HttpPostContextTest {
             header { "Content-Type" to "application/json; charset=utf-8" }
             body { string("content") }
         }.use {
-            val res = it.asJson()
+            val res = it.toJson()
             assertEquals("application/json; charset=utf-8", res["headers"]["content-type"].asText())
         }
     }
@@ -29,7 +29,7 @@ class HttpPostContextTest {
             header { "Content-Type" to "application/x-www-form-urlencoded; charset=utf-8" }
             body("application/json") { string("content") }
         }.use {
-            val res = it.asJson()
+            val res = it.toJson()
             assertEquals("application/json; charset=utf-8", res["headers"]["content-type"].asText())
         }
     }
@@ -40,7 +40,7 @@ class HttpPostContextTest {
             url("https://postman-echo.com/post")
             body("application/x-www-form-urlencoded") { json("content") }
         }.use {
-            val res = it.asJson()
+            val res = it.toJson()
             assertEquals("application/json; charset=utf-8", res["headers"]["content-type"].asText())
         }
     }

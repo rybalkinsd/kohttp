@@ -1,7 +1,6 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.dsl.httpDelete
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
 import org.junit.Test
@@ -51,7 +50,7 @@ class HttpDeleteDslKtTest {
                 }
             }
         }.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedForm, parsedResponse["form"])
@@ -100,7 +99,7 @@ class HttpDeleteDslKtTest {
         }
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedJson, parsedResponse["json"])
