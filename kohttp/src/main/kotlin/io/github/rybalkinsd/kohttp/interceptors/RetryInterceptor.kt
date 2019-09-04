@@ -72,8 +72,16 @@ class RetryInterceptor(
 
     internal fun parseRetryAfter(headers: Headers): Long? {
         val retryAfter = headers["Retry-After"] ?: return null
-        return retryAfter.toLongOrNull()?.let { it * 1000 } ?: try {
-            val date = httpDateFormat.parse(retryAfter).toInstant().epochSecond
+        return parseRetryAfterAsNumber(retryAfter) ?: parseRetryAfterAsDate(retryAfter)
+    }
+
+    private fun parseRetryAfterAsNumber(headerValue: String): Long? {
+        return headerValue.toLongOrNull()?.let { it * 1000 }
+    }
+
+    private fun parseRetryAfterAsDate(headerValue: String): Long? {
+        return try {
+            val date = httpDateFormat.parse(headerValue).toInstant().epochSecond
             val now = Instant.now().epochSecond
             (date - now).takeIf { it > 0 }
         } catch (ex: ParseException) {
