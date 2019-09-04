@@ -4,9 +4,11 @@ import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.SocketTimeoutException
-import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.Instant
+import java.time.Duration
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import kotlin.math.max
 
 /**
@@ -81,10 +83,11 @@ class RetryInterceptor(
 
     private fun parseRetryAfterAsDate(headerValue: String): Long? {
         return try {
-            val date = httpDateFormat.parse(headerValue).toInstant().epochSecond
-            val now = Instant.now().epochSecond
-            (date - now).takeIf { it > 0 }
-        } catch (ex: ParseException) {
+            val responseDate = ZonedDateTime.parse(headerValue, DateTimeFormatter.RFC_1123_DATE_TIME)
+            val now = ZonedDateTime.now()
+            val duration = Duration.between(now, responseDate)
+            duration.toMillis().takeIf { it > 0 }
+        } catch (ex: DateTimeParseException) {
             null
         }
     }

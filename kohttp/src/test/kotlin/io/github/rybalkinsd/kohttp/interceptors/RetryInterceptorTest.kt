@@ -161,12 +161,12 @@ class RetryInterceptorTest {
     @Test
     fun `parse RetryAfter header whose unit is date`() {
         val interceptor = RetryInterceptor()
-        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "Wed, 21 Oct 2115 07:28:00 GMT")))
+        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "Mon, 21 Oct 2115 07:28:00 GMT")))
         assertNotNull(retryAfter)
     }
 
     @Test
-    fun `return null if cannot parse RetryAfter header`() {
+    fun `return null if RetryAfter header's date value is invalid`() {
         val interceptor = RetryInterceptor()
         val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "Wed,, 21 Oct 2115 07:28:00 GMT")))
         assertNull(retryAfter)
