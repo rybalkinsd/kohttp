@@ -152,6 +152,22 @@ class RetryInterceptorTest {
     }
 
     @Test
+    fun `get Retry-After Header's value as next retry`() {
+        val maxDelayTime = 2001
+        val retryAfterSeconds = 2L
+        val retryAfter = RetryInterceptor().calculateNextRetry(Headers.of(mapOf("Retry-After" to retryAfterSeconds.toString())), 429, 1, 2, maxDelayTime)
+        assertEquals(retryAfterSeconds * 1000, retryAfter)
+    }
+
+    @Test
+    fun `get null as next retry if Retry-After Header's value exceeds maxDelayTime`() {
+        val maxDelayTime = 1999
+        val retryAfterSeconds = 2L
+        val retryAfter = RetryInterceptor().calculateNextRetry(Headers.of(mapOf("Retry-After" to retryAfterSeconds.toString())), 429, 1, 2, maxDelayTime)
+        assertNull(retryAfter)
+    }
+
+    @Test
     fun `parse RetryAfter header whose unit is second`() {
         val interceptor = RetryInterceptor()
         val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "2")))
