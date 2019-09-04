@@ -4,7 +4,6 @@ import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.SocketTimeoutException
-import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -30,9 +29,6 @@ class RetryInterceptor(
     private val ratio: Int = 1,
     private val errorStatuses: List<Int> = listOf(429, 503, 504)
 ) : Interceptor {
-
-    //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date#Syntax
-    private val httpDateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
