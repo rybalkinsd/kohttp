@@ -106,5 +106,5 @@ return runBlocking {
 * [Interceptors](gitbook/core/interceptors.md)
 * [Customisation](gitbook/core/customisation.md)
 * [Experimental features](gitbook/core/experimental-features.md)
-* [Changelog](history/changelog.md)
+* [Changelog](gitbook/history/changelog.md)
 
