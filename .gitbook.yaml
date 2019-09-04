@@ -1,4 +1,4 @@
 root: ./gitbook/
 
 structure:
-  summary: ./gitbook/SUMMARY.md
+  summary: SUMMARY.md
