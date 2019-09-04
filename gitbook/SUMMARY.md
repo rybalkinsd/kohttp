@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Introduction](README.md)
+* [Introduction](../README.md)
 
 ## Core
 
@@ -27,5 +27,5 @@
 
 ## History
 
-* [Changelog](history/changelog.md)
+* [Changelog](../history/changelog.md)
 

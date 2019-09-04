@@ -8,10 +8,10 @@ Kotlin DSL http client based on okhttp
 
 ## Features
 
- 🔹 HTTP [`GET`](core/synchronous-calls/get.md)/[`POST`](core/synchronous-calls/post.md)/[`PUT`](core/synchronous-calls/put.md)/[`HEAD`](core/synchronous-calls/head.md)/[`DELETE`](core/synchronous-calls/delete.md)/[`PATCH`](core/synchronous-calls/patch.md) requests   
- 🔹 [Asynchronous](core/asynchronous-calls/) and [blocking](core/synchronous-calls/) requests  
- 🔹 [Upload files](core/synchronous-calls/upload-files.md)  
- 🔹 [Logging](core/interceptors.md#logging-interceptor-a-request-logging-interceptor) with an opportunity to convert kohttp call to cUrl call  
+ 🔹 HTTP [`GET`](gitbook/core/synchronous-calls/get.md)/[`POST`](gitbook/core/synchronous-calls/post.md)/[`PUT`](gitbook/core/synchronous-calls/put.md)/[`HEAD`](gitbook/core/synchronous-calls/head.md)/[`DELETE`](gitbook/core/synchronous-calls/delete.md)/[`PATCH`](gitbook/core/synchronous-calls/patch.md) requests   
+ 🔹 [Asynchronous](gitbook/core/asynchronous-calls/) and [blocking](gitbook/core/synchronous-calls/) requests  
+ 🔹 [Upload files](gitbook/core/synchronous-calls/upload-files.md)  
+ 🔹 [Logging](gitbook/core/interceptors.md#logging-interceptor-a-request-logging-interceptor) with an opportunity to convert kohttp call to cUrl call  
  🔹 Simple and convenient call creation via kotlin DSL
 
 ## Installation
@@ -86,25 +86,25 @@ return runBlocking {
 
 ## Table of contents
 
-* [Synchronous calls](core/synchronous-calls/)
-  * [GET](core/synchronous-calls/get.md)
-  * [POST](core/synchronous-calls/post.md)
-  * [PUT](core/synchronous-calls/put.md)
-  * [HEAD](core/synchronous-calls/head.md)
-  * [DELETE](core/synchronous-calls/delete.md)
-  * [PATCH](core/synchronous-calls/patch.md)
-  * [Upload files](core/synchronous-calls/upload-files.md)
-* [Asynchronous calls](core/asynchronous-calls/)
-  * [async GET](core/asynchronous-calls/async-get.md)
-  * [async POST](core/asynchronous-calls/async-post.md)
-  * [async PUT](core/asynchronous-calls/async-put.md)
-  * [async HEAD](core/asynchronous-calls/async-head.md)
-  * [async DELETE](core/asynchronous-calls/async-delete.md)
-  * [async PATCH](core/asynchronous-calls/async-patch.md)
-  * [async Upload files](core/asynchronous-calls/async-upload-files.md)
-* [Response usage](core/response-usage.md)
-* [Interceptors](core/interceptors.md)
-* [Customisation](core/customisation.md)
-* [Experimental features](core/experimental-features.md)
+* [Synchronous calls](gitbook/core/synchronous-calls/)
+  * [GET](gitbook/core/synchronous-calls/get.md)
+  * [POST](gitbook/core/synchronous-calls/post.md)
+  * [PUT](gitbook/core/synchronous-calls/put.md)
+  * [HEAD](gitbook/core/synchronous-calls/head.md)
+  * [DELETE](gitbook/core/synchronous-calls/delete.md)
+  * [PATCH](gitbook/core/synchronous-calls/patch.md)
+  * [Upload files](gitbook/core/synchronous-calls/upload-files.md)
+* [Asynchronous calls](gitbook/core/asynchronous-calls/)
+  * [async GET](gitbook/core/asynchronous-calls/async-get.md)
+  * [async POST](gitbook/core/asynchronous-calls/async-post.md)
+  * [async PUT](gitbook/core/asynchronous-calls/async-put.md)
+  * [async HEAD](gitbook/core/asynchronous-calls/async-head.md)
+  * [async DELETE](gitbook/core/asynchronous-calls/async-delete.md)
+  * [async PATCH](gitbook/core/asynchronous-calls/async-patch.md)
+  * [async Upload files](gitbook/core/asynchronous-calls/async-upload-files.md)
+* [Response usage](gitbook/core/response-usage.md)
+* [Interceptors](gitbook/core/interceptors.md)
+* [Customisation](gitbook/core/customisation.md)
+* [Experimental features](gitbook/core/experimental-features.md)
 * [Changelog](history/changelog.md)
 
