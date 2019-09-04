@@ -1,7 +1,6 @@
 package io.github.rybalkinsd.kohttp.ext
 
-import io.github.rybalkinsd.kohttp.ext.upload
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import org.junit.Test
 import java.net.URL
 import kotlin.test.assertEquals
@@ -15,7 +14,7 @@ class UriExtKtTest {
         val response = fileUri.upload("http://postman-echo.com/post")
 
         assertEquals(200, response.code())
-        val parsedResponse = response.asJson()
+        val parsedResponse = response.toJson()
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }
@@ -26,7 +25,7 @@ class UriExtKtTest {
         val response = fileUri.upload(URL("http://postman-echo.com/post"))
 
         assertEquals(200, response.code())
-        val parsedResponse = response.asJson()
+        val parsedResponse = response.toJson()
         assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
         assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
     }

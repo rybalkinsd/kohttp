@@ -3,8 +3,7 @@ package io.github.rybalkinsd.kohttp.interceptors
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.httpGet
-import io.github.rybalkinsd.kohttp.interceptors.SigningInterceptor
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import org.junit.Test
 import java.security.MessageDigest
 import java.util.*
@@ -38,7 +37,7 @@ class SigningInterceptorTest {
                 "random" to 213
             }
         }.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertTrue { it.code() == 200 }
             assertEquals(expected, parsedResponse["args"]["key"].asText())
         }

@@ -1,8 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.dsl.httpGet
 import io.github.rybalkinsd.kohttp.ext.url
-import io.github.rybalkinsd.kohttp.jackson.ext.asJson
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
 import io.github.rybalkinsd.kohttp.util.json
@@ -94,7 +93,7 @@ class HttpGetDslKtTest {
             }
         }
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertEquals(200, it.code())
@@ -141,7 +140,7 @@ class HttpGetDslKtTest {
             }
         }
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertEquals(200, it.code())
@@ -169,7 +168,7 @@ class HttpGetDslKtTest {
         )
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsExactly(expectedParams, parsedResponse["args"])
         }
     }
@@ -193,7 +192,7 @@ class HttpGetDslKtTest {
 
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsExactly(expectedParams, parsedResponse["args"])
         }
     }
@@ -219,7 +218,7 @@ class HttpGetDslKtTest {
 
 
         response.use {
-            val parsedResponse = it.asJson()
+            val parsedResponse = it.toJson()
             assertContainsExactly(expectedParams, parsedResponse["args"])
         }
     }
