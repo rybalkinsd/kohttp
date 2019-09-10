@@ -33,10 +33,10 @@ class CurlLoggingInterceptor(
         return chain.proceed(request)
     }
 
-    protected fun buildCurlCommand(request: Request) = buildString {
+    private fun buildCurlCommand(request: Request) = buildString {
         append("curl -X ${request.method()}")
         append(buildCurlHeaderOption(request.headers()))
-        append(buildCurlBodyOption(request.body()))
+        append(buildBodyOption(request.body()))
         append(""" "${request.url()}"""")
     }
 
@@ -47,13 +47,13 @@ class CurlLoggingInterceptor(
         }.joinToString("")
     }
 
-    private fun buildCurlBodyOption(body: RequestBody?): String {
+    private fun buildBodyOption(body: RequestBody?): String {
         if (body == null) return ""
         return body.flatMap {
             it.replace("\n", "\\n")
                 .replace("\r", "\\r")
         }.run {
-            " --data $'$this'"
+            " -d '$this'"
         }
     }
 
