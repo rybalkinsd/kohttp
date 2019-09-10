@@ -1,9 +1,11 @@
 package io.github.rybalkinsd.kohttp.interceptors.logging
 
 import io.github.rybalkinsd.kohttp.ext.asSequence
+import io.github.rybalkinsd.kohttp.util.flatMap
+import okhttp3.Headers
 import okhttp3.Interceptor
+import okhttp3.RequestBody
 import okhttp3.Response
-import okio.Buffer
 import java.util.*
 
 /**
@@ -32,45 +34,51 @@ import java.util.*
 class HttpLoggingInterceptor(
         private val log: (String) -> Unit = ::println
 ) : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val connection = chain.connection()
         val id = UUID.randomUUID()
+
         log("--> $id")
         log("${request.method()} ${request.url()} ${connection?.protocol() ?: ""}")
-
-        request.headers().asSequence().forEach { (k, v) ->
-            log("$k $v")
-        }
-
+        log(request.headers())
         log("")
-
-        val body = request.body()
-        if (body != null) {
-            val data = Buffer().use {
-                body.writeTo(it)
-                it.readString(Charsets.UTF_8).replace("\n", "\\n")
-                        .replace("\r", "\\r")
-            }
-
-            log(data)
-        }
-
+        request.body()?.let { log(it) }
         log("---")
 
+
+        val start = System.currentTimeMillis()
+        val timing: Long
         val response: Response = try {
-            chain.proceed(request)
+            chain.proceed(request).also {
+                timing = System.currentTimeMillis() - start
+            }
         } catch (e: Exception) {
             log("<-- FAIL: $e")
             throw e
         }
 
-        log("<-- $id")
+        log("<-- $id in $timing ms")
         log("${response.code()} ${response.request().url()}")
-        response.headers().asSequence().forEach { (k, v) ->
-            log("$k $v")
-        }
+        log(response.headers())
         log("---")
         return response
     }
+
+    private fun log(headers: Headers) {
+        headers.asSequence().forEach { (k, v) ->
+            log("$k $v")
+        }
+    }
+
+    private fun log(body: RequestBody) {
+        body.flatMap {
+            it.replace("\n", "\\n")
+                .replace("\r", "\\r")
+        }.also {
+            log(it)
+        }
+    }
 }
+

@@ -1,8 +1,8 @@
 package io.github.rybalkinsd.kohttp.interceptors.logging
 
 import io.github.rybalkinsd.kohttp.ext.asSequence
+import io.github.rybalkinsd.kohttp.util.flatMap
 import okhttp3.*
-import okio.Buffer
 
 /**
  * Request Logging Interceptor
@@ -49,17 +49,17 @@ class CurlLoggingInterceptor(
 
     private fun buildCurlBodyOption(body: RequestBody?): String {
         if (body == null) return ""
-        val data = Buffer().use {
-            body.writeTo(it)
-            it.readUtf8().replace("\n", "\\n")
-                    .replace("\r", "\\r")
+        return body.flatMap {
+            it.replace("\n", "\\n")
+                .replace("\r", "\\r")
+        }.run {
+            " --data $'$this'"
         }
-        return " --data $'$data'"
     }
 
 }
 
 private fun String.trimDoubleQuote() =
-        if (startsWith('"') && endsWith('"'))
-            substring(1, length - 1)
-        else this
+    if (startsWith('"') && endsWith('"')) {
+        substring(1, length - 1)
+    } else this
