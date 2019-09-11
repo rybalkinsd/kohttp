@@ -10,13 +10,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 /**
- * @author doyaaaaaken
+ * @author doyaaaaaken, sergey
  */
-class CurlLoggingStrategyTest {
-
+class CurlLoggingInterceptorTest {
 
     @Test
-    fun `build curl command of simple get request`() {
+    fun `curl of simple get request`() {
         val chain = setupMockChain {
             url("https://postman-echo.com/get")
         }
@@ -33,7 +32,7 @@ class CurlLoggingStrategyTest {
     }
 
     @Test
-    fun `build curl command of request with header`() {
+    fun `curl of request with header`() {
         val chain = setupMockChain {
             url("https://postman-echo.com/get")
             header {
@@ -57,7 +56,7 @@ class CurlLoggingStrategyTest {
     }
 
     @Test
-    fun `build curl command of request with body`() {
+    fun `curl of request with body`() {
         val chain = setupPostMockChain {
             url("https://postman-echo.com/post")
             body {
