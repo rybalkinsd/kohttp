@@ -3,6 +3,7 @@ package io.github.rybalkinsd.kohttp.interceptors
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.httpGet
+import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
 import io.mockk.spyk
 import io.mockk.verify
 import okhttp3.*
@@ -107,7 +108,7 @@ class RetryInterceptorTest {
             val query = (query() ?: "").toByteArray()
             urlEncoder.encodeToString(md5.digest(query))
         })
-        val loggingInterceptorSpy = spyk(LoggingInterceptor())
+        val loggingInterceptorSpy = spyk(HttpLoggingInterceptor())
 
         createExpectationForGetWithResponseCode(4, 503)
         val client = defaultHttpClient.fork {
