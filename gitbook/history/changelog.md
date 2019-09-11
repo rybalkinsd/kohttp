@@ -4,9 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/rybalkinsd/kohttp/compare/v0.10.0...HEAD)
+## [Unreleased](https://github.com/rybalkinsd/kohttp/compare/0.11.0...HEAD)
 
-## [0.10.0](https://github.com/rybalkinsd/kohttp/pull/121) - 2019-06-20
+## [0.11.0](https://github.com/rybalkinsd/kohttp/tree/0.11.0) - 2019-08-11
+
+### Added
+* Introduced multimodule structure [issue \#128](https://github.com/rybalkinsd/kohttp/issues/128)
+* Split project into `kohttp` and `kohttp-jackson`
+* Added full-featured Android sample [PR \#149](https://github.com/rybalkinsd/kohttp/pull/149) by [@IVSivak](https://github.com/IVSivak)
+* Introduced cURL interceptor [issue \#139](https://github.com/rybalkinsd/kohttp/issues/139) by [@doyaaaaaken](https://github.com/doyaaaaaken)
+* Introduced [gitbook](https://kohttp.gitbook.io/) by [@deviantBadge](https://github.com/DeviantBadge)
+* Added full docs sync for gitbook
+
+### Changed
+* Improved Multipart DSL [issue \#132](https://github.com/rybalkinsd/kohttp/issues/132)
+* [kohttp-jackson] Improved `toJson`, `toJsonOrNull`, `toType` methods [issue \#153](https://github.com/rybalkinsd/kohttp/issues/153)
+* Redesigned simple logging interceptor to log both requests and responses [issue \#144](https://github.com/rybalkinsd/kohttp/issues/144)
+
+### Removed
+* Eager requests extensions [issue \#120](https://github.com/rybalkinsd/kohttp/issues/123)
+* `kohttp.yaml` and it's configuration
+
+### Big thanks
+
+[@IVSivak](https://github.com/IVSivak), [@doyaaaaaken](https://github.com/doyaaaaaken), [@deviantBadge](https://github.com/DeviantBadge) for your contribution
+
+
+
+## [0.10.0](https://github.com/rybalkinsd/kohttp/tree/0.10.0) - 2019-06-20
 
 ### Added
 

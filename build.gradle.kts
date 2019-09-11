@@ -13,7 +13,7 @@ allprojects {
     apply(plugin = "jacoco")
 
     group = "io.github.rybalkinsd"
-    version = "0.11.0-SNAPSHOT"
+    version = "0.12.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
