@@ -3,8 +3,8 @@ package io.github.rybalkinsd.kohttp.dsl
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 /**
  * @author bpaxio, gokul
@@ -54,7 +54,7 @@ class HttpPatchDslKtTest {
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedForm, parsedResponse["form"])
-            assertEquals(200, it.code())
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 
@@ -103,7 +103,7 @@ class HttpPatchDslKtTest {
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedJson, parsedResponse["json"])
-            assertEquals(200, it.code())
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 }

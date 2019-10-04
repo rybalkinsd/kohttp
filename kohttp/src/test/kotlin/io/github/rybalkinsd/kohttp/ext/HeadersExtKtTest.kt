@@ -1,12 +1,12 @@
 package io.github.rybalkinsd.kohttp.ext
 
 import okhttp3.Headers
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class HeadersExtKtTest {
 
-    val headers: Headers = Headers.Builder()
+    private val headers: Headers = Headers.Builder()
             .add("zero", "0")
             .add("one", "1")
             .add("two", "2")
@@ -16,7 +16,7 @@ class HeadersExtKtTest {
     @Test
     fun `iterating with asSequence`() {
         headers.asSequence().forEachIndexed { index, header ->
-            assertEquals(header.value.toInt(), index)
+            assertThat(index).isEqualTo(header.value.toInt())
         }
     }
 
@@ -24,7 +24,7 @@ class HeadersExtKtTest {
     fun `filter and sum`() {
         val sum = headers.asSequence().filter { it.name.contains('o') }
             .sumBy { it.value.toInt() }
-        assertEquals(3, sum)
+        assertThat(sum).isEqualTo(3)
     }
 
     @Test(expected = NoSuchElementException::class)

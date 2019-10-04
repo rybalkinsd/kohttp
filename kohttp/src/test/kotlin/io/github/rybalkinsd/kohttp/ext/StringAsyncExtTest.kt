@@ -1,9 +1,9 @@
 package io.github.rybalkinsd.kohttp.ext
 
 import kotlinx.coroutines.runBlocking
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.system.measureTimeMillis
-import kotlin.test.assertEquals
 
 /**
  * @author sergey
@@ -20,8 +20,7 @@ class StringAsyncExtTest {
                 tasks.map { r ->
                     r.await().also { it.close() }
                 }.forEach {
-                    assertEquals(200, it.code())
-
+                    assertThat(it.code()).isEqualTo(200)
                 }
             }
         }.also { println("$it ms") }

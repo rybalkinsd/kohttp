@@ -1,7 +1,7 @@
 package io.github.rybalkinsd.kohttp.dsl.context
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 /**
  * @author doyaaaaaken
@@ -14,7 +14,7 @@ class HttpPostContextTest {
         val context = HttpPostContext()
         context.body("application/json") { string("content") }
 
-        assertEquals(expected, context.makeBody().contentType().toString())
+        assertThat(context.makeBody().contentType().toString()).isEqualTo(expected)
     }
 
     @Test
@@ -23,7 +23,7 @@ class HttpPostContextTest {
         val context = HttpPostContext()
         context.body { form("") }
 
-        assertEquals(expected, context.makeBody().contentType().toString())
+        assertThat(context.makeBody().contentType().toString()).isEqualTo(expected)
     }
 
     @Test
@@ -32,7 +32,7 @@ class HttpPostContextTest {
         val context = HttpPostContext()
         context.body { json {} }
 
-        assertEquals(expected, context.makeBody().contentType().toString())
+        assertThat(context.makeBody().contentType().toString()).isEqualTo(expected)
     }
 
     @Test
@@ -41,7 +41,7 @@ class HttpPostContextTest {
         val context = HttpPostContext()
         context.body("application/json; charset=utf-8") { form("") }
 
-        assertEquals(expected, context.makeBody().contentType().toString())
+        assertThat(context.makeBody().contentType().toString()).isEqualTo(expected)
     }
 
 }

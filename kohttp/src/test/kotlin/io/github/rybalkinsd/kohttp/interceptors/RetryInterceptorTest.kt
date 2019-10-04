@@ -7,7 +7,7 @@ import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
 import io.mockk.spyk
 import io.mockk.verify
 import okhttp3.*
-import org.junit.Assert
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.mockserver.client.MockServerClient
@@ -95,9 +95,9 @@ class RetryInterceptorTest {
     fun `delay increase with step`() {
         val retryInterceptor = RetryInterceptor(ratio = 2)
         val invocationTimeout: Long = 1000
-        assert(retryInterceptor.performAndReturnDelay(invocationTimeout) == invocationTimeout * 2)
-        assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 2) == invocationTimeout * 4)
-        assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 4) == invocationTimeout * 8)
+        assertThat(retryInterceptor.performAndReturnDelay(invocationTimeout)).isEqualTo(invocationTimeout * 2)
+        assertThat(retryInterceptor.performAndReturnDelay(invocationTimeout * 2)).isEqualTo(invocationTimeout * 4)
+        assertThat(retryInterceptor.performAndReturnDelay(invocationTimeout * 4)).isEqualTo( invocationTimeout * 8)
     }
 
     @Test
@@ -138,14 +138,14 @@ class RetryInterceptorTest {
     fun `not need retry if status code is 200`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(200).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertFalse(RetryInterceptor().isRetry(response, 1))
+        assertThat(RetryInterceptor().isRetry(response, 1)).isFalse()
     }
 
     @Test
     fun `need retry if status code in error codes list`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(503).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertTrue(RetryInterceptor().isRetry(response, 1))
+        assertThat(RetryInterceptor().isRetry(response, 1)).isTrue()
     }
 
     private fun getCall(client: OkHttpClient) {

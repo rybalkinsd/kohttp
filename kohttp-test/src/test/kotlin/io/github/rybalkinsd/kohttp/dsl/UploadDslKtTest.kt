@@ -2,9 +2,8 @@ package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class UploadDslKtTest {
 
@@ -17,8 +16,8 @@ class UploadDslKtTest {
         }
 
         val parsedResponse = r.toJson()
-        assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
-        assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
+        assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
+        assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
     }
 
     @Test
@@ -28,8 +27,8 @@ class UploadDslKtTest {
             path = "/files/test1Mb.db"
         }
 
-        assertEquals(200, downloadResponse.code())
-        assertEquals(1 * 1024 * 1024, downloadResponse.body()?.contentLength())
+        assertThat(downloadResponse.code()).isEqualTo(200)
+        assertThat(downloadResponse.body()?.contentLength()).isEqualTo(1 * 1024 * 1024)
 
         val uploadResponse = upload {
             url("http://postman-echo.com/post")
@@ -37,8 +36,8 @@ class UploadDslKtTest {
             bytes("data", data)
         }
 
-        assertEquals(200, uploadResponse.code())
-        assertEquals(1 * 1024 * 1024 + 173, uploadResponse.toJson()["headers"]["content-length"].asInt())
+        assertThat(uploadResponse.code()).isEqualTo(200)
+        assertThat(uploadResponse.toJson()["headers"]["content-length"].asInt()).isEqualTo(1 * 1024 * 1024 + 173)
     }
 
     @Test
@@ -77,10 +76,10 @@ class UploadDslKtTest {
 
         val parsedResponse = r.toJson()
 
-        assertEquals(expectedArgs["query"], parsedResponse["args"]["query"].asText())
-        assertEquals(expectedArgs["listOfParams"], parsedResponse["args"]["listOfParams"].toString())
+        assertThat(parsedResponse["args"]["query"].asText()).isEqualTo(expectedArgs["query"])
+        assertThat(parsedResponse["args"]["listOfParams"].toString()).isEqualTo(expectedArgs["listOfParams"])
         assertContainsAtLeast(expectedHeaders, parsedResponse["headers"])
-        assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
-        assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
+        assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
+        assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
     }
 }

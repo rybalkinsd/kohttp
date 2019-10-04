@@ -1,9 +1,8 @@
 package io.github.rybalkinsd.kohttp.dsl.async
 
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 /**
  * @author sergey
@@ -17,11 +16,13 @@ class HttpHeadAsyncDslTest {
             path = "/search"
             port = 80
         }
-        Assert.assertFalse("After coroutine call, we must have not-ready response", response.isCompleted)
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
 
         runBlocking {
             response.await().use {
-                assertEquals(200, it.code())
+                assertThat(it.code()).isEqualTo(200)
             }
         }
     }

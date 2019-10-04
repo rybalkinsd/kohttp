@@ -1,10 +1,9 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.File
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class HttpMultipartDslTest {
 
@@ -22,8 +21,8 @@ class HttpMultipartDslTest {
         }
 
         val parsedResponse = response.toJson()
-        assertEquals(1046193, parsedResponse["headers"]["content-length"].asInt())
-        assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
+        assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046193)
+        assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
     }
 
     @Test
@@ -40,8 +39,8 @@ class HttpMultipartDslTest {
         }
 
         val parsedResponse = response.toJson()
-        assertEquals(1046213, parsedResponse["headers"]["content-length"].asInt())
-        assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/alternative; boundary=") }
+        assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046213)
+        assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/alternative; boundary=")
     }
 
 }

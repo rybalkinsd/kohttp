@@ -4,11 +4,10 @@ import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.httpGet
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.security.MessageDigest
 import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class SigningInterceptorTest {
     @Test
@@ -38,8 +37,8 @@ class SigningInterceptorTest {
             }
         }.use {
             val parsedResponse = it.toJson()
-            assertTrue { it.code() == 200 }
-            assertEquals(expected, parsedResponse["args"]["key"].asText())
+            assertThat(it.code()).isEqualTo(200)
+            assertThat(parsedResponse["args"]["key"].asText()).isEqualTo(expected)
         }
     }
 }
