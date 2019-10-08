@@ -52,6 +52,7 @@ val pushNotifications: List<Deferred<Response>> = usersData.map {
 
 * [Kotlin weekly](https://mailchi.mp/kotlinweekly/kotlin-weekly-124) mentioned us
 * [Android weekly \(CN\)](https://androidweekly.io/android-dev-weekly-issue-208/) mentioned us
+* [Kotlin http client. Making kohttp 0.11.0](https://medium.com/@sergei.rybalkin/kotlin-http-client-making-kohttp-0-11-0-af16fb702c86?source=friends_link&sk=e0284c5f8028034eafd433ff5fcfcf47) - medium post
 * [Write your Android network as Kotlin DSL](https://medium.com/datadriveninvestor/write-your-android-networking-as-a-kotlin-dsl-330febae503f) - medium post
 * [Upload files to Google Drive with Kotlin](https://medium.com/@sergei.rybalkin/upload-file-to-google-drive-with-kotlin-931cec5252c1) - medium post
 * [Production Kotlin DSL \(RU + subtitles\) ](https://youtu.be/4m9bS0M0Nww) - Kotlin/Everywhere talk, YouTube
