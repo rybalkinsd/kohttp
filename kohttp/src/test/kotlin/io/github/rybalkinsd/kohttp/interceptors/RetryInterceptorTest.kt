@@ -21,6 +21,9 @@ import java.net.SocketTimeoutException
 import java.security.MessageDigest
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 
 class RetryInterceptorTest {
@@ -92,12 +95,13 @@ class RetryInterceptorTest {
     }
 
     @Test
-    fun `delay increase with step`() {
-        val retryInterceptor = RetryInterceptor(ratio = 2)
+    fun `delay increase by ratio`() {
+        val ratio = 2
+        val retryInterceptor = RetryInterceptor(ratio = ratio)
         val invocationTimeout: Long = 1000
-        assert(retryInterceptor.performAndReturnDelay(invocationTimeout) == invocationTimeout * 2)
-        assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 2) == invocationTimeout * 4)
-        assert(retryInterceptor.performAndReturnDelay(invocationTimeout * 4) == invocationTimeout * 8)
+        val responseHeaders = Headers.of()
+        val responseCode = 429
+        assertEquals(invocationTimeout * ratio, retryInterceptor.calculateNextRetry(responseHeaders, responseCode, 0, invocationTimeout, 10000))
     }
 
     @Test
@@ -138,14 +142,51 @@ class RetryInterceptorTest {
     fun `not need retry if status code is 200`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(200).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertFalse(RetryInterceptor().isRetry(response, 1))
+        Assert.assertNull(RetryInterceptor().calculateNextRetry(response.headers(), response.code(), 1, 2, 30))
     }
 
     @Test
     fun `need retry if status code in error codes list`() {
         val request = Request.Builder().url(HttpUrl.Builder().host(localhost).scheme("http").build()).build()
         val response = Response.Builder().code(503).protocol(Protocol.HTTP_1_1).message("").request(request).build()
-        Assert.assertTrue(RetryInterceptor().isRetry(response, 1))
+        Assert.assertNotNull(RetryInterceptor().calculateNextRetry(response.headers(), response.code(), 1, 2, 30))
+    }
+
+    @Test
+    fun `get Retry-After Header's value as next retry`() {
+        val maxDelayTime = 2001
+        val retryAfterSeconds = 2L
+        val retryAfter = RetryInterceptor().calculateNextRetry(Headers.of(mapOf("Retry-After" to retryAfterSeconds.toString())), 429, 1, 2, maxDelayTime)
+        assertEquals(retryAfterSeconds * 1000, retryAfter)
+    }
+
+    @Test
+    fun `get null as next retry if Retry-After Header's value exceeds maxDelayTime`() {
+        val maxDelayTime = 1999
+        val retryAfterSeconds = 2L
+        val retryAfter = RetryInterceptor().calculateNextRetry(Headers.of(mapOf("Retry-After" to retryAfterSeconds.toString())), 429, 1, 2, maxDelayTime)
+        assertNull(retryAfter)
+    }
+
+    @Test
+    fun `parse RetryAfter header whose unit is second`() {
+        val interceptor = RetryInterceptor()
+        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "2")))
+        assertEquals(2 * 1000, retryAfter)
+    }
+
+    @Test
+    fun `parse RetryAfter header whose unit is date`() {
+        val interceptor = RetryInterceptor()
+        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "Mon, 21 Oct 2115 07:28:00 GMT")))
+        assertNotNull(retryAfter)
+    }
+
+    @Test
+    fun `return null if RetryAfter header's date value is invalid`() {
+        val interceptor = RetryInterceptor()
+        val retryAfter = interceptor.parseRetryAfter(Headers.of(mapOf("Retry-After" to "Wed,, 21 Oct 2115 07:28:00 GMT")))
+        assertNull(retryAfter)
     }
 
     private fun getCall(client: OkHttpClient) {
