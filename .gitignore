@@ -1,8 +1,8 @@
+.DS_Store
 .idea
 .gradle
 *.iml
 
-/out
-/build
-/*/out/
-/*/build
+**/out
+**/lib
+**/build
