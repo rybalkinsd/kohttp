@@ -17,5 +17,5 @@ class HeaderContext {
         map["cookie"] = CookieContext().also(init).collect()
     }
 
-    internal fun forEach(action: (k: String, v: Any) -> Unit) = map.forEach(action)
+    internal fun forEach(action: (k: String, v: Any) -> Unit) = map.forEach { (k, v) -> action(k, v) }
 }
