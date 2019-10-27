@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 * Android 6, API Level 23 support [issue \#162](https://github.com/rybalkinsd/kohttp/issues/162) by @govorovsky
 
+### Big thanks
+[@govorovsky](https://github.com/govorovsky), [@gokulchandra](https://github.com/gokulchandra) for your contribution
+
 ## [0.11.0](https://github.com/rybalkinsd/kohttp/tree/0.11.0) - 2019-08-11
 
 ### Added
