@@ -4,7 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/rybalkinsd/kohttp/compare/0.11.0...HEAD)
+## [Unreleased](https://github.com/rybalkinsd/kohttp/compare/0.11.1...HEAD)
+
+## [0.11.1](https://github.com/rybalkinsd/kohttp/tree/0.11.1) - 2019-10-27
+
+### Changed
+* Kotlin 1.3.50 [issue \#155](https://github.com/rybalkinsd/kohttp/issues/155) by @gokulchandra
+
+### Fixed
+* Android 6, API Level 23 support [issue \#162](https://github.com/rybalkinsd/kohttp/issues/162) by @govorovsky
+
+### Big thanks
+[@govorovsky](https://github.com/govorovsky), [@gokulchandra](https://github.com/gokulchandra) for your contribution
 
 ## [0.11.0](https://github.com/rybalkinsd/kohttp/tree/0.11.0) - 2019-08-11
 
