@@ -6,27 +6,25 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.net.MalformedURLException
 import java.net.URL
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class HttpContextExtKtTest {
 
     @Test
     fun `full url test`() {
         val context = HttpGetContext().apply { url("https://www.example.org:8080/path?foo=bar") }
-        assertEquals("https", context.scheme)
-        assertEquals("www.example.org", context.host)
-        assertEquals("/path", context.path)
-        assertEquals("bar", context.params["foo"])
+        assertThat(context.scheme).isEqualTo("https")
+        assertThat(context.host).isEqualTo("www.example.org")
+        assertThat(context.path).isEqualTo("/path")
+        assertThat(context.params["foo"]).isEqualTo("bar")
     }
 
     @Test
     fun `full url test without port`() {
         val context = HttpGetContext().apply { url("https://www.example.org/path") }
-        assertEquals("https", context.scheme)
-        assertEquals("www.example.org", context.host)
-        assertEquals("/path", context.path)
-        assertNull(context.port)
+        assertThat(context.scheme).isEqualTo("https")
+        assertThat(context.host).isEqualTo("www.example.org")
+        assertThat(context.path).isEqualTo("/path")
+        assertThat(context.port).isNull()
     }
 
     @Test(expected = MalformedURLException::class)
@@ -37,10 +35,10 @@ class HttpContextExtKtTest {
     @Test
     fun `full url test without path`() {
         val context = HttpGetContext().apply { url("http://www.example.org") }
-        assertEquals("http", context.scheme)
-        assertEquals("www.example.org", context.host)
-        assertEquals("", context.path)
-        assertNull(context.port)
+        assertThat(context.scheme).isEqualTo("http")
+        assertThat(context.host).isEqualTo("www.example.org")
+        assertThat(context.path).isEmpty()
+        assertThat(context.port).isNull()
     }
 
     // expecting NPE for b/c of protocol
@@ -64,7 +62,7 @@ class HttpContextExtKtTest {
         val context = HttpGetContext().apply {
             url("https://www.example.org/?")
         }
-        assertEquals(0, context.params.size)
+        assertThat(context.params).isEmpty()
     }
 
     @Test
@@ -74,8 +72,8 @@ class HttpContextExtKtTest {
         }
 
         val params = context.params
-        assertEquals(1, params.size)
-        assertEquals("b", params["a"])
+        assertThat(params).hasSize(1)
+        assertThat(params["a"]).isEqualTo("b")
     }
 
     @Test
@@ -85,10 +83,10 @@ class HttpContextExtKtTest {
         }
 
         val params = context.params
-        assertEquals(3, params.size)
-        assertEquals("b", params["a"])
-        assertEquals("", params["c"])
-        assertEquals("123", params["d"])
+        assertThat(params).hasSize(3)
+        assertThat(params["a"]).isEqualTo("b")
+        assertThat(params["c"] as String).isEmpty()
+        assertThat(params["d"]).isEqualTo("123")
     }
 
     @Test
@@ -98,8 +96,8 @@ class HttpContextExtKtTest {
         }
 
         val params = context.params
-        assertEquals(1, params.size)
-        assertEquals(listOf(null, "", "123", "xxx"), params["a"])
+        assertThat(params).hasSize(1)
+        assertThat(params["a"]).isEqualTo(listOf(null, "", "123", "xxx"))
     }
 
     @Test
@@ -112,36 +110,33 @@ class HttpContextExtKtTest {
         }
 
         val params = context.params
-        assertEquals(1, params.size)
-        assertEquals(listOf("xxx", "", "yyy"), params["a"])
+        assertThat(params).hasSize(1)
+        assertThat(params["a"]).isEqualTo(listOf("xxx", "", "yyy"))
     }
 
     @Test
     fun `duplicate query keys`() {
         val context = HttpGetContext().apply { url("https://www.example.org/path?id[]=1&id[]=2") }
         val params = context.params
-        assertEquals(1, params.size)
-        assertEquals(listOf("1", "2"), params["id[]"])
+        assertThat(params).hasSize(1)
+        assertThat(params["id[]"]).isEqualTo(listOf("1", "2"))
     }
 
 
     @Test
     fun `query param without value`() {
         val context = HttpGetContext().apply { url("https://www.example.org/path?foo&bar=baz") }
-        with(context.params) {
-            assertEquals(2, size)
-            assertEquals(null, get("foo"))
-            assertEquals("baz", get("bar"))
-        }
+        val params = context.params
+        assertThat(params).hasSize(2)
+        assertThat(params["foo"]).isNull()
+        assertThat(params["bar"]).isEqualTo("baz")
     }
 
     @Test
     fun `query param with value containing = symbol`() {
         val context = HttpGetContext().apply { url("https://www.example.org/path?bool=2*2==4") }
-        with(context.params) {
-            assertEquals(1, size)
-            assertEquals("2*2==4", get("bool"))
-        }
+        assertThat(context.params).hasSize(1)
+        assertThat(context.params["bool"]).isEqualTo("2*2==4")
     }
 
     @Test
@@ -150,7 +145,7 @@ class HttpContextExtKtTest {
             url("https://www.example.org/path?a")
         }
 
-        assertThat(context.params.size).isEqualTo(1)
+        assertThat(context.params).hasSize(1)
         assertThat(context.params["a"]).isNull()
     }
 

@@ -1,9 +1,8 @@
 package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.util.json
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 /**
  * @author sergey
@@ -24,7 +23,7 @@ class HttpHeadDslKtTest {
         }
 
         response.use {
-            assertEquals(200, it.code())
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 
@@ -60,8 +59,8 @@ class HttpHeadDslKtTest {
         }
 
         response.use {
-            assertTrue { it.body()!!.string().isEmpty() }
-            assertEquals(200, it.code())
+            assertThat(it.body()!!.string()).isEmpty()
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 }

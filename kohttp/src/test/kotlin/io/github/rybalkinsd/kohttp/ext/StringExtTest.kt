@@ -1,8 +1,8 @@
 package io.github.rybalkinsd.kohttp.ext
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.system.measureTimeMillis
-import kotlin.test.assertEquals
 
 /**
  * @author sergey
@@ -12,7 +12,7 @@ class StringExtTest {
     @Test
     fun `single sync invoke of httpGet`() {
         val result = "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
-        assertEquals(200, result.code())
+        assertThat(result.code()).isEqualTo(200)
     }
 
     @Test
@@ -20,7 +20,7 @@ class StringExtTest {
         val result = "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
 
         result.use {
-            assertEquals(200, it.code())
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 
@@ -30,7 +30,7 @@ class StringExtTest {
             List(100) {
                 "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
             }.forEach {
-                assertEquals(200, it.code())
+                assertThat(it.code()).isEqualTo(200)
             }
         }.also { println("$it ms") }
     }

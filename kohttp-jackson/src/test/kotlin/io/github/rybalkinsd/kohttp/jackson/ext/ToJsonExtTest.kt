@@ -10,7 +10,6 @@ import okhttp3.ResponseBody
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Test
-import kotlin.test.assertNotNull
 
 /**
  * @author sergey
@@ -123,8 +122,8 @@ class ToJsonExtTest {
 
         with(response.toJsonOrNull()) {
             @Suppress("UsePropertyAccessSyntax")
-            assertNotNull(this)
-            assertThat(this["a"].intValue()).isEqualTo(42)
+            assertThat(this).isNotNull()
+            assertThat(this!!["a"].intValue()).isEqualTo(42)
 
         }
     }

@@ -6,9 +6,8 @@ import io.github.rybalkinsd.kohttp.dsl.upload
 import io.github.rybalkinsd.kohttp.ext.httpGet
 import io.github.rybalkinsd.kohttp.interceptors.logging.CurlLoggingInterceptor
 import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class LoggingInterceptorTest {
     @Test
@@ -24,7 +23,7 @@ class LoggingInterceptorTest {
 
         "https://postman-echo.com/get".httpGet(client)
 
-        assertTrue { logSize > 0 }
+        assertThat(logSize).isGreaterThan(0)
     }
 
     @Test
@@ -37,7 +36,7 @@ class LoggingInterceptorTest {
 
         val response = "https://postman-echo.com/get".httpGet(client)
 
-        assertEquals(200, response.code())
+        assertThat(response.code()).isEqualTo(200)
     }
 
     @Test
@@ -54,7 +53,7 @@ class LoggingInterceptorTest {
             file(fileUri)
         }
 
-        assertEquals(200, response.code())
+        assertThat(response.code()).isEqualTo(200)
     }
 
     @Test
@@ -67,6 +66,6 @@ class LoggingInterceptorTest {
 
         val response = "https://postman-echo.com/get".httpGet(client)
 
-        assertEquals(200, response.code())
+        assertThat(response.code()).isEqualTo(200)
     }
 }

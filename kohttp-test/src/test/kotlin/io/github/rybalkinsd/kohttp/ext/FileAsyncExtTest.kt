@@ -2,11 +2,10 @@ package io.github.rybalkinsd.kohttp.ext
 
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import kotlinx.coroutines.runBlocking
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.File
 import java.net.URL
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 /**
  * @author evgeny
@@ -22,9 +21,9 @@ class FileAsyncExtTest {
             response.await().use {
                 val parsedResponse = it.toJson()
 
-                assertEquals(200, it.code())
-                assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
-                assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
+                assertThat(it.code()).isEqualTo(200)
+                assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
+                assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
             }
         }
     }
@@ -38,9 +37,9 @@ class FileAsyncExtTest {
             response.await().use {
                 val parsedResponse = it.toJson()
 
-                assertEquals(200, it.code())
-                assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
-                assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
+                assertThat(it.code()).isEqualTo(200)
+                assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
+                assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
             }
         }
     }
