@@ -1,12 +1,12 @@
 package io.github.rybalkinsd.kohttp.dsl
 
-import io.github.rybalkinsd.kohttp.ext.url
-import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
+import io.github.rybalkinsd.kohttp.ext.url
+import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.util.json
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 
 /**
@@ -28,7 +28,7 @@ class HttpGetDslKtTest {
         }
 
         response.use {
-            assertEquals(200, it.code())
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 
@@ -46,11 +46,10 @@ class HttpGetDslKtTest {
         }
 
         response.use {
-            assertEquals(false, it.request().url().query()?.contains("%5B"))
-            assertEquals(200, it.code())
+            assertThat(it.request().url().query()!!).doesNotContain("%5B")
+            assertThat(it.code()).isEqualTo(200)
         }
     }
-
 
     @Test
     fun `single sync http get invocation with param and header`() {
@@ -96,7 +95,7 @@ class HttpGetDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertEquals(200, it.code())
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 
@@ -143,7 +142,7 @@ class HttpGetDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertEquals(200, it.code())
+            assertThat(it.code()).isEqualTo(200)
         }
     }
 
@@ -190,7 +189,6 @@ class HttpGetDslKtTest {
             "a" to listOf("1", "", "3")
         )
 
-
         response.use {
             val parsedResponse = it.toJson()
             assertContainsExactly(expectedParams, parsedResponse["args"])
@@ -215,7 +213,6 @@ class HttpGetDslKtTest {
         val expectedParams = mapOf(
             "a" to listOf("1", "", null, null, "3", 1, 2, null)
         )
-
 
         response.use {
             val parsedResponse = it.toJson()

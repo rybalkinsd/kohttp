@@ -9,8 +9,6 @@ import org.mockserver.junit.MockServerRule
 import org.mockserver.matchers.Times
 import org.mockserver.model.HttpRequest
 import org.mockserver.model.HttpResponse
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 /**
  * @author sergey
@@ -33,8 +31,8 @@ class AsTypeExtTest {
 
         mockGet().use {
             val simple: SimpleClass? = it.toType()
-            assertNotNull(simple)
-            assertThat(simple.a).isEqualTo(42)
+            assertThat(simple).isNotNull()
+            assertThat(simple?.a).isEqualTo(42)
         }
     }
 
@@ -44,7 +42,7 @@ class AsTypeExtTest {
 
         mockGet().use {
             val simple: SimpleClass? = it.toType()
-            assertNull(simple)
+            assertThat(simple).isNull()
         }
     }
 
@@ -54,7 +52,7 @@ class AsTypeExtTest {
 
         mockGet().use {
             val simple: SimpleClass? = it.toType()
-            assertNull(simple)
+            assertThat(simple).isNull()
         }
     }
 
@@ -69,9 +67,9 @@ class AsTypeExtTest {
 
         mockGet().use {
             val complex = it.toType<ComplexConstructorClass>()
-            assertNotNull(complex)
-            assertThat(complex.host).isEqualTo(localhost)
-            assertThat(complex.port).isEqualTo(mockServerPort)
+            assertThat(complex).isNotNull()
+            assertThat(complex?.host).isEqualTo(localhost)
+            assertThat(complex?.port).isEqualTo(mockServerPort)
         }
     }
 
@@ -84,8 +82,8 @@ class AsTypeExtTest {
 
         mockGet().use {
             val simple: SimpleDataClass? = it.toType()
-            assertNotNull(simple)
-            assertThat(simple.a).isEqualTo(42)
+            assertThat(simple).isNotNull()
+            assertThat(simple?.a).isEqualTo(42)
         }
     }
 
@@ -103,8 +101,8 @@ class AsTypeExtTest {
 
         mockGet().use {
             val nested: NestedDataClass? = it.toType()
-            assertNotNull(nested)
-            with (nested) {
+            assertThat(nested).isNotNull()
+            with (nested!!) {
                 assertThat(x).isEqualTo(42)
                 assertThat(y).isNull()
                 assertThat(z.a).isEqualTo(42)

@@ -2,10 +2,8 @@ package io.github.rybalkinsd.kohttp.dsl.async
 
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class UploadAsyncDslTest {
 
@@ -16,15 +14,17 @@ class UploadAsyncDslTest {
             val fileUri = this.javaClass.getResource("/cat.gif").toURI()
             file(fileUri)
         }
-        Assert.assertFalse("After coroutine call, we must have not-ready response", response.isCompleted)
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
 
         runBlocking {
             response.await().use {
                 val parsedResponse = it.toJson()
 
-                assertEquals(200, it.code())
-                assertEquals(1046214, parsedResponse["headers"]["content-length"].asInt())
-                assertTrue { parsedResponse["headers"]["content-type"].asText().startsWith("multipart/mixed; boundary=") }
+                assertThat(it.code()).isEqualTo(200)
+                assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
+                assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
             }
         }
     }

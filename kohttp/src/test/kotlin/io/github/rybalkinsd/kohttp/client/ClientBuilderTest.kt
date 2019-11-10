@@ -2,14 +2,14 @@ package io.github.rybalkinsd.kohttp.client
 
 import okhttp3.*
 import okhttp3.internal.tls.OkHostnameVerifier
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.fail
 import org.junit.Test
 import java.lang.reflect.InvocationTargetException
 import java.net.ProxySelector
 import java.util.concurrent.TimeUnit
 import javax.net.SocketFactory
 import kotlin.reflect.full.declaredMemberProperties
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 /**
  * @author sergey
@@ -81,29 +81,29 @@ class ClientBuilderTest {
             .pingInterval(0, TimeUnit.MILLISECONDS)
             .build()
 
-        with(client) {
-            assertEquals(dispatcher(), dslClient.dispatcher())
-            assertEquals(authenticator(), dslClient.authenticator())
-            assertEquals(protocols(), dslClient.protocols())
-            assertEquals(connectionSpecs(), dslClient.connectionSpecs())
-            assertEquals(eventListenerFactory(), dslClient.eventListenerFactory())
-            assertEquals(proxySelector(), dslClient.proxySelector())
-            assertEquals(cookieJar(), dslClient.cookieJar())
-            assertEquals(socketFactory(), dslClient.socketFactory())
-            assertEquals(socketFactory(), dslClient.socketFactory())
-            assertEquals(hostnameVerifier(), dslClient.hostnameVerifier())
-            assertEquals(certificatePinner(), dslClient.certificatePinner())
-            assertEquals(proxyAuthenticator(), dslClient.proxyAuthenticator())
-            assertEquals(authenticator(), dslClient.authenticator())
-            assertEquals(connectionPool(), dslClient.connectionPool())
-            assertEquals(dns(), dslClient.dns())
-            assertEquals(followSslRedirects(), dslClient.followSslRedirects())
-            assertEquals(followSslRedirects(), dslClient.followRedirects())
-            assertEquals(retryOnConnectionFailure(), dslClient.retryOnConnectionFailure())
-            assertEquals(connectTimeoutMillis(), dslClient.connectTimeoutMillis())
-            assertEquals(readTimeoutMillis(), dslClient.readTimeoutMillis())
-            assertEquals(writeTimeoutMillis(), dslClient.writeTimeoutMillis())
-            assertEquals(pingIntervalMillis(), dslClient.pingIntervalMillis())
+        with(dslClient) {
+            assertThat(dispatcher()).isEqualTo(client.dispatcher())
+            assertThat(authenticator()).isEqualTo(client.authenticator())
+            assertThat(protocols()).isEqualTo(client.protocols())
+            assertThat(connectionSpecs()).isEqualTo(client.connectionSpecs())
+            assertThat(eventListenerFactory()).isEqualTo(client.eventListenerFactory())
+            assertThat(proxySelector()).isEqualTo(client.proxySelector())
+            assertThat(cookieJar()).isEqualTo(client.cookieJar())
+            assertThat(socketFactory()).isEqualTo(client.socketFactory())
+            assertThat(socketFactory()).isEqualTo(client.socketFactory())
+            assertThat(hostnameVerifier()).isEqualTo(client.hostnameVerifier())
+            assertThat(certificatePinner()).isEqualTo(client.certificatePinner())
+            assertThat(proxyAuthenticator()).isEqualTo(client.proxyAuthenticator())
+            assertThat(authenticator()).isEqualTo(client.authenticator())
+            assertThat(connectionPool()).isEqualTo(client.connectionPool())
+            assertThat(dns()).isEqualTo(client.dns())
+            assertThat(followSslRedirects()).isEqualTo(client.followSslRedirects())
+            assertThat(followSslRedirects()).isEqualTo(client.followRedirects())
+            assertThat(retryOnConnectionFailure()).isEqualTo(client.retryOnConnectionFailure())
+            assertThat(connectTimeoutMillis()).isEqualTo(client.connectTimeoutMillis())
+            assertThat(readTimeoutMillis()).isEqualTo(client.readTimeoutMillis())
+            assertThat(writeTimeoutMillis()).isEqualTo(client.writeTimeoutMillis())
+            assertThat(pingIntervalMillis()).isEqualTo(client.pingIntervalMillis())
         }
     }
 
@@ -114,7 +114,7 @@ class ClientBuilderTest {
             .map {
                 try {
                     it.call(clientBuilder)
-                    assertTrue(false, "${it.name} call is successful, but not expected to be")
+                    fail<Any>("${it.name} call is successful, but not expected to be")
                 } catch (ignored: InvocationTargetException) {
                 }
             }

@@ -1,7 +1,7 @@
 package io.github.rybalkinsd.kohttp.util
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 /**
  * @author sergey
@@ -13,7 +13,7 @@ class JsonKtTest {
         val json = json {
             "a" to "1"
         }
-        assertEquals("""{"a":"1"}""", json)
+        assertThat(json).isEqualTo("""{"a":"1"}""")
     }
 
     @Test
@@ -22,7 +22,7 @@ class JsonKtTest {
         val json = json {
             "a" to nString
         }
-        assertEquals("""{"a":null}""", json)
+        assertThat(json).isEqualTo("""{"a":null}""")
     }
 
     @Test
@@ -31,7 +31,7 @@ class JsonKtTest {
             "a" to "1"
             "b" to 2
         }
-        assertEquals("""{"a":"1","b":2}""", json)
+        assertThat(json).isEqualTo("""{"a":"1","b":2}""")
     }
 
     @Test
@@ -40,7 +40,7 @@ class JsonKtTest {
         val json = json {
             "a" to nNumber
         }
-        assertEquals("""{"a":null}""", json)
+        assertThat(json).isEqualTo("""{"a":null}""")
     }
 
     @Test
@@ -49,7 +49,7 @@ class JsonKtTest {
             "a" to listOf(1, 2f, 3L)
             "b" to 2
         }
-        assertEquals("""{"a":[1,2.0,3],"b":2}""", json)
+        assertThat(json).isEqualTo("""{"a":[1,2.0,3],"b":2}""")
     }
 
     @Test
@@ -59,7 +59,7 @@ class JsonKtTest {
             "a" to listOf(1, 2f, nNumber, 3L)
             "b" to 2
         }
-        assertEquals("""{"a":[1,2.0,null,3],"b":2}""", json)
+        assertThat(json).isEqualTo("""{"a":[1,2.0,null,3],"b":2}""")
     }
 
 
@@ -69,7 +69,7 @@ class JsonKtTest {
             "a" to listOf("x1", "x2", "x3")
             "b" to 2
         }
-        assertEquals("""{"a":["x1","x2","x3"],"b":2}""", json)
+        assertThat(json).isEqualTo("""{"a":["x1","x2","x3"],"b":2}""")
     }
 
     @Test
@@ -78,7 +78,7 @@ class JsonKtTest {
         val json = json {
             "a" to listOf("x1", nString, "x3")
         }
-        assertEquals("""{"a":["x1",null,"x3"]}""", json)
+        assertThat(json).isEqualTo("""{"a":["x1",null,"x3"]}""")
     }
 
     @Test
@@ -91,7 +91,7 @@ class JsonKtTest {
             }
             "b" to 2
         }
-        assertEquals("""{"a":{"i":42,"ii":"abc","iii":["x","y","z"]},"b":2}""", json)
+        assertThat(json).isEqualTo("""{"a":{"i":42,"ii":"abc","iii":["x","y","z"]},"b":2}""")
     }
 
     @Test
@@ -100,7 +100,7 @@ class JsonKtTest {
         val json = json {
             "a" to nJson
         }
-        assertEquals("""{"a":null}""", json)
+        assertThat(json).isEqualTo("""{"a":null}""")
     }
 
 
@@ -111,7 +111,7 @@ class JsonKtTest {
                 "i" to listOf("x", 42, 2.0, "any")
             }
         }
-        assertEquals("""{"a":{"i":["x",42,2.0,"any"]}}""", json)
+        assertThat(json).isEqualTo("""{"a":{"i":["x",42,2.0,"any"]}}""")
     }
 
     @Test
@@ -121,7 +121,7 @@ class JsonKtTest {
                 "i" to listOf("x", 42, 2.0, null, "any")
             }
         }
-        assertEquals("""{"a":{"i":["x",42,2.0,null,"any"]}}""", json)
+        assertThat(json).isEqualTo("""{"a":{"i":["x",42,2.0,null,"any"]}}""")
     }
 
     @Test
@@ -129,7 +129,7 @@ class JsonKtTest {
         val json = json {
             "a" to true
         }
-        assertEquals("""{"a":true}""", json)
+        assertThat(json).isEqualTo("""{"a":true}""")
     }
 
     @Test
@@ -138,7 +138,7 @@ class JsonKtTest {
         val json = json {
             "a" to nBoolean
         }
-        assertEquals("""{"a":null}""", json)
+        assertThat(json).isEqualTo("""{"a":null}""")
     }
 
 }

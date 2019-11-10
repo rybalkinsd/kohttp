@@ -5,10 +5,9 @@ import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.ext.httpGet
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.time.Instant
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 private class TestInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -32,7 +31,7 @@ class InterceptorsDslTest {
         }
 
         "https://postman-echo.com/get".httpGet(client = client).use {
-            assertTrue { it.header("x-response-time") != null }
+            assertThat(it.header("x-response-time")).isNotNull()
         }
     }
 
@@ -47,7 +46,7 @@ class InterceptorsDslTest {
             }
         }
         forkedClient.interceptors().mapIndexed { idx, it ->
-            assertEquals(it, interceptors[idx])
+            assertThat(interceptors[idx]).isEqualTo(it)
         }
     }
 }

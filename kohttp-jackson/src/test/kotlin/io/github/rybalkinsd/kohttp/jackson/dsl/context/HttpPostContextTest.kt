@@ -3,8 +3,8 @@ package io.github.rybalkinsd.kohttp.jackson.dsl.context
 import io.github.rybalkinsd.kohttp.dsl.httpPost
 import io.github.rybalkinsd.kohttp.ext.url
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 /**
  * Created by Sergey Rybalkin on 2019-08-04.
@@ -18,7 +18,7 @@ class HttpPostContextTest {
             body { string("content") }
         }.use {
             val res = it.toJson()
-            assertEquals("application/json; charset=utf-8", res["headers"]["content-type"].asText())
+            assertThat(res["headers"]["content-type"].asText()).isEqualTo("application/json; charset=utf-8")
         }
     }
 
@@ -30,7 +30,7 @@ class HttpPostContextTest {
             body("application/json") { string("content") }
         }.use {
             val res = it.toJson()
-            assertEquals("application/json; charset=utf-8", res["headers"]["content-type"].asText())
+            assertThat(res["headers"]["content-type"].asText()).isEqualTo("application/json; charset=utf-8")
         }
     }
 
@@ -41,7 +41,7 @@ class HttpPostContextTest {
             body("application/x-www-form-urlencoded") { json("content") }
         }.use {
             val res = it.toJson()
-            assertEquals("application/json; charset=utf-8", res["headers"]["content-type"].asText())
+            assertThat(res["headers"]["content-type"].asText()).isEqualTo("application/json; charset=utf-8")
         }
     }
 }
