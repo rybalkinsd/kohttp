@@ -18,7 +18,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.11.0")
+	implementation("io.github.rybalkinsd:kohttp:+")
 
 }
 
