@@ -64,13 +64,13 @@ val pushNotifications: List<Deferred<Response>> = usersData.map {
 Kotlin DSL:
 
 ```kotlin
-implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.11.0")
+implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.11.1")
 ```
 
 Groovy DSL:
 
 ```groovy
-implementation 'io.github.rybalkinsd:kohttp:0.11.0'
+implementation 'io.github.rybalkinsd:kohttp:0.11.1'
 ```
 
 ### Maven:
@@ -79,7 +79,7 @@ implementation 'io.github.rybalkinsd:kohttp:0.11.0'
 <dependency>
   <groupId>io.github.rybalkinsd</groupId>
   <artifactId>kohttp</artifactId>
-  <version>0.11.0</version>
+  <version>0.11.1</version>
 </dependency>
 ```
 
