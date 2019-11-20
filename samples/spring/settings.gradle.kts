@@ -1,2 +1,2 @@
-rootProject.name = "spring_kohttp"
+rootProject.name = "spring-kohttp"
 rootProject.buildFileName = "build.gradle.kts"
