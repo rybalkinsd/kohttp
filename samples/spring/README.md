@@ -4,11 +4,21 @@
 This is a basic application showing kohttp usage together with Spring Boot. 
 We are using Spring Boot 2.x, however, Spring Boot 1.x uses similar ideas, except Spring MVC Router DSL.
 
-Application expose 4 endpoints on `localhost:8080`
-- GET /foo
-- POST /foo
-- GET /foobar
-- POST /foobar
+
+## Checking /weather
+**WeatherApp** is a sample application the weather in provided `location`.
+
+Open `localhost:8080/weather` in your browser.
+Or use cURL
+```bash
+curl -X GET http://localhost:8080/weather
+```
+
+## Accessing and changing `location`
+It is possible to check and modify you location
+
+Open `localhost:8080/location` in your browser.
+- GET /weather/log
 
 Each endpoint perform various requests using `kohttp`. 
 Both GET endpoints use defaultHttpClient as a client for `kohttp` requests.
