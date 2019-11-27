@@ -1,4 +1,4 @@
-package io.github.rybalkinsd.kohttp.spring.service
+package io.github.rybalkinsd.kohttp.spring.repo
 
 import org.springframework.stereotype.Repository
 

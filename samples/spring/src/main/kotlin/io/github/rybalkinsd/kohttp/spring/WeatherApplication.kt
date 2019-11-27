@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean
  * ComponentScan will also trigger initialization in
  * 	- WeatherController [io.github.rybalkinsd.kohttp.spring.controller.WeatherController]
  * 	- LocationController [io.github.rybalkinsd.kohttp.spring.controller.LocationController]
- * 	- LocationRepo [io.github.rybalkinsd.kohttp.spring.service.LocationRepo]
+ * 	- LocationRepo [io.github.rybalkinsd.kohttp.spring.repo.LocationRepo]
  * 	- MockLogService [io.github.rybalkinsd.kohttp.spring.mock.MockLogServer]
  */
 @SpringBootApplication

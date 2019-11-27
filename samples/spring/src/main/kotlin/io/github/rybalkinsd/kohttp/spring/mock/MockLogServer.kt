@@ -7,8 +7,8 @@ import org.springframework.web.servlet.function.router
 import kotlin.random.Random
 
 /**
- * It's rather complicated to install any log service with REST API.
- * So, we're using a [MockLogServer] to emulate such a log service.
+ * It's rather complicated to install any log repo with REST API.
+ * So, we're using a [MockLogServer] to emulate such a log repo.
  *
  * [MockLogServer] accept POST requests with log data, however, it may
  * take a while to respond.

@@ -1,15 +1,14 @@
 package io.github.rybalkinsd.kohttp.spring.controller
 
-import io.github.rybalkinsd.kohttp.spring.service.LocationRepo
-import org.springframework.http.ResponseEntity
+import io.github.rybalkinsd.kohttp.spring.repo.LocationRepo
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
  * [LocationController] accept
- * GET request to access current location
- * POST request to modify current location
+ * GET /location  - request to access current location
+ * POST /location - request to modify current location
  *
  * @author Sergey
  */
@@ -19,8 +18,7 @@ class LocationController(private val locationRepo: LocationRepo) {
     fun getHandler(): String = locationRepo.location
 
     @PostMapping("/location")
-    fun postHandler(location: String): ResponseEntity<Unit> {
+    fun postHandler(location: String) {
         locationRepo.location = location
-        return ResponseEntity.ok().build()
     }
 }
