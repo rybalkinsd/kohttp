@@ -6,7 +6,6 @@ We are using Spring Boot 2.x, however, Spring Boot 1.x should work, except Sprin
 
 Application allows to check temperature in chosen location.
 
-
 ## Configuration
 - **kohttp** specific configurations is in `WeatherApplication` class.
 - Spring Boot context:
@@ -25,7 +24,6 @@ curl -X GET http://localhost:8080/weather
 *WeatherController* use **kohttp** to access third party REST API with weather data.
 
 *WeatherController* also use **kohttp** to log weather asynchronously using a specific client: `extendedTimeoutClient`.   
-
 
 ## Accessing /location
 *LocationController* expose API to get and modify you location.
@@ -53,7 +51,6 @@ curl -X GET http://localhost:8080/weather/log
 
 Note: MockLogService is designed in the way that it emulates eventual consistent behaviour.
 Logs get accounted with a specific delay and could be reordered. 
-
 
 ## Build
 Build sample as any other SpringBoot application.  
