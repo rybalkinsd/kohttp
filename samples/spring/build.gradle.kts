@@ -7,18 +7,18 @@ plugins {
 	kotlin("plugin.spring") version "1.3.50"
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	// using latest available version of kohttp
 	implementation("io.github.rybalkinsd:kohttp:+")
+    implementation("io.github.rybalkinsd:kohttp-jackson:+")
 
 }
 
