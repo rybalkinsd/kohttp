@@ -9,7 +9,7 @@ Kotlin DSL http client
 ## Features
  🔹 Developers Experinece-driven library without verbosity.
  
- 🔹 Providing a native way to use http client in Kotlin.
+ 🔹 Native way to use http client in Kotlin.
  
  🔹 HTTP [`GET`](gitbook/core/synchronous-calls/get.md)/[`POST`](gitbook/core/synchronous-calls/post.md)/[`PUT`](gitbook/core/synchronous-calls/put.md)/[`HEAD`](gitbook/core/synchronous-calls/head.md)/[`DELETE`](gitbook/core/synchronous-calls/delete.md)/[`PATCH`](gitbook/core/synchronous-calls/patch.md) requests.   
  
@@ -47,6 +47,10 @@ val pushNotifications: List<Deferred<Response>> = usersData.map {
     }
 }
 ```
+
+## Samples
+- [Android application](/samples/android)
+- [Spring Boot application](/samples/spring)  
 
 ## About kohttp
 
