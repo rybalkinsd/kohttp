@@ -12,7 +12,7 @@ class SecondActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    lateinit var viewModel: SecondViewModel
+    private lateinit var viewModel: SecondViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,4 +21,5 @@ class SecondActivity : AppCompatActivity() {
         setContentView(R.layout.activity_second)
         viewModel = injectViewModel(viewModelFactory)
     }
+
 }
