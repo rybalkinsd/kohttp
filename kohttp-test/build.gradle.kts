@@ -4,5 +4,5 @@ dependencies {
     testImplementation(project(":kohttp-jackson"))
 
     testImplementation(kotlin("test-junit"))
-    testImplementation("org.assertj:assertj-core:3.12.2")
+    testImplementation("org.assertj:assertj-core:3.15.0")
 }

@@ -3,6 +3,7 @@ package io.github.rybalkinsd.kohttp.client
 import okhttp3.*
 import okhttp3.internal.tls.OkHostnameVerifier
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatCode
 import org.assertj.core.api.Assertions.fail
 import org.junit.Test
 import java.lang.reflect.InvocationTargetException
@@ -154,10 +155,12 @@ class ClientBuilderTest {
         val sslContext = SSLContext.getInstance("TLSv1.2")
         sslContext.init(keyManagers, trustManagers, SecureRandom())
 
-        client {
-            sslSocketFactory = sslContext.socketFactory
-            trustManager = trustManagers[0] as X509TrustManager
-        }
+        assertThatCode {
+            client {
+                sslSocketFactory = sslContext.socketFactory
+                trustManager = trustManagers[0] as X509TrustManager
+            }
+        }.doesNotThrowAnyException()
     }
 
 }
