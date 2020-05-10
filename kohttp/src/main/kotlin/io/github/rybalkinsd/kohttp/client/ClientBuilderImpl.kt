@@ -33,7 +33,7 @@ internal class ClientBuilderImpl : ClientBuilder {
 
     private val builder: OkHttpClient.Builder
 
-    private var internatSslSocketFactory: SSLSocketFactory? = null
+    private var internalSslSocketFactory: SSLSocketFactory? = null
     private var internalX509TrustManager: X509TrustManager? = null
 
     constructor() {
@@ -89,7 +89,7 @@ internal class ClientBuilderImpl : ClientBuilder {
         get() = throw UnsupportedOperationException()
 
     override var sslSocketFactory: SSLSocketFactory
-        set(value) { internatSslSocketFactory = value }
+        set(value) { internalSslSocketFactory = value }
         get() = throw UnsupportedOperationException()
 
     override var trustManager: X509TrustManager
@@ -155,8 +155,8 @@ internal class ClientBuilderImpl : ClientBuilder {
     }
 
     private fun buildWithSslMaterialIfPresent() {
-        if (internatSslSocketFactory != null && internalX509TrustManager != null) {
-            builder.sslSocketFactory(internatSslSocketFactory!!, internalX509TrustManager!!)
+        if (internalSslSocketFactory != null && internalX509TrustManager != null) {
+            builder.sslSocketFactory(internalSslSocketFactory!!, internalX509TrustManager!!)
         }
     }
 
