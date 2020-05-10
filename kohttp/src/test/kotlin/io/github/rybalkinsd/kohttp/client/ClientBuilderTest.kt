@@ -7,9 +7,13 @@ import org.assertj.core.api.Assertions.fail
 import org.junit.Test
 import java.lang.reflect.InvocationTargetException
 import java.net.ProxySelector
+import java.security.KeyStore
+import java.security.SecureRandom
 import java.util.concurrent.TimeUnit
 import javax.net.SocketFactory
+import javax.net.ssl.*
 import kotlin.reflect.full.declaredMemberProperties
+
 
 /**
  * @author sergey
@@ -118,6 +122,42 @@ class ClientBuilderTest {
                 } catch (ignored: InvocationTargetException) {
                 }
             }
+    }
+
+    @Test
+    fun `client with ssl material`() {
+        val keyStorePath = "identity.jsk"
+        val trustStorePath = "truststore.jks"
+
+        val keyStorePassword = "secret".toCharArray()
+        val trustStorePassword = "secret".toCharArray()
+
+        val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
+        val trustStore = KeyStore.getInstance(KeyStore.getDefaultType())
+
+        ClientBuilderTest::class.java.classLoader.getResourceAsStream(keyStorePath).use { keyStoreInputStream ->
+            keyStore.load(keyStoreInputStream, keyStorePassword)
+        }
+
+        ClientBuilderTest::class.java.classLoader.getResourceAsStream(trustStorePath).use { trustStoreInputStream ->
+            trustStore.load(trustStoreInputStream, trustStorePassword)
+        }
+
+        val keyManagerFactory: KeyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
+        keyManagerFactory.init(keyStore, keyStorePassword)
+        val keyManagers: Array<KeyManager> = keyManagerFactory.keyManagers
+
+        val trustManagerFactory: TrustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+        trustManagerFactory.init(trustStore)
+        val trustManagers: Array<TrustManager> = trustManagerFactory.trustManagers
+
+        val sslContext = SSLContext.getInstance("TLSv1.2")
+        sslContext.init(keyManagers, trustManagers, SecureRandom())
+
+        client {
+            sslSocketFactory = sslContext.socketFactory
+            trustManager = trustManagers[0] as X509TrustManager
+        }
     }
 
 }

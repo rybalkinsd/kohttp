@@ -17,6 +17,7 @@ import java.net.ProxySelector
 import javax.net.SocketFactory
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 
 /**
@@ -55,6 +56,9 @@ interface ClientBuilder : ForkClientBuilder {
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var sslSocketFactory: SSLSocketFactory
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
+    var trustManager: X509TrustManager
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var hostnameVerifier: HostnameVerifier

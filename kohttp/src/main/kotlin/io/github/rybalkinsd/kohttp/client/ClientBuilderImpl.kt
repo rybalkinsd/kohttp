@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 import javax.net.SocketFactory
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 /**
  * DSL builder for OkHttpClient
@@ -31,6 +32,9 @@ fun client(block: ClientBuilder.() -> Unit) = ClientBuilderImpl().apply(block).b
 internal class ClientBuilderImpl : ClientBuilder {
 
     private val builder: OkHttpClient.Builder
+
+    private var internatSslSocketFactory: SSLSocketFactory? = null
+    private var internalX509TrustManager: X509TrustManager? = null
 
     constructor() {
         builder = OkHttpClient.Builder()
@@ -85,8 +89,11 @@ internal class ClientBuilderImpl : ClientBuilder {
         get() = throw UnsupportedOperationException()
 
     override var sslSocketFactory: SSLSocketFactory
-        @Suppress("DEPRECATION")
-        set(value) { builder.sslSocketFactory(value) }
+        set(value) { internatSslSocketFactory = value }
+        get() = throw UnsupportedOperationException()
+
+    override var trustManager: X509TrustManager
+        set(value) { internalX509TrustManager = value }
         get() = throw UnsupportedOperationException()
 
     override var hostnameVerifier: HostnameVerifier
@@ -141,5 +148,16 @@ internal class ClientBuilderImpl : ClientBuilder {
         set(value) { builder.pingInterval(value, TimeUnit.MILLISECONDS) }
         get() = throw UnsupportedOperationException()
 
-    fun build(): OkHttpClient = builder.build()
+    fun build(): OkHttpClient {
+        buildWithSslMaterialIfPresent()
+
+        return builder.build()
+    }
+
+    private fun buildWithSslMaterialIfPresent() {
+        if (internatSslSocketFactory != null && internalX509TrustManager != null) {
+            builder.sslSocketFactory(internatSslSocketFactory!!, internalX509TrustManager!!)
+        }
+    }
+
 }
