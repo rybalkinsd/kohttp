@@ -56,7 +56,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         scheme(scheme)
         host(host)
         port?.let { port(it) }
-        path?.let { encodedPath(it) }
+        if (!path.isNullOrEmpty()) { encodedPath(path) }
         paramContext.forEach { k, v ->
             when (v) {
                 null -> addQueryParameter(k, null)
@@ -66,7 +66,36 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         }
     }
 
+
+
     open fun makeBody(): RequestBody = throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as HttpContext
+
+        if (method != other.method) return false
+        if (paramContext != other.paramContext) return false
+        if (headerContext != other.headerContext) return false
+        if (scheme != other.scheme) return false
+        if (host != other.host) return false
+        if (port != other.port) return false
+        if (path != other.path) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = method.hashCode()
+        result = 31 * result + paramContext.hashCode()
+        result = 31 * result + headerContext.hashCode()
+        result = 31 * result + scheme.hashCode()
+        result = 31 * result + host.hashCode()
+        result = 31 * result + (port ?: 0)
+        result = 31 * result + (path?.hashCode() ?: 0)
+        return result
+    }
 
 }
 
