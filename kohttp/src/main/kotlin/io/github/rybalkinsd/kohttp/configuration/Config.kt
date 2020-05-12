@@ -25,7 +25,6 @@ internal data class ClientConfig(
 
 class SslConfig {
 
-    var socketFactory: SocketFactory? = null
     var sslSocketFactory: SSLSocketFactory? = null
     var trustManager: X509TrustManager? = null
     var certificatePinner: CertificatePinner? = null

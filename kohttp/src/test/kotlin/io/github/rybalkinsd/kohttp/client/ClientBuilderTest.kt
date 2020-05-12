@@ -37,7 +37,6 @@ class ClientBuilderTest {
         val defaultDns = Dns.SYSTEM
         val defaultTimeout: Long = 20_000
         val defaultSslConfig: SslConfig = SslConfig().apply {
-            socketFactory = defaultSocketFactory
             hostnameVerifier = defaultHostnameVerifier
             certificatePinner = defaultCertificatePinner
             followSslRedirects = true
@@ -51,6 +50,7 @@ class ClientBuilderTest {
             eventListenerFactory = defaultFactory
             proxySelector = defaultProxySelector
             cookieJar = defaultCookieJar
+            socketFactory = defaultSocketFactory
             sslConfig = defaultSslConfig
             proxyAuthenticator = defaultAuth
             authenticator = defaultAuth

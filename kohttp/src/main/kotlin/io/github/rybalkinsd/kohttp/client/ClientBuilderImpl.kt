@@ -15,6 +15,7 @@ import okhttp3.Protocol
 import java.net.Proxy
 import java.net.ProxySelector
 import java.util.concurrent.TimeUnit
+import javax.net.SocketFactory
 
 /**
  * DSL builder for OkHttpClient
@@ -77,16 +78,21 @@ internal class ClientBuilderImpl : ClientBuilder {
         set(value) { builder.cache(value) }
         get() = throw UnsupportedOperationException()
 
+    override var socketFactory: SocketFactory
+        set(value) { builder.socketFactory(value) }
+        get() = throw UnsupportedOperationException()
+
     override var sslConfig: SslConfig
         set(value) {
-            if (value.sslSocketFactory != null && value.trustManager != null) {
-                builder.sslSocketFactory(value.sslSocketFactory!!, value.trustManager!!)
+            value.sslSocketFactory?.let { sslSocketFactory ->
+                value.trustManager?.let { trustManager ->
+                    builder.sslSocketFactory(sslSocketFactory, trustManager)
+                }
             }
 
-            value.socketFactory.let { if (it != null) builder.socketFactory(it) }
-            value.certificatePinner.let { if (it != null) builder.certificatePinner(it) }
-            value.hostnameVerifier.let { if (it != null) builder.hostnameVerifier(it) }
-            value.followSslRedirects.let { if (it != null) builder.followSslRedirects(it) }
+            value.certificatePinner?.let { builder.certificatePinner(it) }
+            value.hostnameVerifier?.let { builder.hostnameVerifier(it) }
+            value.followSslRedirects?.let { builder.followSslRedirects(it) }
         }
         get() = throw UnsupportedOperationException()
 

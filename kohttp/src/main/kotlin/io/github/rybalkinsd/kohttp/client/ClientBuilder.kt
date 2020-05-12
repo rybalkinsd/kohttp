@@ -53,6 +53,9 @@ interface ClientBuilder : ForkClientBuilder {
     var cookieJar: CookieJar
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
+    var socketFactory: SocketFactory
+
+    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var sslConfig: SslConfig
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
