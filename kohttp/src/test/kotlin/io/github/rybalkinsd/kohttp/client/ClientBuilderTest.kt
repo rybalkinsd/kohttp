@@ -36,6 +36,11 @@ class ClientBuilderTest {
         val defaultConnectionPool = ConnectionPool()
         val defaultDns = Dns.SYSTEM
         val defaultTimeout: Long = 20_000
+        val defaultSslConfig: SslConfig = SslConfig().apply {
+            socketFactory = defaultSocketFactory
+            hostnameVerifier = defaultHostnameVerifier
+            certificatePinner = defaultCertificatePinner
+        }
 
         val dslClient = client {
             dispatcher = defaultDispatcher
@@ -45,9 +50,7 @@ class ClientBuilderTest {
             eventListenerFactory = defaultFactory
             proxySelector = defaultProxySelector
             cookieJar = defaultCookieJar
-            socketFactory = defaultSocketFactory
-            hostnameVerifier = defaultHostnameVerifier
-            certificatePinner = defaultCertificatePinner
+            sslConfig = defaultSslConfig
             proxyAuthenticator = defaultAuth
             authenticator = defaultAuth
             connectionPool = defaultConnectionPool
@@ -133,11 +136,11 @@ class ClientBuilderTest {
 
         assertThatCode {
             client {
-                sslConfig = SslConfig(
-                        sslSocketFactory = sslFactory.sslContext.socketFactory,
-                        trustManager = sslFactory.trustManager
-                )
-                hostnameVerifier = sslFactory.hostnameVerifier
+                sslConfig = SslConfig().apply {
+                    sslSocketFactory = sslFactory.sslContext.socketFactory
+                    trustManager = sslFactory.trustManager
+                    hostnameVerifier = sslFactory.hostnameVerifier
+                }
             }
         }.doesNotThrowAnyException()
     }

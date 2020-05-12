@@ -3,7 +3,6 @@ package io.github.rybalkinsd.kohttp.client
 import io.github.rybalkinsd.kohttp.configuration.SslConfig
 import okhttp3.Authenticator
 import okhttp3.Cache
-import okhttp3.CertificatePinner
 import okhttp3.ConnectionPool
 import okhttp3.ConnectionSpec
 import okhttp3.CookieJar
@@ -16,8 +15,6 @@ import okhttp3.Protocol
 import java.net.Proxy
 import java.net.ProxySelector
 import java.util.concurrent.TimeUnit
-import javax.net.SocketFactory
-import javax.net.ssl.HostnameVerifier
 
 /**
  * DSL builder for OkHttpClient
@@ -80,20 +77,17 @@ internal class ClientBuilderImpl : ClientBuilder {
         set(value) { builder.cache(value) }
         get() = throw UnsupportedOperationException()
 
-    override var socketFactory: SocketFactory
-        set(value) { builder.socketFactory(value) }
-        get() = throw UnsupportedOperationException()
-
     override var sslConfig: SslConfig
-        set(value) { builder.sslSocketFactory(value.sslSocketFactory, value.trustManager)}
-        get() = throw UnsupportedOperationException()
+        set(value) {
+            if (value.sslSocketFactory != null && value.trustManager != null) {
+                builder.sslSocketFactory(value.sslSocketFactory!!, value.trustManager!!)
+            }
 
-    override var hostnameVerifier: HostnameVerifier
-        set(value) { builder.hostnameVerifier(value) }
-        get() = throw UnsupportedOperationException()
-
-    override var certificatePinner: CertificatePinner
-        set(value) { builder.certificatePinner(value) }
+            value.socketFactory.let { if (it != null) builder.socketFactory(it) }
+            value.certificatePinner.let { if (it != null) builder.certificatePinner(it) }
+            value.hostnameVerifier.let { if (it != null) builder.hostnameVerifier(it) }
+            value.followSslRedirects.let { if (it != null) builder.followSslRedirects(it) }
+        }
         get() = throw UnsupportedOperationException()
 
     override var proxyAuthenticator: Authenticator

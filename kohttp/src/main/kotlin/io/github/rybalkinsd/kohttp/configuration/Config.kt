@@ -1,6 +1,9 @@
 package io.github.rybalkinsd.kohttp.configuration
 
+import okhttp3.CertificatePinner
 import java.util.concurrent.TimeUnit
+import javax.net.SocketFactory
+import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
 
@@ -20,10 +23,16 @@ internal data class ClientConfig(
     val dispatcher: DispatcherConfig = DispatcherConfig()
 )
 
-data class SslConfig(
-    val sslSocketFactory: SSLSocketFactory,
-    val trustManager: X509TrustManager
-)
+class SslConfig {
+
+    var socketFactory: SocketFactory? = null
+    var sslSocketFactory: SSLSocketFactory? = null
+    var trustManager: X509TrustManager? = null
+    var certificatePinner: CertificatePinner? = null
+    var hostnameVerifier: HostnameVerifier? = null
+    var followSslRedirects: Boolean? = null
+
+}
 
 /**
  * okhttp {@link Dispatcher} configuration
