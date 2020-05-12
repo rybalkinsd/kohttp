@@ -1,5 +1,6 @@
 package io.github.rybalkinsd.kohttp.client
 
+import io.github.rybalkinsd.kohttp.configuration.SslConfig
 import okhttp3.Authenticator
 import okhttp3.Cache
 import okhttp3.CertificatePinner
@@ -17,8 +18,6 @@ import java.net.ProxySelector
 import java.util.concurrent.TimeUnit
 import javax.net.SocketFactory
 import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.X509TrustManager
 
 /**
  * DSL builder for OkHttpClient
@@ -32,9 +31,6 @@ fun client(block: ClientBuilder.() -> Unit) = ClientBuilderImpl().apply(block).b
 internal class ClientBuilderImpl : ClientBuilder {
 
     private val builder: OkHttpClient.Builder
-
-    private var internalSslSocketFactory: SSLSocketFactory? = null
-    private var internalX509TrustManager: X509TrustManager? = null
 
     constructor() {
         builder = OkHttpClient.Builder()
@@ -88,12 +84,8 @@ internal class ClientBuilderImpl : ClientBuilder {
         set(value) { builder.socketFactory(value) }
         get() = throw UnsupportedOperationException()
 
-    override var sslSocketFactory: SSLSocketFactory
-        set(value) { internalSslSocketFactory = value }
-        get() = throw UnsupportedOperationException()
-
-    override var trustManager: X509TrustManager
-        set(value) { internalX509TrustManager = value }
+    override var sslConfig: SslConfig
+        set(value) { builder.sslSocketFactory(value.sslSocketFactory, value.trustManager)}
         get() = throw UnsupportedOperationException()
 
     override var hostnameVerifier: HostnameVerifier
@@ -148,16 +140,6 @@ internal class ClientBuilderImpl : ClientBuilder {
         set(value) { builder.pingInterval(value, TimeUnit.MILLISECONDS) }
         get() = throw UnsupportedOperationException()
 
-    fun build(): OkHttpClient {
-        buildWithSslMaterialIfPresent()
-
-        return builder.build()
-    }
-
-    private fun buildWithSslMaterialIfPresent() {
-        if (internalSslSocketFactory != null && internalX509TrustManager != null) {
-            builder.sslSocketFactory(internalSslSocketFactory!!, internalX509TrustManager!!)
-        }
-    }
+    fun build(): OkHttpClient = builder.build()
 
 }

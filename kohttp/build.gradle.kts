@@ -9,5 +9,6 @@ dependencies {
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.mock-server:mockserver-netty:5.5.4")
     testImplementation("org.mock-server:mockserver-client-java:5.5.4")
-    testImplementation("org.assertj:assertj-core:3.15.0")
+    testImplementation("org.assertj:assertj-core:3.16.1")
+    testImplementation("io.github.hakky54:sslcontext-kickstart:3.0.9")
 }

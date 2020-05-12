@@ -1,6 +1,8 @@
 package io.github.rybalkinsd.kohttp.configuration
 
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 const val DEFAULT_REQUEST_AMOUNT: Int = 256
 
@@ -16,6 +18,11 @@ internal data class ClientConfig(
     val followRedirects: Boolean = true,
     val followSslRedirects: Boolean = true,
     val dispatcher: DispatcherConfig = DispatcherConfig()
+)
+
+data class SslConfig(
+    val sslSocketFactory: SSLSocketFactory,
+    val trustManager: X509TrustManager
 )
 
 /**

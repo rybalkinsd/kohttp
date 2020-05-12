@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.client
 
 import io.github.rybalkinsd.kohttp.client.dsl.InterceptorsDsl
+import io.github.rybalkinsd.kohttp.configuration.SslConfig
 import okhttp3.Authenticator
 import okhttp3.Cache
 import okhttp3.CertificatePinner
@@ -55,10 +56,7 @@ interface ClientBuilder : ForkClientBuilder {
     var socketFactory: SocketFactory
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var sslSocketFactory: SSLSocketFactory
-
-    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var trustManager: X509TrustManager
+    var sslConfig: SslConfig
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var hostnameVerifier: HostnameVerifier

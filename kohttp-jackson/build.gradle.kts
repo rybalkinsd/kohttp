@@ -11,7 +11,7 @@ dependencies {
     testImplementation("org.mock-server:mockserver-netty:5.5.4")
     testImplementation("org.mock-server:mockserver-client-java:5.5.4")
 
-    testImplementation("org.assertj:assertj-core:3.15.0")
+    testImplementation("org.assertj:assertj-core:3.16.1")
 }
 
 fun jackson(pack: String) = "com.fasterxml.jackson.$pack"
