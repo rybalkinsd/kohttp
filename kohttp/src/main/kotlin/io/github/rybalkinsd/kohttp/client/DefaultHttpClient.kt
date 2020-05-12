@@ -39,7 +39,7 @@ val defaultHttpClient: OkHttpClient = config.client.let {
         readTimeout = it.readTimeout
         writeTimeout = it.writeTimeout
         followRedirects = it.followRedirects
-        followSslRedirects = it.followSslRedirects
+        sslConfig = it.sslConfig
         dispatcher = it.dispatcher.create()
     }
 }

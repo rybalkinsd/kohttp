@@ -18,7 +18,6 @@ class ForkClientBuilderTest {
         val client = defaultHttpClient.newBuilder()
             .cache(null)
             .dns(defaultDns)
-            .followSslRedirects(false)
             .followRedirects(false)
             .retryOnConnectionFailure(false)
             .connectTimeout(defaultTimeout, TimeUnit.MILLISECONDS)
@@ -32,7 +31,6 @@ class ForkClientBuilderTest {
             networkInterceptors = emptyList()
             cache = null
             dns = defaultDns
-            followSslRedirects = false
             followRedirects = false
             retryOnConnectionFailure = false
             connectTimeout = defaultTimeout
@@ -56,8 +54,7 @@ class ForkClientBuilderTest {
             assertThat(authenticator()).isEqualTo(client.authenticator())
             assertThat(connectionPool()).isEqualTo(client.connectionPool())
             assertThat(dns()).isEqualTo(client.dns())
-            assertThat(followSslRedirects()).isEqualTo(client.followSslRedirects())
-            assertThat(followSslRedirects()).isEqualTo(client.followRedirects())
+            assertThat(followRedirects()).isEqualTo(client.followRedirects())
             assertThat(retryOnConnectionFailure()).isEqualTo(client.retryOnConnectionFailure())
             assertThat(connectTimeoutMillis()).isEqualTo(client.connectTimeoutMillis())
             assertThat(readTimeoutMillis()).isEqualTo(client.readTimeoutMillis())

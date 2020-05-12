@@ -79,9 +79,6 @@ interface ForkClientBuilder {
     var dns: Dns
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var followSslRedirects: Boolean
-
-    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var followRedirects: Boolean
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")

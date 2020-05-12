@@ -19,7 +19,7 @@ internal data class ClientConfig(
     val writeTimeout: Long = TimeUnit.SECONDS.toMillis(10),
     val connectionPoolConfig: ConnectionPoolConfig = ConnectionPoolConfig(),
     val followRedirects: Boolean = true,
-    val followSslRedirects: Boolean = true,
+    val sslConfig: SslConfig = SslConfig().apply { followSslRedirects = true },
     val dispatcher: DispatcherConfig = DispatcherConfig()
 )
 

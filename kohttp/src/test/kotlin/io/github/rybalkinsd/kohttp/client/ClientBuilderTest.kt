@@ -40,6 +40,7 @@ class ClientBuilderTest {
             socketFactory = defaultSocketFactory
             hostnameVerifier = defaultHostnameVerifier
             certificatePinner = defaultCertificatePinner
+            followSslRedirects = true
         }
 
         val dslClient = client {
@@ -55,7 +56,6 @@ class ClientBuilderTest {
             authenticator = defaultAuth
             connectionPool = defaultConnectionPool
             dns = defaultDns
-            followSslRedirects = true
             followRedirects = true
             retryOnConnectionFailure = true
             connectTimeout = defaultTimeout

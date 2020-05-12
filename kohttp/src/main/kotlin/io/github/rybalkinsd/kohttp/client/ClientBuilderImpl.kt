@@ -106,10 +106,6 @@ internal class ClientBuilderImpl : ClientBuilder {
         set(value) { builder.dns(value) }
         get() = throw UnsupportedOperationException()
 
-    override var followSslRedirects: Boolean
-        set(value) { builder.followSslRedirects(value) }
-        get() = throw UnsupportedOperationException()
-
     override var followRedirects: Boolean
         set(value) { builder.followRedirects(value) }
         get() = throw UnsupportedOperationException()
