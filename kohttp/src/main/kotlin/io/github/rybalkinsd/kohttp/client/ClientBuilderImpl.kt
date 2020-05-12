@@ -1,8 +1,8 @@
 package io.github.rybalkinsd.kohttp.client
 
+import io.github.rybalkinsd.kohttp.configuration.SslConfig
 import okhttp3.Authenticator
 import okhttp3.Cache
-import okhttp3.CertificatePinner
 import okhttp3.ConnectionPool
 import okhttp3.ConnectionSpec
 import okhttp3.CookieJar
@@ -16,8 +16,6 @@ import java.net.Proxy
 import java.net.ProxySelector
 import java.util.concurrent.TimeUnit
 import javax.net.SocketFactory
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.SSLSocketFactory
 
 /**
  * DSL builder for OkHttpClient
@@ -84,17 +82,18 @@ internal class ClientBuilderImpl : ClientBuilder {
         set(value) { builder.socketFactory(value) }
         get() = throw UnsupportedOperationException()
 
-    override var sslSocketFactory: SSLSocketFactory
-        @Suppress("DEPRECATION")
-        set(value) { builder.sslSocketFactory(value) }
-        get() = throw UnsupportedOperationException()
+    override var sslConfig: SslConfig
+        set(value) {
+            value.sslSocketFactory?.let { sslSocketFactory ->
+                value.trustManager?.let { trustManager ->
+                    builder.sslSocketFactory(sslSocketFactory, trustManager)
+                }
+            }
 
-    override var hostnameVerifier: HostnameVerifier
-        set(value) { builder.hostnameVerifier(value) }
-        get() = throw UnsupportedOperationException()
-
-    override var certificatePinner: CertificatePinner
-        set(value) { builder.certificatePinner(value) }
+            value.certificatePinner?.let { builder.certificatePinner(it) }
+            value.hostnameVerifier?.let { builder.hostnameVerifier(it) }
+            value.followSslRedirects?.let { builder.followSslRedirects(it) }
+        }
         get() = throw UnsupportedOperationException()
 
     override var proxyAuthenticator: Authenticator
@@ -111,10 +110,6 @@ internal class ClientBuilderImpl : ClientBuilder {
 
     override var dns: Dns
         set(value) { builder.dns(value) }
-        get() = throw UnsupportedOperationException()
-
-    override var followSslRedirects: Boolean
-        set(value) { builder.followSslRedirects(value) }
         get() = throw UnsupportedOperationException()
 
     override var followRedirects: Boolean
@@ -142,4 +137,5 @@ internal class ClientBuilderImpl : ClientBuilder {
         get() = throw UnsupportedOperationException()
 
     fun build(): OkHttpClient = builder.build()
+
 }

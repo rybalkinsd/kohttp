@@ -1,8 +1,11 @@
 package io.github.rybalkinsd.kohttp.client
 
+import io.github.rybalkinsd.kohttp.configuration.SslConfig
+import nl.altindag.sslcontext.SSLFactory
 import okhttp3.*
 import okhttp3.internal.tls.OkHostnameVerifier
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatCode
 import org.assertj.core.api.Assertions.fail
 import org.junit.Test
 import java.lang.reflect.InvocationTargetException
@@ -10,6 +13,7 @@ import java.net.ProxySelector
 import java.util.concurrent.TimeUnit
 import javax.net.SocketFactory
 import kotlin.reflect.full.declaredMemberProperties
+
 
 /**
  * @author sergey
@@ -32,6 +36,11 @@ class ClientBuilderTest {
         val defaultConnectionPool = ConnectionPool()
         val defaultDns = Dns.SYSTEM
         val defaultTimeout: Long = 20_000
+        val defaultSslConfig: SslConfig = SslConfig().apply {
+            hostnameVerifier = defaultHostnameVerifier
+            certificatePinner = defaultCertificatePinner
+            followSslRedirects = true
+        }
 
         val dslClient = client {
             dispatcher = defaultDispatcher
@@ -42,13 +51,11 @@ class ClientBuilderTest {
             proxySelector = defaultProxySelector
             cookieJar = defaultCookieJar
             socketFactory = defaultSocketFactory
-            hostnameVerifier = defaultHostnameVerifier
-            certificatePinner = defaultCertificatePinner
+            sslConfig = defaultSslConfig
             proxyAuthenticator = defaultAuth
             authenticator = defaultAuth
             connectionPool = defaultConnectionPool
             dns = defaultDns
-            followSslRedirects = true
             followRedirects = true
             retryOnConnectionFailure = true
             connectTimeout = defaultTimeout
@@ -118,6 +125,24 @@ class ClientBuilderTest {
                 } catch (ignored: InvocationTargetException) {
                 }
             }
+    }
+
+    @Test
+    fun `client with ssl material`() {
+        val sslFactory = SSLFactory.builder()
+                .withIdentity("keystores/identity.jks", "secret".toCharArray())
+                .withTrustStore("keystores/truststore.jks", "secret".toCharArray())
+                .build()
+
+        assertThatCode {
+            client {
+                sslConfig = SslConfig().apply {
+                    sslSocketFactory = sslFactory.sslContext.socketFactory
+                    trustManager = sslFactory.trustManager
+                    hostnameVerifier = sslFactory.hostnameVerifier
+                }
+            }
+        }.doesNotThrowAnyException()
     }
 
 }

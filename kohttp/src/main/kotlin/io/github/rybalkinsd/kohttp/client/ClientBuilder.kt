@@ -1,6 +1,7 @@
 package io.github.rybalkinsd.kohttp.client
 
 import io.github.rybalkinsd.kohttp.client.dsl.InterceptorsDsl
+import io.github.rybalkinsd.kohttp.configuration.SslConfig
 import okhttp3.Authenticator
 import okhttp3.Cache
 import okhttp3.CertificatePinner
@@ -17,6 +18,7 @@ import java.net.ProxySelector
 import javax.net.SocketFactory
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 
 /**
@@ -54,13 +56,7 @@ interface ClientBuilder : ForkClientBuilder {
     var socketFactory: SocketFactory
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var sslSocketFactory: SSLSocketFactory
-
-    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var hostnameVerifier: HostnameVerifier
-
-    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var certificatePinner: CertificatePinner
+    var sslConfig: SslConfig
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var proxyAuthenticator: Authenticator
@@ -84,9 +80,6 @@ interface ForkClientBuilder {
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var dns: Dns
-
-    @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
-    var followSslRedirects: Boolean
 
     @get:Deprecated(level = DeprecationLevel.ERROR, message = "Write only field")
     var followRedirects: Boolean
