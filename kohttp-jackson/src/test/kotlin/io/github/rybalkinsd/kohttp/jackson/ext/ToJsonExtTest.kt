@@ -21,19 +21,14 @@ class ToJsonExtTest {
     @Test
     fun `gets response as json # ext`() {
         val response = getUrl.httpGet().toJson().toString()
-        val expectedRegex = json {
-            "args" to json { }
-            "headers" to json {
-                "x-forwarded-proto" to "https"
-                "host" to "postman-echo.com"
-                "accept-encoding" to "gzip"
-                "user-agent" to "okhttp/[0-9]*.[0-9]*.[0-9]*"
-                "x-forwarded-port" to "443"
-            }
-            "url" to getUrl
-        }.escape()
 
-        assertThat(response).matches(expectedRegex)
+        assertThat(response)
+                .containsPattern(""""user-agent":"okhttp/[0-9]*.[0-9]*.[0-9]*"""")
+                .containsPattern(""""x-forwarded-proto":"https"""")
+                .containsPattern(""""x-forwarded-port":"443"""")
+                .containsPattern(""""host":"postman-echo.com"""")
+                .containsPattern(""""accept-encoding":"gzip"""")
+                .containsPattern(""""url":"$getUrl"""")
     }
 
     @Test
@@ -131,7 +126,3 @@ class ToJsonExtTest {
 
 
 }
-
-private fun String.escape(): String = replace("/", "\\/")
-        .replace("{", "\\{")
-        .replace("}", "\\}")
