@@ -2,6 +2,7 @@ package io.github.rybalkinsd.kohttp.ext
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import java.util.regex.Pattern
 
 /**
  * @author sergey
@@ -13,23 +14,14 @@ class ResponseExtKtTest {
     @Test
     fun `gets response as string # ext`() {
         val response = getUrl.httpGet().asString()!!
-        val expectedRegex = """{
-            |"args":{},
-            |"headers":{
-            |   "x-forwarded-proto":"https",
-            |   "host":"postman-echo.com",
-            |   "accept-encoding":"gzip",
-            |   "user-agent":"okhttp/[0-9]*.[0-9]*.[0-9]*",
-            |   "x-forwarded-port":"443"
-            |   },
-            |"url":"https://postman-echo.com/get"
-            |}"""
-                .trimMargin("|")
-                .replace(Regex("\\s"),"")
-                .escape()
 
-
-        assertThat(response).matches(expectedRegex)
+        assertThat(response)
+                .containsPattern(""""user-agent":"okhttp/[0-9]*.[0-9]*.[0-9]*"""")
+                .containsPattern(""""x-forwarded-proto":"https"""")
+                .containsPattern(""""x-forwarded-port":"443"""")
+                .containsPattern(""""host":"postman-echo.com"""")
+                .containsPattern(""""accept-encoding":"gzip"""")
+                .containsPattern(""""url":"https://postman-echo.com/get"""")
     }
 
     @Test
@@ -37,38 +29,7 @@ class ResponseExtKtTest {
         val response = "https://postman-echo.com/stream/2".httpGet().asStream()
                 ?.readBytes()?.let { String(it) }
 
-        val expectedRegex = """{
-        |  "args": {
-        |    "n": "2"
-        |  },
-        |  "headers": {
-        |    "x-forwarded-proto": "https",
-        |    "host": "postman-echo.com",
-        |    "accept-encoding": "gzip",
-        |    "user-agent": "okhttp/[0-9]*.[0-9]*.[0-9]*",
-        |    "x-forwarded-port": "443"
-        |  },
-        |  "url": "https://postman-echo.com/stream/2"
-        |}{
-        |  "args": {
-        |    "n": "2"
-        |  },
-        |  "headers": {
-        |    "x-forwarded-proto": "https",
-        |    "host": "postman-echo.com",
-        |    "accept-encoding": "gzip",
-        |    "user-agent": "okhttp/[0-9]*.[0-9]*.[0-9*]",
-        |    "x-forwarded-port": "443"
-        |  },
-        |  "url": "https://postman-echo.com/stream/2"
-        |}"""
-                .trimMargin("|")
-                .escape()
-
-        assertThat(response).matches(expectedRegex)
+        // Ensure we get two pairs of arguments as declared in our request
+        assertThat(response).containsPattern(Pattern.compile("args.*args", Pattern.DOTALL))
     }
 }
-
-private fun String.escape(): String = replace("/", "\\/")
-        .replace("{", "\\{")
-        .replace("}", "\\}")
