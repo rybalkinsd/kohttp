@@ -65,15 +65,3 @@ fun String.httpGetAsync(client: Call.Factory = defaultHttpClient): Deferred<Resp
     GlobalScope.async(context = Dispatchers.Unconfined) {
         client.suspendCall(Request.Builder().url(this@httpGetAsync).build())
     }
-
-@Suppress("DeferredIsResult")
-@Deprecated(
-    message = "Use httpGetAsync instead. This function was renamed according to Kotlin Style Guide." +
-        "This function will be removed in version 0.12.0",
-    replaceWith = ReplaceWith(
-        "httpGetAsync(client)",
-        "httpGetAsync")
-)
-fun String.asyncHttpGet(client: Call.Factory = defaultHttpClient): Deferred<Response> =
-    httpGetAsync(client)
-
