@@ -66,9 +66,8 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         }
     }
 
-
-
     open fun makeBody(): RequestBody = throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

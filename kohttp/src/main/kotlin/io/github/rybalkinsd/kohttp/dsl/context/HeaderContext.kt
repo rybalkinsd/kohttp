@@ -18,4 +18,19 @@ class HeaderContext {
     }
 
     internal fun forEach(action: (k: String, v: Any) -> Unit) = map.forEach { (k, v) -> action(k, v) }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as HeaderContext
+
+        if (map != other.map) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return map.hashCode()
+    }
 }

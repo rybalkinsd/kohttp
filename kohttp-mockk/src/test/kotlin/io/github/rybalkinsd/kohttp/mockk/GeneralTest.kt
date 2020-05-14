@@ -1,90 +1,73 @@
 package io.github.rybalkinsd.kohttp.mockk
 
-import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
-import io.github.rybalkinsd.kohttp.dsl.context.HttpGetContext
-import io.github.rybalkinsd.kohttp.dsl.context.HttpPatchContext
 import io.github.rybalkinsd.kohttp.dsl.httpGet
+import io.github.rybalkinsd.kohttp.dsl.httpPost
 import io.github.rybalkinsd.kohttp.ext.url
+import io.github.rybalkinsd.kohttp.mockk.Matchers.Companion.matching
 import io.mockk.*
-import okhttp3.Request
-import okhttp3.Response
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.function.Consumer
-import kotlin.reflect.KFunction
-import kotlin.reflect.full.memberProperties
-import kotlin.test.assertEquals
 
-@EnableKohttpMock
-class GeneralTest {
-
-
-
-
-    fun MockKMatcherScope.matching(init: HttpGetContext.() -> Unit): HttpGetContext.() -> Unit = match {
-        HttpGetContext().apply(init) == HttpGetContext().apply(it)
-    }
-
+class MatchersTest {
 
     @Test
-    fun name() {
-
-        every { httpGet(init = matching {
-            url("https://google.com")
-        })
-
+    fun `get request matcher`() {
+        every {
+            httpGet(init = matching {
+                url("https://unknown.site")
+                param {
+                    "x" to 123
+                    "y" to "no"
+                }
+            })
         } returns Response {
             request(mockk())
             protocol(mockk())
-            code(200)
+            code(42)
             message("")
         }
 
 
-        val a = httpGet {
-            url("https://google.com")
+        val r = httpGet {
+            url("https://unknown.site")
+            param {
+                "y" to "no"
+                "x" to 123
+            }
         }
-        assertThat(a.code()).isEqualTo(42)
+        assertThat(r.code()).isEqualTo(42)
     }
 
-
-}
-
-    fun HttpGetContext.match(o: HttpGetContext?): Boolean {
-        HttpGetContext::class.memberProperties.all {
-            it.get(this)
-            it.get(o)
+    @Test
+    fun `post request matcher`() {
+        every {
+            httpPost(init = matching {
+                url("https://github.com")
+                body {
+                    json {
+                        "abc" to 123
+                    }
+                }
+            })
+        } returns Response {
+            request(mockk())
+            protocol(mockk())
+            code(101)
+            message("mockk")
         }
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as HttpContext
-
-        if (method != other.method) return false
-        if (paramContext != other.paramContext) return false
-        if (headerContext != other.headerContext) return false
-        if (scheme != other.scheme) return false
-        if (host != other.host) return false
-        if (port != other.port) return false
-        if (path != other.path) return false
-
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as HttpContext
-
-        if (method != other.method) return false
-        if (paramContext != other.paramContext) return false
-        if (headerContext != other.headerContext) return false
-        if (scheme != other.scheme) return false
-        if (host != other.host) return false
-        if (port != other.port) return false
-        if (path != other.path) return false
-
-        return true
+        val r = httpPost {
+            url("https://github.com")
+            body {
+                json {
+                    "abc" to 123
+                }
+            }
+        }
+        with(r) {
+            assertThat(message()).isEqualTo("mockk")
+            assertThat(code()).isEqualTo(101)
+        }
     }
 
 }
