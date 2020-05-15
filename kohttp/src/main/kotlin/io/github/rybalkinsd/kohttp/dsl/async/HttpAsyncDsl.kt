@@ -11,7 +11,6 @@ import kotlinx.coroutines.async
 import okhttp3.Call
 import okhttp3.Response
 
-@Suppress("UNCHECKED_CAST")
 fun <T : HttpContext> httpAsync(
         client: Call.Factory = defaultHttpClient,
         init: T.() -> Unit
@@ -20,7 +19,6 @@ fun <T : HttpContext> httpAsync(
             client.suspendCall(translateHttpContext(null, init).makeRequest())
         }
 
-@Suppress("UNCHECKED_CAST")
 fun <T : HttpContext> httpAsync(
         client: Call.Factory = defaultHttpClient,
         method: Method,

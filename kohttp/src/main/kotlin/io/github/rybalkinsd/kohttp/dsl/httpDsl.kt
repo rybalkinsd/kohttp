@@ -6,12 +6,10 @@ import io.github.rybalkinsd.kohttp.util.translateHttpContext
 import okhttp3.Call
 import okhttp3.Response
 
-@Suppress("UNCHECKED_CAST")
 fun <T : HttpContext> http(client: Call.Factory = defaultHttpClient, init: T.() -> Unit): Response {
     return client.newCall(translateHttpContext(null, init).makeRequest()).execute()
 }
 
-@Suppress("UNCHECKED_CAST")
 fun <T : HttpContext> http(client: Call.Factory = defaultHttpClient, method: Method, init: T.() -> Unit): Response {
     return client.newCall(translateHttpContext(method, init).makeRequest()).execute()
 }
