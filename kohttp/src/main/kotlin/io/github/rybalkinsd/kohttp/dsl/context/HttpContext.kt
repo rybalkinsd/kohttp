@@ -19,6 +19,7 @@ import okhttp3.RequestBody
 sealed class HttpContext(private val method: Method = GET) : IHttpContext {
     private val paramContext = ParamContext()
     private val headerContext = HeaderContext()
+    private var body: RequestBody = RequestBody.create(null, byteArrayOf())
 
     var scheme: String = "http"
     var host: String = ""
@@ -31,6 +32,20 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
 
     override fun header(init: HeaderContext.() -> Unit) {
         headerContext.init()
+    }
+
+    fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
+        body = when (method) {
+            GET, HEAD ->  throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
+            POST, PUT, PATCH, DELETE -> BodyContext(contentType).init()
+        }
+    }
+
+    fun multipartBody(contentType: String? = null, init: MultipartBodyContext.() -> Unit) {
+        body = when (method) {
+            GET, HEAD ->  throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
+            POST, PUT, PATCH, DELETE -> MultipartBodyContext(contentType).apply { init() }.build()
+        }
     }
 
     override fun makeRequest(): Request = with(Request.Builder()) {
@@ -66,29 +81,16 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
         }
     }
 
-    open fun makeBody(): RequestBody = throw UnsupportedOperationException("Request body is not supported for [$method] Method.")
+    open fun makeBody(): RequestBody = body
 
-}
-
-open class HttpPostContext(method: Method = POST) : HttpContext(method) {
-    private var body: RequestBody = RequestBody.create(null, byteArrayOf())
-
-    fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
-        body = BodyContext(contentType).init()
-    }
-
-    fun multipartBody(contentType: String? = null, init: MultipartBodyContext.() -> Unit) {
-        body = MultipartBodyContext(contentType).apply { init() }.build()
-    }
-
-    override fun makeBody(): RequestBody = body
 }
 
 class HttpGetContext : HttpContext()
 class HttpHeadContext : HttpContext(method = HEAD)
-class HttpPutContext : HttpPostContext(method = PUT)
-class HttpPatchContext : HttpPostContext(method = PATCH)
-class HttpDeleteContext : HttpPostContext(method = DELETE)
+class HttpPostContext : HttpContext(method = POST)
+class HttpPutContext : HttpContext(method = PUT)
+class HttpPatchContext : HttpContext(method = PATCH)
+class HttpDeleteContext : HttpContext(method = DELETE)
 
 enum class Method {
     GET, POST, PUT, DELETE, PATCH, HEAD
