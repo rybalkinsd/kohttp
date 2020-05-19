@@ -2,10 +2,7 @@ package io.github.rybalkinsd.kohttp.dsl.async
 
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
-import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.context.Method
-import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.util.json
 import kotlinx.coroutines.runBlocking
@@ -104,13 +101,7 @@ class HttpAsyncDslTest {
                 "arg" to "iphone"
         )
 
-        val client = defaultHttpClient.fork {
-            interceptors {
-                +HttpLoggingInterceptor()
-            }
-        }
-
-        val response = httpAsync(client, method = Method.POST) {
+        val response = httpAsync(method = Method.POST) {
             host = "postman-echo.com"
             path = "/post"
 
