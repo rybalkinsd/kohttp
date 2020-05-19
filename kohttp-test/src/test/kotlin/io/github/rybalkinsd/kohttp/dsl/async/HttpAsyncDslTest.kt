@@ -1,20 +1,21 @@
-package io.github.rybalkinsd.kohttp.dsl
+package io.github.rybalkinsd.kohttp.dsl.async
 
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
 import io.github.rybalkinsd.kohttp.client.defaultHttpClient
 import io.github.rybalkinsd.kohttp.client.fork
-import io.github.rybalkinsd.kohttp.dsl.context.*
+import io.github.rybalkinsd.kohttp.dsl.context.Method
 import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.util.json
-import org.assertj.core.api.Assertions.*
+import kotlinx.coroutines.runBlocking
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class HttpDslKtTest {
+class HttpAsyncDslTest {
 
     @Test
-    fun `get request with param and header`() {
+    fun `async get request with param and header`() {
         val variable = 123L
         val expectedHeader = mapOf(
                 "one" to "42",
@@ -28,7 +29,7 @@ class HttpDslKtTest {
                 "lr" to "213"
         )
 
-        http(method = Method.GET) {
+        val response = httpAsync(method = Method.GET) {
             host = "postman-echo.com"
             path = "/get"
 
@@ -53,17 +54,25 @@ class HttpDslKtTest {
                 "text" to "iphone"
                 "lr" to 213
             }
-        }.use {
-            val parsedResponse = it.toJson()
-            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
-            assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+        }
+
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
+
+        runBlocking {
+            response.await().use {
+                val parsedResponse = it.toJson()
+                assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+                assertContainsExactly(expectedParams, parsedResponse["args"])
+                assertThat(it.code()).isEqualTo(200)
+            }
         }
     }
 
     @Test
-    fun `head request with param and header`() {
-        http(method = Method.HEAD) {
+    fun `async head request with param and header`() {
+        val response = httpAsync(method = Method.HEAD) {
             host = "postman-echo.com"
             path = "/get"
 
@@ -71,20 +80,28 @@ class HttpDslKtTest {
                 "text" to "iphone"
                 "lr" to 213
             }
-        }.use {
-            assertThat(it.code()).isEqualTo(200)
+        }
+
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
+
+        runBlocking {
+            response.await().use {
+                assertThat(it.code()).isEqualTo(200)
+            }
         }
     }
 
     @Test
-    fun `post request with param and header`() {
+    fun `async post request with param and header`() {
         val expectedHeader = mapOf(
-            "one" to "42",
-            "cookie" to "aaa=bbb; ccc=42"
+                "one" to "42",
+                "cookie" to "aaa=bbb; ccc=42"
         )
 
         val expectedParams = mapOf(
-            "arg" to "iphone"
+                "arg" to "iphone"
         )
 
         val client = defaultHttpClient.fork {
@@ -93,7 +110,7 @@ class HttpDslKtTest {
             }
         }
 
-        http(client, method = Method.POST) {
+        val response = httpAsync(client, method = Method.POST) {
             host = "postman-echo.com"
             path = "/post"
 
@@ -108,16 +125,24 @@ class HttpDslKtTest {
                     "ccc" to 42
                 }
             }
-        }.use {
-            val parsedResponse = it.toJson()
-            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
-            assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+        }
+
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
+
+        runBlocking {
+            response.await().use {
+                val parsedResponse = it.toJson()
+                assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+                assertContainsExactly(expectedParams, parsedResponse["args"])
+                assertThat(it.code()).isEqualTo(200)
+            }
         }
     }
 
     @Test
-    fun `put request with param and header`() {
+    fun `async put request with param and header`() {
         val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
@@ -127,7 +152,7 @@ class HttpDslKtTest {
                 "arg" to "iphone"
         )
 
-        http(method = Method.PUT) {
+        val response = httpAsync(method = Method.PUT) {
             host = "postman-echo.com"
             path = "/put"
 
@@ -142,16 +167,24 @@ class HttpDslKtTest {
                     "ccc" to 42
                 }
             }
-        }.use {
-            val parsedResponse = it.toJson()
-            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
-            assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+        }
+
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
+
+        runBlocking {
+            response.await().use {
+                val parsedResponse = it.toJson()
+                assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+                assertContainsExactly(expectedParams, parsedResponse["args"])
+                assertThat(it.code()).isEqualTo(200)
+            }
         }
     }
 
     @Test
-    fun `patch request with param and header`() {
+    fun `async patch request with param and header`() {
         val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
@@ -161,7 +194,7 @@ class HttpDslKtTest {
                 "arg" to "iphone"
         )
 
-        http(method = Method.PATCH) {
+        val response = httpAsync(method = Method.PATCH) {
             host = "postman-echo.com"
             path = "/patch"
 
@@ -176,16 +209,24 @@ class HttpDslKtTest {
                     "ccc" to 42
                 }
             }
-        }.use {
-            val parsedResponse = it.toJson()
-            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
-            assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+        }
+
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
+
+        runBlocking {
+            response.await().use {
+                val parsedResponse = it.toJson()
+                assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+                assertContainsExactly(expectedParams, parsedResponse["args"])
+                assertThat(it.code()).isEqualTo(200)
+            }
         }
     }
 
     @Test
-    fun `delete request with param and header`() {
+    fun `async delete request with param and header`() {
         val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
@@ -195,7 +236,7 @@ class HttpDslKtTest {
                 "arg" to "iphone"
         )
 
-        http(method = Method.DELETE) {
+        val response = httpAsync(method = Method.DELETE) {
             host = "postman-echo.com"
             path = "/delete"
 
@@ -210,11 +251,19 @@ class HttpDslKtTest {
                     "ccc" to 42
                 }
             }
-        }.use {
-            val parsedResponse = it.toJson()
-            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
-            assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+        }
+
+        assertThat(response.isCompleted)
+                .`as`("After coroutine call, we must have not-ready response")
+                .isFalse()
+
+        runBlocking {
+            response.await().use {
+                val parsedResponse = it.toJson()
+                assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+                assertContainsExactly(expectedParams, parsedResponse["args"])
+                assertThat(it.code()).isEqualTo(200)
+            }
         }
     }
 

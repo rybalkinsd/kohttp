@@ -94,13 +94,11 @@ enum class Method {
     GET, POST, PUT, DELETE, PATCH, HEAD
 }
 
-
 internal interface IHttpContext {
     fun param(init: ParamContext.() -> Unit)
     fun header(init: HeaderContext.() -> Unit)
     fun makeRequest(): Request
 }
-
 
 @DslMarker
 annotation class HttpDslMarker
