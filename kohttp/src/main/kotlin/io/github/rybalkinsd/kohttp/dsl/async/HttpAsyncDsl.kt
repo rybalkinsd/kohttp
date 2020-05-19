@@ -17,5 +17,5 @@ fun <T : HttpContext> httpAsync(
         init: T.() -> Unit
 ): Deferred<Response> =
         GlobalScope.async(context = Dispatchers.Unconfined) {
-            client.suspendCall(createHttpContext(method, init).makeRequest())
+            client.suspendCall(method.createHttpContext<T>().apply(init).makeRequest())
         }
