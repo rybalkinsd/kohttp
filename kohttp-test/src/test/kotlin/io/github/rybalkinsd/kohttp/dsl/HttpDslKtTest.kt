@@ -9,15 +9,11 @@ import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import org.assertj.core.api.Assertions.*
 import org.junit.Test
-import java.io.File
 
-/**
- * @author sergey, alex, gokul
- */
 class HttpDslKtTest {
 
     @Test
-    fun `post request with explicitly using HttpPostContext and discarding the HttpMethod`() {
+    fun `post request with HttpPostContext`() {
         val expectedHeader = mapOf(
             "one" to "42",
             "cookie" to "aaa=bbb; ccc=42"
@@ -38,7 +34,7 @@ class HttpDslKtTest {
             }
         }
 
-        http(client, init = fun HttpPostContext.() {
+        http(client, method = Method.POST, init = fun HttpPostContext.() {
             host = "postman-echo.com"
             path = "/post"
 
@@ -70,7 +66,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `post request with explicitly using HttpContext and http post method`() {
+    fun `post request with HttpContext`() {
         val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
@@ -110,7 +106,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `post request with explicitly using HttpGetContext and http post method should throw exception`() {
+    fun `post request with HttpGetContext should throw exception`() {
         val client = defaultHttpClient.fork {
             interceptors {
                 +HttpLoggingInterceptor()
@@ -138,8 +134,8 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `get request with explicitly using HttpGetContext and discarding the HttpMethod`() {
-        val response = http(init = fun HttpGetContext.() {
+    fun `get request with HttpGetContext`() {
+        val response = http(method = Method.GET, init = fun HttpGetContext.() {
             host = "yandex.ru"
             path = "/search"
             port = 80
@@ -156,7 +152,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `get request with explicitly using HttpContext and http get method`() {
+    fun `get request with HttpContext`() {
         val response = http(method = Method.GET, init = fun HttpContext.() {
             host = "yandex.ru"
             path = "/search"
@@ -174,7 +170,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `get request with explicitly using HttpPostContext and http get method should throw exception`() {
+    fun `get request with HttpPostContext should throw exception`() {
         assertThatThrownBy {
             http(method = Method.GET, init = fun HttpPostContext.() {
                 host = "yandex.ru"
@@ -190,7 +186,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `delete request with explicitly using HttpDeleteContext and discarding the HttpMethod`() {
+    fun `delete request with HttpDeleteContext`() {
         val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
@@ -205,7 +201,7 @@ class HttpDslKtTest {
                 "email" to "john.doe@gmail.com"
         )
 
-        http(init = fun HttpDeleteContext.() {
+        http(method = Method.DELETE, init = fun HttpDeleteContext.() {
             host = "postman-echo.com"
             path = "/delete"
 
@@ -237,7 +233,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `delete request with explicitly using HttpContext and http delete method`() {
+    fun `delete request with HttpContext`() {
         val expectedHeader = mapOf(
                 "one" to "42",
                 "cookie" to "aaa=bbb; ccc=42"
@@ -271,7 +267,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `delete request with explicitly using HttpPatchContext and http delete method should throw exception`() {
+    fun `delete request with HttpPatchContext should throw exception`() {
         assertThatThrownBy {
             http(method = Method.DELETE, init = fun HttpPatchContext.() {
                 host = "postman-echo.com"
@@ -293,7 +289,7 @@ class HttpDslKtTest {
     }
 
     @Test
-    fun `delete request with explicitly using HttpPutContext and http delete method should throw exception`() {
+    fun `delete request with HttpPutContext should throw exception`() {
         assertThatThrownBy {
             http(method = Method.DELETE, init = fun HttpPutContext.() {
                 host = "postman-echo.com"
