@@ -11,6 +11,9 @@ import io.github.rybalkinsd.kohttp.util.json
 import org.assertj.core.api.Assertions.*
 import org.junit.Test
 
+/**
+ * @author sergey, alex, gokul, hakky54
+ */
 class HttpDslKtTest {
 
     @Test
@@ -93,7 +96,7 @@ class HttpDslKtTest {
             }
         }
 
-        http(client, method = Method.POST) {
+        http(client, Method.POST) {
             host = "postman-echo.com"
             path = "/post"
 
