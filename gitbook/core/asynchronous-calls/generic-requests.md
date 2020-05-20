@@ -1,6 +1,6 @@
 # async Generic requests
 
-A request context can be reused for different http methods without explicitly calling the `httpGet` or other functions for different http methods.
+A request context can be reused for different http methods without explicitly calling the `httpGetAsync` or other functions for different http methods.
 
 ```kotlin
 var variableMethod: Method = Method.GET
