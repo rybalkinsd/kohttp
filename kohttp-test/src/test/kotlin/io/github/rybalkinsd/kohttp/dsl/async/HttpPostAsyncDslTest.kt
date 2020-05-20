@@ -7,6 +7,9 @@ import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
+/**
+ * @author sergey, alex, gokul, hakky54
+ */
 class HttpPostAsyncDslTest {
 
     @Test
