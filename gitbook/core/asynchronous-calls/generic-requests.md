@@ -3,9 +3,9 @@
 A request context can be reused for different http methods without explicitly calling the `httpGet` or other functions for different http methods.
 
 ```kotlin
-var method: Method = Method.GET
+var variableMethod: Method = Method.GET
 
-val response: Deferred<Response> = httpAsync(method) {
+val response: Deferred<Response> = httpAsync(method = variableMethod) {
     host = "google.com"
     path = "/search"
     param {
@@ -13,4 +13,20 @@ val response: Deferred<Response> = httpAsync(method) {
         "safe" to "off"
     }
 }
+```
+
+or
+
+```kotlin
+var variableMethod: Method = Method.GET
+val context : HttpContext.() -> Unit = {
+    host = "google.com"
+    path = "/search"
+    param {
+        "q" to "iphone"
+        "safe" to "off"
+    }
+}
+
+val response: Deferred<Response> = httpAsync(method = variableMethod, init = context)
 ```

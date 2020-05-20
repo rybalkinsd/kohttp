@@ -2,13 +2,11 @@ package io.github.rybalkinsd.kohttp.dsl
 
 import io.github.rybalkinsd.kohttp.assertContainsAtLeast
 import io.github.rybalkinsd.kohttp.assertContainsExactly
-import io.github.rybalkinsd.kohttp.client.defaultHttpClient
-import io.github.rybalkinsd.kohttp.client.fork
-import io.github.rybalkinsd.kohttp.dsl.context.*
-import io.github.rybalkinsd.kohttp.interceptors.logging.HttpLoggingInterceptor
+import io.github.rybalkinsd.kohttp.dsl.context.HttpContext
+import io.github.rybalkinsd.kohttp.dsl.context.Method
 import io.github.rybalkinsd.kohttp.jackson.ext.toJson
 import io.github.rybalkinsd.kohttp.util.json
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 /**
@@ -90,13 +88,7 @@ class HttpDslKtTest {
             "arg" to "iphone"
         )
 
-        val client = defaultHttpClient.fork {
-            interceptors {
-                +HttpLoggingInterceptor()
-            }
-        }
-
-        http(client, Method.POST) {
+        val ctx : HttpContext.() -> Unit = {
             host = "postman-echo.com"
             path = "/post"
 
@@ -111,12 +103,15 @@ class HttpDslKtTest {
                     "ccc" to 42
                 }
             }
-        }.use {
-            val parsedResponse = it.toJson()
-            assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
-            assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
         }
+
+        http(method = Method.POST, init = ctx)
+                .use {
+                    val parsedResponse = it.toJson()
+                    assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
+                    assertContainsExactly(expectedParams, parsedResponse["args"])
+                    assertThat(it.code()).isEqualTo(200)
+                }
     }
 
     @Test
