@@ -10,7 +10,6 @@ import kotlinx.coroutines.async
 import okhttp3.Call
 import okhttp3.Response
 
-
 /**
  * Method provides an asynchronous DSL call of HTTP PATCH
  *

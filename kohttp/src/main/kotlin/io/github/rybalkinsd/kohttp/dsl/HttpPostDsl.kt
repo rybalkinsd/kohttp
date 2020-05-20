@@ -5,9 +5,8 @@ import io.github.rybalkinsd.kohttp.dsl.context.HttpPostContext
 import okhttp3.Call
 import okhttp3.Response
 
-
 /**
- * Method provides an synchronous DSL call of HTTP POST
+ * Method provides a synchronous DSL call of HTTP POST
  *
  * @return a `Response` instance.
  *

@@ -5,9 +5,8 @@ import io.github.rybalkinsd.kohttp.dsl.context.HttpPutContext
 import okhttp3.Call
 import okhttp3.Response
 
-
 /**
- * Method provides an synchronous DSL call of HTTP PUT
+ * Method provides a synchronous DSL call of HTTP PUT
  *
  * @return a `Response` instance.
  *
