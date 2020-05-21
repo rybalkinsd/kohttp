@@ -41,9 +41,14 @@ import okhttp3.Response
  * @see HttpContext
  * @see Method
  *
- * @since 0.11.2
+ * @since 0.12.0
  * @author hakky54
  */
-fun http(client: Call.Factory = defaultHttpClient, method: Method, init: HttpContext.() -> Unit): Response {
-    return client.newCall(method.makeHttpContext().apply(init).makeRequest()).execute()
+fun http(
+        client: Call.Factory = defaultHttpClient,
+        method: Method,
+        init: HttpContext.() -> Unit
+): Response {
+    val context = method.makeHttpContext().apply(init)
+    return client.newCall(context.makeRequest()).execute()
 }

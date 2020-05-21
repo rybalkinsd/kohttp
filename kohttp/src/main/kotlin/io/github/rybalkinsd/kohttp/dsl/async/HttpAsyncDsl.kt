@@ -40,7 +40,7 @@ import okhttp3.Response
  * @see HttpContext
  * @see Method
  *
- * @since 0.11.2
+ * @since 0.12.0
  * @author hakky54
  */
 fun httpAsync(
