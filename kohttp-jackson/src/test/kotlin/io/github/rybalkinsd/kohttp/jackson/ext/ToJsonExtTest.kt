@@ -2,7 +2,6 @@ package io.github.rybalkinsd.kohttp.jackson.ext
 
 import com.fasterxml.jackson.core.JsonParseException
 import io.github.rybalkinsd.kohttp.ext.httpGet
-import io.github.rybalkinsd.kohttp.util.json
 import io.mockk.every
 import io.mockk.mockk
 import okhttp3.Response
