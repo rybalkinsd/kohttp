@@ -7,7 +7,7 @@ import okhttp3.Response
 
 
 /**
- * Method provides an synchronous DSL call of HTTP POST
+ * Method provides a synchronous DSL call of HTTP POST
  *
  * @return a `Response` instance.
  *

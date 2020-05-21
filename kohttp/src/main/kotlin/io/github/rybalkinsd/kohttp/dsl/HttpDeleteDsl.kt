@@ -7,7 +7,7 @@ import okhttp3.Response
 
 
 /**
- * Method provides an synchronous DSL call of HTTP DELETE
+ * Method provides a synchronous DSL call of HTTP DELETE
  *
  * @return a `Response` instance.
  *
