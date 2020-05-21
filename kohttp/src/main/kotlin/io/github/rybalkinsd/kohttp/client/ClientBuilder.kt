@@ -4,6 +4,7 @@ import io.github.rybalkinsd.kohttp.client.dsl.InterceptorsDsl
 import io.github.rybalkinsd.kohttp.configuration.SslConfig
 import okhttp3.Authenticator
 import okhttp3.Cache
+import okhttp3.CertificatePinner
 import okhttp3.ConnectionPool
 import okhttp3.ConnectionSpec
 import okhttp3.CookieJar
@@ -15,6 +16,9 @@ import okhttp3.Protocol
 import java.net.Proxy
 import java.net.ProxySelector
 import javax.net.SocketFactory
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 
 /**

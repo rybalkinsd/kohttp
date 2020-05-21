@@ -2,6 +2,7 @@ package io.github.rybalkinsd.kohttp.configuration
 
 import okhttp3.CertificatePinner
 import java.util.concurrent.TimeUnit
+import javax.net.SocketFactory
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
