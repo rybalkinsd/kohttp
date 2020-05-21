@@ -5,6 +5,7 @@ import io.github.rybalkinsd.kohttp.dsl.context.HttpPatchContext
 import okhttp3.Call
 import okhttp3.Response
 
+
 /**
  * Method provides an synchronous DSL call of HTTP PATCH
  *
