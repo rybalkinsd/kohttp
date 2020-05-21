@@ -6,7 +6,7 @@ import okhttp3.Call
 import okhttp3.Response
 
 /**
- * Method provides a synchronous DSL call of HTTP HEAD
+ * Method provides an synchronous DSL call of HTTP HEAD
  *
  * @return a `Response` instance.
  *
