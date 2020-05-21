@@ -51,3 +51,4 @@ fun httpAsync(
         GlobalScope.async(context = Dispatchers.Unconfined) {
             client.suspendCall(method.makeHttpContext().apply(init).makeRequest())
         }
+        
