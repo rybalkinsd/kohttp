@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.3.50"
-
+    kotlin("kapt") version "1.3.50" apply false
     jacoco
     id("org.jetbrains.dokka") version "0.9.16"
     `maven-publish`
@@ -11,7 +11,6 @@ plugins {
 
 allprojects {
     apply(plugin = "jacoco")
-
     group = "io.github.rybalkinsd"
     version = "0.12.0-SNAPSHOT"
 
@@ -24,6 +23,7 @@ val notToPublish = listOf("kohttp-test")
 
 subprojects {
     apply(plugin = "kotlin")
+//    apply(plugin = "kotlin-kapt")
 
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
