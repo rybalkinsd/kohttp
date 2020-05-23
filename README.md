@@ -7,7 +7,7 @@
 Kotlin DSL http client
 
 ## Features
- 🔹 Developers Experinece-driven library without verbosity.
+ 🔹 Developers Experience-driven library without verbosity.
  
  🔹 Native way to use http client in Kotlin.
  
