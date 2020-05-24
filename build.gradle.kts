@@ -33,7 +33,7 @@ subprojects {
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("test").java.srcDirs("src/main/kotlin")
+        getByName("test").java.srcDirs("src/test/kotlin")
     }
 
     if (project.name !in notToPublish) {
