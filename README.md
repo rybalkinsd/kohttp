@@ -24,16 +24,20 @@ Kotlin DSL http client
 
 ## Quick start
 ```kotlin
+// Use String or URL extensions send simple request
 val response = "https://my-host.com/users?admin=true".httpGet()
-// use integration with your favorite serialization library
-val usersData = users.toJson()
 
-val pushNotifications: List<Deferred<Response>> = usersData.map {
+// Parse response with your favorite library
+val users = response.toJson()
+
+// Use sync or async methods to send your requests
+// Configure method params, headers, cookies and body in a concise way
+val notifications: List<Deferred<Response>> = users.forEach { user ->
     httpPostAsync {
         url("https://my-host.com/friends/push")
         
         param {
-            "userId" to it[id]
+            "userId" to user[id]
             "eventType" to NewFriend
         }
         
