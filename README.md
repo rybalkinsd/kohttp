@@ -7,7 +7,7 @@
 Kotlin DSL http client
 
 ## Features
- 🔹 Developers Experinece-driven library without verbosity.
+ 🔹 Developers Experience-driven library without verbosity.
  
  🔹 Native way to use http client in Kotlin.
  
@@ -68,13 +68,13 @@ val pushNotifications: List<Deferred<Response>> = usersData.map {
 Kotlin DSL:
 
 ```kotlin
-implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.11.1")
+implementation(group = "io.github.rybalkinsd", name = "kohttp", version = "0.12.0")
 ```
 
 Groovy DSL:
 
 ```groovy
-implementation 'io.github.rybalkinsd:kohttp:0.11.1'
+implementation 'io.github.rybalkinsd:kohttp:0.12.0'
 ```
 
 ### Maven:
@@ -83,7 +83,7 @@ implementation 'io.github.rybalkinsd:kohttp:0.11.1'
 <dependency>
   <groupId>io.github.rybalkinsd</groupId>
   <artifactId>kohttp</artifactId>
-  <version>0.11.1</version>
+  <version>0.12.0</version>
 </dependency>
 ```
 

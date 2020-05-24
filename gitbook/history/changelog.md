@@ -4,7 +4,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/rybalkinsd/kohttp/compare/0.11.1...HEAD)
+## [Unreleased](https://github.com/rybalkinsd/kohttp/compare/0.12.0...HEAD)
+
+## [0.12.0](https://github.com/rybalkinsd/kohttp/tree/0.12.0) - 2020-05-23
+
+### Added
+* Spring boot sample
+* DSL for variable http methods `http(method) { }`
+* Async DSL for variable http method `asyncHttp(method) { }`
+
+### Changed
+* Improved SSL support
+* Improved our documentation
+* Moved to AssertJ in our tests
+
+### Removed
+* Deprecated async methods
+
+### Big thanks
+[@Hakky54](https://github.com/Hakky54), [@gokulchandra](https://github.com/gokulchandra), [@vpondala](https://github.com/vpondala) for your contribution
+
 
 ## [0.11.1](https://github.com/rybalkinsd/kohttp/tree/0.11.1) - 2019-10-27
 
