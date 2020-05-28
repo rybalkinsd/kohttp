@@ -31,11 +31,6 @@ subprojects {
 
     val sourceSets = the<SourceSetContainer>()
 
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("test").java.srcDirs("src/main/kotlin")
-    }
-
     if (project.name !in notToPublish) {
         apply(plugin = "org.jetbrains.dokka")
         apply(plugin = "maven-publish")
