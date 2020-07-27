@@ -31,6 +31,13 @@ subprojects {
 
     val sourceSets = the<SourceSetContainer>()
 
+    sourceSets {
+        create("testIntegration") {
+            compileClasspath += sourceSets["main"].output + configurations["testRuntimeClasspath"]
+            runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
+        }
+    }
+
     if (project.name !in notToPublish) {
         apply(plugin = "org.jetbrains.dokka")
         apply(plugin = "maven-publish")
@@ -105,6 +112,17 @@ subprojects {
         }
     }
 
+    tasks.register<Test>("testIntegration") {
+        description = "Runs the integration tests."
+        group = "verification"
+        testClassesDirs = sourceSets["testIntegration"].output.classesDirs
+        classpath = sourceSets["testIntegration"].runtimeClasspath
+        mustRunAfter(tasks["test"])
+    }
+
+    tasks.named("check") {
+        dependsOn("testIntegration")
+    }
 }
 
 
