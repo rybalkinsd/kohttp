@@ -5,7 +5,7 @@ Kohttp methods return `okhttp3.Response` which is `AutoClosable` It's strictly r
 ```kotlin
 val response = httpGet { ... }
 
-reponse.use {
+response.use {
     ...
 }
 ```
