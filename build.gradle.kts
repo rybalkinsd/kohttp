@@ -29,10 +29,12 @@ subprojects {
         kotlinOptions.jvmTarget = "1.8"
     }
 
+    val testIntegrationAlias = "testIntegration"
+
     val sourceSets = the<SourceSetContainer>()
 
     sourceSets {
-        create("testIntegration") {
+        create(testIntegrationAlias) {
             compileClasspath += sourceSets["main"].output + configurations["testRuntimeClasspath"]
             runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
         }
@@ -112,16 +114,16 @@ subprojects {
         }
     }
 
-    tasks.register<Test>("testIntegration") {
+    tasks.register<Test>(testIntegrationAlias) {
         description = "Runs the integration tests."
         group = "verification"
-        testClassesDirs = sourceSets["testIntegration"].output.classesDirs
-        classpath = sourceSets["testIntegration"].runtimeClasspath
+        testClassesDirs = sourceSets[testIntegrationAlias].output.classesDirs
+        classpath = sourceSets[testIntegrationAlias].runtimeClasspath
         mustRunAfter(tasks["test"])
     }
 
     tasks.named("check") {
-        dependsOn("testIntegration")
+        dependsOn(testIntegrationAlias)
     }
 }
 
