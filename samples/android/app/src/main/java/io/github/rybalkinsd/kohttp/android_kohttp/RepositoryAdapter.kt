@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.item_repository.view.*
 
 class RepositoryAdapter : RecyclerView.Adapter<RepositoryAdapter.ViewHolder>() {
 
-    private val repositories = mutableListOf<Repository>()
+    private val flits = mutableListOf<Flit>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -17,22 +17,26 @@ class RepositoryAdapter : RecyclerView.Adapter<RepositoryAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = repositories.size
+    override fun getItemCount(): Int = flits.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(repositories[position])
+        holder.bind(flits[position])
     }
 
-    fun update(repositories: List<Repository>) {
-        this.repositories.clear()
-        this.repositories.addAll(repositories)
+    fun update(flits: List<Flit>) {
+        this.flits.clear()
+        this.flits.addAll(flits)
         notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Repository) {
-            itemView.name.text = item.name
+        fun bind(item: Flit) {
+            itemView.name.text = 
+                """
+                    ${item.userName}
+                    ${item.content}
+                """.trimIndent()
         }
     }
 }

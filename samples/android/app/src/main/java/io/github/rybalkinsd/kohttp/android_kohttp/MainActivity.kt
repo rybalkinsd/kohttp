@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         mainViewModel.responseLiveData.observe(this, Observer {
             mainTextView.text = it.status
-            adapter.update(it.repositories)
+            adapter.update(it.discover.data)
         })
     }
 }
