@@ -45,7 +45,7 @@ class InterceptorsDslTest {
                 +interceptors[2]
             }
         }
-        forkedClient.interceptors().mapIndexed { idx, it ->
+        forkedClient.interceptors.mapIndexed { idx, it ->
             assertThat(interceptors[idx]).isEqualTo(it)
         }
     }

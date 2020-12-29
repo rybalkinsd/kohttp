@@ -105,7 +105,7 @@ class RetryInterceptorTest {
         val urlEncoder = Base64.getUrlEncoder()
         val md5 = MessageDigest.getInstance("md5")
         val signingInterceptorSpy = spyk(SigningInterceptor("key") {
-            val query = (query() ?: "").toByteArray()
+            val query = (query ?: "").toByteArray()
             urlEncoder.encodeToString(md5.digest(query))
         })
         val loggingInterceptorSpy = spyk(HttpLoggingInterceptor())

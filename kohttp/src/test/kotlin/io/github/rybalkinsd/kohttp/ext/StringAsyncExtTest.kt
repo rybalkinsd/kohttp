@@ -20,7 +20,7 @@ class StringAsyncExtTest {
                 tasks.map { r ->
                     r.await().also { it.close() }
                 }.forEach {
-                    assertThat(it.code()).isEqualTo(200)
+                    assertThat(it.code).isEqualTo(200)
                 }
             }
         }.also { println("$it ms") }

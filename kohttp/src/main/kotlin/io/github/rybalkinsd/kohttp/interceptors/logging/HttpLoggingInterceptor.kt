@@ -41,10 +41,10 @@ class HttpLoggingInterceptor(
         val id = UUID.randomUUID()
 
         log("--> $id")
-        log("${request.method()} ${request.url()} ${connection?.protocol() ?: ""}")
-        log(request.headers())
+        log("${request.method} ${request.url} ${connection?.protocol() ?: ""}")
+        log(request.headers)
         log("")
-        request.body()?.let { log(it) }
+        request.body?.let { log(it) }
         log("---")
 
 
@@ -60,8 +60,8 @@ class HttpLoggingInterceptor(
         }
 
         log("<-- $id in $timing ms")
-        log("${response.code()} ${response.request().url()}")
-        log(response.headers())
+        log("${response.code} ${response.request.url}")
+        log(response.headers)
         log("---")
         return response
     }

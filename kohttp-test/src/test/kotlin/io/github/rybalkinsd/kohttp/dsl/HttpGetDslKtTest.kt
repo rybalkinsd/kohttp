@@ -28,7 +28,7 @@ class HttpGetDslKtTest {
         }
 
         response.use {
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -46,8 +46,8 @@ class HttpGetDslKtTest {
         }
 
         response.use {
-            assertThat(it.request().url().query()!!).doesNotContain("%5B")
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.request.url.query!!).doesNotContain("%5B")
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -95,7 +95,7 @@ class HttpGetDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -142,7 +142,7 @@ class HttpGetDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 

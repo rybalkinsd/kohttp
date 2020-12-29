@@ -36,7 +36,7 @@ class LoggingInterceptorTest {
 
         val response = "https://postman-echo.com/get".httpGet(client)
 
-        assertThat(response.code()).isEqualTo(200)
+        assertThat(response.code).isEqualTo(200)
     }
 
     @Test
@@ -53,7 +53,7 @@ class LoggingInterceptorTest {
             file(fileUri)
         }
 
-        assertThat(response.code()).isEqualTo(200)
+        assertThat(response.code).isEqualTo(200)
     }
 
     @Test
@@ -66,6 +66,6 @@ class LoggingInterceptorTest {
 
         val response = "https://postman-echo.com/get".httpGet(client)
 
-        assertThat(response.code()).isEqualTo(200)
+        assertThat(response.code).isEqualTo(200)
     }
 }

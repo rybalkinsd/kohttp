@@ -54,7 +54,7 @@ class HttpPatchDslKtTest {
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedForm, parsedResponse["form"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -103,7 +103,7 @@ class HttpPatchDslKtTest {
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
             assertContainsExactly(expectedJson, parsedResponse["json"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 }

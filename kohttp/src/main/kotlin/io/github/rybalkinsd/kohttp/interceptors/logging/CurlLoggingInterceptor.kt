@@ -34,10 +34,10 @@ class CurlLoggingInterceptor(
     }
 
     private fun buildCurlCommand(request: Request) = buildString {
-        append("curl -X ${request.method()}")
-        append(buildCurlHeaderOption(request.headers()))
-        append(buildBodyOption(request.body()))
-        append(""" "${request.url()}"""")
+        append("curl -X ${request.method}")
+        append(buildCurlHeaderOption(request.headers))
+        append(buildBodyOption(request.body))
+        append(""" "${request.url}"""")
     }
 
     private fun buildCurlHeaderOption(headers: Headers): String {

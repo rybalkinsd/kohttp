@@ -27,16 +27,16 @@ class UploadDslKtTest {
             path = "/files/test1Mb.db"
         }
 
-        assertThat(downloadResponse.code()).isEqualTo(200)
-        assertThat(downloadResponse.body()?.contentLength()).isEqualTo(1 * 1024 * 1024)
+        assertThat(downloadResponse.code).isEqualTo(200)
+        assertThat(downloadResponse.body?.contentLength()).isEqualTo(1 * 1024 * 1024)
 
         val uploadResponse = upload {
             url("http://postman-echo.com/post")
-            val data = downloadResponse.body()?.bytes()!!
+            val data = downloadResponse.body?.bytes()!!
             bytes("data", data)
         }
 
-        assertThat(uploadResponse.code()).isEqualTo(200)
+        assertThat(uploadResponse.code).isEqualTo(200)
         assertThat(uploadResponse.toJson()["headers"]["content-length"].asInt()).isEqualTo(1 * 1024 * 1024 + 173)
     }
 

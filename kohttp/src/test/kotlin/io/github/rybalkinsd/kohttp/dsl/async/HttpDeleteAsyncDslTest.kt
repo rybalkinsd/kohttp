@@ -21,7 +21,7 @@ class HttpDeleteAsyncDslTest {
 
         runBlocking {
             response.await().use {
-                assertThat(it.code()).isEqualTo(200)
+                assertThat(it.code).isEqualTo(200)
             }
         }
     }

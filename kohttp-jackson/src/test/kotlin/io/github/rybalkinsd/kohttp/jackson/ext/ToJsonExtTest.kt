@@ -33,7 +33,7 @@ class ToJsonExtTest {
     @Test
     fun `null body toJson`() {
         val response = mockk<Response>()
-        every { response.body() } returns null
+        every { response.body } returns null
 
         assertThatExceptionOfType(DeserializationException::class.java).isThrownBy {
             response.toJson()
@@ -43,7 +43,7 @@ class ToJsonExtTest {
     @Test
     fun `null body toJsonOrNull`() {
         val response = mockk<Response>()
-        every { response.body() } returns null
+        every { response.body } returns null
 
         assertThat(response.toJsonOrNull()).isNull()
     }
@@ -52,7 +52,7 @@ class ToJsonExtTest {
     fun `empty body toJson`() {
         val response = mockk<Response>()
         val body = mockk<ResponseBody>()
-        every { response.body()} returns body
+        every { response.body} returns body
         every { body.string() } returns ""
 
         assertThatExceptionOfType(DeserializationException::class.java).isThrownBy {
@@ -64,7 +64,7 @@ class ToJsonExtTest {
     fun `empty body toJsonOrNull`() {
         val response = mockk<Response>()
         val body = mockk<ResponseBody>()
-        every { response.body()} returns body
+        every { response.body} returns body
         every { body.string() } returns ""
 
         assertThat(response.toJsonOrNull()).isNull()
@@ -74,7 +74,7 @@ class ToJsonExtTest {
     fun `broken body toJson`() {
         val response = mockk<Response>()
         val body = mockk<ResponseBody>()
-        every { response.body()} returns body
+        every { response.body} returns body
         every { body.string() } returns "{ 'a': 42"
 
         assertThatExceptionOfType(JsonParseException::class.java).isThrownBy {
@@ -86,7 +86,7 @@ class ToJsonExtTest {
     fun `broken body toJsonOrNull`() {
         val response = mockk<Response>()
         val body = mockk<ResponseBody>()
-        every { response.body()} returns body
+        every { response.body} returns body
         every { body.string() } returns "{ 'a': 42"
 
         assertThat(response.toJsonOrNull()).isNull()
@@ -96,7 +96,7 @@ class ToJsonExtTest {
     fun `valid body toJson`() {
         val response = mockk<Response>()
         val body = mockk<ResponseBody>()
-        every { response.body()} returns body
+        every { response.body} returns body
         every { body.string() } returns """{ "a": 42 }"""
 
         with(response.toJson()) {
@@ -111,7 +111,7 @@ class ToJsonExtTest {
     fun `valid body toJsonOrNull`() {
         val response = mockk<Response>()
         val body = mockk<ResponseBody>()
-        every { response.body()} returns body
+        every { response.body} returns body
         every { body.string() } returns """{ "a": 42 }"""
 
         with(response.toJsonOrNull()) {

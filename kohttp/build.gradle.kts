@@ -2,7 +2,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     api("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.2.1")
-    api("com.squareup.okhttp3", "okhttp", "3.14.2")
+    api("com.squareup.okhttp3", "okhttp", "4.9.0")
 
 
     testImplementation(kotlin("test-junit"))

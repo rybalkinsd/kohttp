@@ -18,7 +18,7 @@ class SigningInterceptorTest {
         val client = defaultHttpClient.fork {
             interceptors {
                 +SigningInterceptor("key") {
-                    val query = (query() ?: "").toByteArray()
+                    val query = (query ?: "").toByteArray()
                     urlEncoder.encodeToString(md5.digest(query))
                 }
             }
@@ -37,7 +37,7 @@ class SigningInterceptorTest {
             }
         }.use {
             val parsedResponse = it.toJson()
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
             assertThat(parsedResponse["args"]["key"].asText()).isEqualTo(expected)
         }
     }

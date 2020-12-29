@@ -53,5 +53,5 @@ class RetryInterceptor(
     private fun shouldDelay(attemptsCount: Int) = invocationTimeout > 0 && attemptsCount > 0
 
     internal fun isRetry(response: Response, attemptsCount: Int): Boolean =
-            attemptsCount < failureThreshold && response.code() in errorStatuses
+            attemptsCount < failureThreshold && response.code in errorStatuses
 }

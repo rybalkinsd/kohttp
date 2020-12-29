@@ -10,6 +10,7 @@ import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * @since 0.1.0
@@ -71,7 +72,7 @@ sealed class HttpContext(private val method: Method = GET) : IHttpContext {
 }
 
 open class HttpPostContext(method: Method = POST) : HttpContext(method) {
-    private var body: RequestBody = RequestBody.create(null, byteArrayOf())
+    private var body: RequestBody = byteArrayOf().toRequestBody(null)
 
     fun body(contentType: String? = null, init: BodyContext.() -> RequestBody) {
         body = BodyContext(contentType).init()

@@ -23,7 +23,7 @@ import okhttp3.Response
  * @author gokul, sergey
  */
 fun Response.toJson(mapper: ObjectMapper = default): JsonNode {
-    val content = body()?.string()
+    val content = body?.string()
 
     return when {
         content.isNullOrBlank() -> throw DeserializationException(cause = "Request body is '$content'")
@@ -66,7 +66,7 @@ fun Response.toJsonOrNull(mapper: ObjectMapper = default): JsonNode? = try {
  * @since 0.11.0
  * @author sergey
  */
-inline fun <reified T : Any> Response.toType(mapper: ObjectMapper = default): T? = with(body()?.string()) {
+inline fun <reified T : Any> Response.toType(mapper: ObjectMapper = default): T? = with(body?.string()) {
     if (isNullOrBlank()) null
     else mapper.readValue<T>(this!!)
 }

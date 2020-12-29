@@ -6,6 +6,7 @@ import io.github.rybalkinsd.kohttp.ext.url
 import io.mockk.every
 import io.mockk.mockk
 import okhttp3.*
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -119,11 +120,11 @@ private fun setupPostMockChain(init: HttpPostContext.() -> Unit): Interceptor.Ch
 
 private fun mockChain() = mockk<Interceptor.Chain>().apply {
     val response = mockk<Response>()
-    every { response.code() } returns 200
-    every { response.headers() } returns Headers.Builder().add("a", "b").build()
-    every { response.request().url() } returns HttpUrl.get("http://127.0.0.1")
+    every { response.code } returns 200
+    every { response.headers } returns Headers.Builder().add("a", "b").build()
+    every { response.request.url } returns "http://127.0.0.1".toHttpUrl()
     every { proceed(any()) } returns response
-    every { connection() } returns mockk<Connection>().apply {
+    every { connection()} returns mockk<Connection>().apply {
         every { protocol() } returns Protocol.HTTP_1_1
     }
 }

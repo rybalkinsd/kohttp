@@ -12,7 +12,7 @@ class StringExtTest {
     @Test
     fun `single sync invoke of httpGet`() {
         val result = "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
-        assertThat(result.code()).isEqualTo(200)
+        assertThat(result.code).isEqualTo(200)
     }
 
     @Test
@@ -20,7 +20,7 @@ class StringExtTest {
         val result = "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
 
         result.use {
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -30,7 +30,7 @@ class StringExtTest {
             List(100) {
                 "https://www.yandex.ru/search/?text=iphone".httpGet().apply { close() }
             }.forEach {
-                assertThat(it.code()).isEqualTo(200)
+                assertThat(it.code).isEqualTo(200)
             }
         }.also { println("$it ms") }
     }

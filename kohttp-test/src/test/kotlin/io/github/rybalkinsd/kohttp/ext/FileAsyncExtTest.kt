@@ -21,7 +21,7 @@ class FileAsyncExtTest {
             response.await().use {
                 val parsedResponse = it.toJson()
 
-                assertThat(it.code()).isEqualTo(200)
+                assertThat(it.code).isEqualTo(200)
                 assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
                 assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
             }
@@ -37,7 +37,7 @@ class FileAsyncExtTest {
             response.await().use {
                 val parsedResponse = it.toJson()
 
-                assertThat(it.code()).isEqualTo(200)
+                assertThat(it.code).isEqualTo(200)
                 assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
                 assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
             }

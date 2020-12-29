@@ -58,7 +58,7 @@ class HttpDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -73,7 +73,7 @@ class HttpDslKtTest {
                 "lr" to 213
             }
         }.use {
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -110,7 +110,7 @@ class HttpDslKtTest {
                     val parsedResponse = it.toJson()
                     assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
                     assertContainsExactly(expectedParams, parsedResponse["args"])
-                    assertThat(it.code()).isEqualTo(200)
+                    assertThat(it.code).isEqualTo(200)
                 }
     }
 
@@ -144,7 +144,7 @@ class HttpDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -178,7 +178,7 @@ class HttpDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -212,7 +212,7 @@ class HttpDslKtTest {
             val parsedResponse = it.toJson()
             assertContainsAtLeast(expectedHeader, parsedResponse["headers"])
             assertContainsExactly(expectedParams, parsedResponse["args"])
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 

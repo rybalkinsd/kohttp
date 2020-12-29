@@ -3,6 +3,7 @@ package io.github.rybalkinsd.kohttp.dsl.context
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.MediaType.Companion.toMediaType
 
 /**
  *
@@ -11,7 +12,7 @@ import okhttp3.RequestBody
  */
 @HttpDslMarker
 class MultipartBodyContext(type: String?) {
-    private val mediaType = type?.let { MediaType.get(it) }
+    private val mediaType = type?.let { it.toMediaType() }
     private val builder = MultipartBody.Builder().also { builder ->
         mediaType?.let { builder.setType(mediaType) }
     }
