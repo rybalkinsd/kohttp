@@ -26,7 +26,7 @@ class OkHttpClientExtKtTest {
         }
 
         "https://postman-echo.com/delay/3".httpGet(client = patientClient).use {
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 

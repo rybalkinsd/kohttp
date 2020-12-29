@@ -23,7 +23,7 @@ class HttpHeadDslKtTest {
         }
 
         response.use {
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.code).isEqualTo(200)
         }
     }
 
@@ -59,8 +59,8 @@ class HttpHeadDslKtTest {
         }
 
         response.use {
-            assertThat(it.body()!!.string()).isEmpty()
-            assertThat(it.code()).isEqualTo(200)
+            assertThat(it.body!!.string()).isEmpty()
+            assertThat(it.code).isEqualTo(200)
         }
     }
 }

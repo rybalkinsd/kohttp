@@ -13,7 +13,7 @@ class FileExtTest {
         val file = File(this.javaClass.getResource("/cat.gif").toURI())
         val response = file.upload("http://postman-echo.com/post")
 
-        assertThat(response.code()).isEqualTo(200)
+        assertThat(response.code).isEqualTo(200)
         val parsedResponse = response.toJson()
         assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
         assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")
@@ -24,7 +24,7 @@ class FileExtTest {
         val file = File(this.javaClass.getResource("/cat.gif").toURI())
         val response = file.upload(URL("http://postman-echo.com/post"))
 
-        assertThat(response.code()).isEqualTo(200)
+        assertThat(response.code).isEqualTo(200)
         val parsedResponse = response.toJson()
         assertThat(parsedResponse["headers"]["content-length"].asInt()).isEqualTo(1046214)
         assertThat(parsedResponse["headers"]["content-type"].asText()).startsWith("multipart/mixed; boundary=")

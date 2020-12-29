@@ -9,7 +9,7 @@ import okhttp3.Headers
 fun Headers.asSequence(): Sequence<Header> = Sequence {
     object : Iterator<Header> {
         private var cursor: Int = 0
-        override fun hasNext() = cursor < size()
+        override fun hasNext() = cursor < size
 
         override fun next(): Header {
             if (!hasNext()) throw NoSuchElementException()

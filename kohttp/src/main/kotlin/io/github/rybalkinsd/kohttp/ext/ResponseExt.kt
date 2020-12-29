@@ -13,7 +13,7 @@ import java.io.InputStream
  * @since 0.9.0
  * @author gokul, sergey
  */
-fun Response.asString(): String? = body()?.use { it.string() }
+fun Response.asString(): String? = body?.use { it.string() }
 
 /**
  * Returns Response Body as a Stream.
@@ -26,4 +26,4 @@ fun Response.asString(): String? = body()?.use { it.string() }
  * @since 0.9.0
  * @author gokul
  */
-fun Response.asStream(): InputStream? = body()?.byteStream()
+fun Response.asStream(): InputStream? = body?.byteStream()

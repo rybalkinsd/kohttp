@@ -94,6 +94,6 @@ private fun mockChain() = mockk<Interceptor.Chain>().apply {
 }
 
 private fun Interceptor.Chain.test() = buildString {
-    CurlLoggingInterceptor { appendln(it) }
+    CurlLoggingInterceptor { appendLine(it) }
         .intercept(this@test)
 }

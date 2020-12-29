@@ -22,9 +22,9 @@ class SigningInterceptor(private val parameterName: String, private val signer: 
     override fun intercept(chain: Interceptor.Chain): Response =
 
         with(chain.request()) {
-            val signedKey = signer(url())
+            val signedKey = signer(url)
 
-            val requestUrl = with(url().newBuilder()) {
+            val requestUrl = with(url.newBuilder()) {
                 addQueryParameter(parameterName, signedKey)
                 build()
             }

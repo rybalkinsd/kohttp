@@ -30,7 +30,7 @@ class ClientBuilderTest {
         val defaultProxySelector = ProxySelector.getDefault()
         val defaultCookieJar = CookieJar.NO_COOKIES
         val defaultSocketFactory = SocketFactory.getDefault()
-        val defaultHostnameVerifier = OkHostnameVerifier.INSTANCE
+        val defaultHostnameVerifier = OkHostnameVerifier
         val defaultCertificatePinner = CertificatePinner.DEFAULT
         val defaultAuth = Authenticator.NONE
         val defaultConnectionPool = ConnectionPool()
@@ -89,28 +89,28 @@ class ClientBuilderTest {
             .build()
 
         with(dslClient) {
-            assertThat(dispatcher()).isEqualTo(client.dispatcher())
-            assertThat(authenticator()).isEqualTo(client.authenticator())
-            assertThat(protocols()).isEqualTo(client.protocols())
-            assertThat(connectionSpecs()).isEqualTo(client.connectionSpecs())
-            assertThat(eventListenerFactory()).isEqualTo(client.eventListenerFactory())
-            assertThat(proxySelector()).isEqualTo(client.proxySelector())
-            assertThat(cookieJar()).isEqualTo(client.cookieJar())
-            assertThat(socketFactory()).isEqualTo(client.socketFactory())
-            assertThat(socketFactory()).isEqualTo(client.socketFactory())
-            assertThat(hostnameVerifier()).isEqualTo(client.hostnameVerifier())
-            assertThat(certificatePinner()).isEqualTo(client.certificatePinner())
-            assertThat(proxyAuthenticator()).isEqualTo(client.proxyAuthenticator())
-            assertThat(authenticator()).isEqualTo(client.authenticator())
-            assertThat(connectionPool()).isEqualTo(client.connectionPool())
-            assertThat(dns()).isEqualTo(client.dns())
-            assertThat(followSslRedirects()).isEqualTo(client.followSslRedirects())
-            assertThat(followSslRedirects()).isEqualTo(client.followRedirects())
-            assertThat(retryOnConnectionFailure()).isEqualTo(client.retryOnConnectionFailure())
-            assertThat(connectTimeoutMillis()).isEqualTo(client.connectTimeoutMillis())
-            assertThat(readTimeoutMillis()).isEqualTo(client.readTimeoutMillis())
-            assertThat(writeTimeoutMillis()).isEqualTo(client.writeTimeoutMillis())
-            assertThat(pingIntervalMillis()).isEqualTo(client.pingIntervalMillis())
+            assertThat(dispatcher).isEqualTo(client.dispatcher)
+            assertThat(authenticator).isEqualTo(client.authenticator)
+            assertThat(protocols).isEqualTo(client.protocols)
+            assertThat(connectionSpecs).isEqualTo(client.connectionSpecs)
+            assertThat(eventListenerFactory).isEqualTo(client.eventListenerFactory)
+            assertThat(proxySelector).isEqualTo(client.proxySelector)
+            assertThat(cookieJar).isEqualTo(client.cookieJar)
+            assertThat(socketFactory).isEqualTo(client.socketFactory)
+            assertThat(socketFactory).isEqualTo(client.socketFactory)
+            assertThat(hostnameVerifier).isEqualTo(client.hostnameVerifier)
+            assertThat(certificatePinner).isEqualTo(client.certificatePinner)
+            assertThat(proxyAuthenticator).isEqualTo(client.proxyAuthenticator)
+            assertThat(authenticator).isEqualTo(client.authenticator)
+            assertThat(connectionPool).isEqualTo(client.connectionPool)
+            assertThat(dns).isEqualTo(client.dns)
+            assertThat(followSslRedirects).isEqualTo(client.followSslRedirects)
+            assertThat(followSslRedirects).isEqualTo(client.followRedirects)
+            assertThat(retryOnConnectionFailure).isEqualTo(client.retryOnConnectionFailure)
+            assertThat(connectTimeoutMillis).isEqualTo(client.connectTimeoutMillis)
+            assertThat(readTimeoutMillis).isEqualTo(client.readTimeoutMillis)
+            assertThat(writeTimeoutMillis).isEqualTo(client.writeTimeoutMillis)
+            assertThat(pingIntervalMillis).isEqualTo(client.pingIntervalMillis)
         }
     }
 
