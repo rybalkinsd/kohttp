@@ -10,7 +10,7 @@ import okhttp3.FormBody
 class Form {
     private val bodyBuilder = FormBody.Builder()
 
-    infix fun String.to(v: Any) {
+    infix fun String.to(v: Any?) {
         bodyBuilder.add(this, v.toString())
     }
 
