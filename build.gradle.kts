@@ -29,7 +29,16 @@ subprojects {
         kotlinOptions.jvmTarget = "1.8"
     }
 
+    val testIntegrationAlias = "testIntegration"
+
     val sourceSets = the<SourceSetContainer>()
+
+    sourceSets {
+        create(testIntegrationAlias) {
+            compileClasspath += sourceSets["main"].output + configurations["testRuntimeClasspath"]
+            runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
+        }
+    }
 
     if (project.name !in notToPublish) {
         apply(plugin = "org.jetbrains.dokka")
@@ -105,6 +114,17 @@ subprojects {
         }
     }
 
+    tasks.register<Test>(testIntegrationAlias) {
+        description = "Runs the integration tests."
+        group = "verification"
+        testClassesDirs = sourceSets[testIntegrationAlias].output.classesDirs
+        classpath = sourceSets[testIntegrationAlias].runtimeClasspath
+        mustRunAfter(tasks["test"])
+    }
+
+    tasks.named("check") {
+        dependsOn(testIntegrationAlias)
+    }
 }
 
 
