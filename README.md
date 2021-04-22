@@ -32,7 +32,7 @@ val users = response.toJson()
 
 // Use sync or async methods to send your requests
 // Configure method params, headers, cookies and body in a concise way
-val notifications: List<Deferred<Response>> = users.forEach { user ->
+val notifications: List<Deferred<Response>> = users.map { user ->
     httpPostAsync {
         url("https://my-host.com/friends/push")
         
